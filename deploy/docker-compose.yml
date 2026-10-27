@@ -1,0 +1,63 @@
+# Production stack: Caddy (TLS + routing), web, api and Redis. Postgres is managed (e.g. Neon) via DATABASE_URI.
+# Usage from the repo root:
+#   docker compose -f deploy/docker-compose.yml --env-file .env run --rm migrate
+#   docker compose -f deploy/docker-compose.yml --env-file .env up -d
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      TOLY_DOMAIN: ${TOLY_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on:
+      - web
+      - api
+
+  web:
+    build:
+      context: ..
+      dockerfile: apps/web/Dockerfile
+      args:
+        API_URL: http://api:4000
+    restart: unless-stopped
+    environment:
+      API_URL: http://api:4000
+      WEB_URL: ${WEB_URL}
+
+  api:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+      target: runtime
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      NODE_ENV: production
+      REDIS_URL: redis://redis:6379
+      CLIENT_IP_HEADER: x-real-ip
+    depends_on:
+      - redis
+
+  migrate:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+      target: migrate
+    env_file: ../.env
+    profiles: [tools]
+
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+
+volumes:
+  caddy-data:
+  redis-data:
