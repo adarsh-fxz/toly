@@ -21,12 +21,26 @@ const schema = z
     TURNSTILE_SITE_KEY: optional,
     TURNSTILE_SECRET_KEY: optional,
     SMS_PROVIDER: z.enum(["console", "sparrow"]).default("console"),
+    PAYMENTS_PROVIDER: z.enum(["mock", "khalti"]).default("mock"),
+    KHALTI_SECRET_KEY: optional,
+    KHALTI_API_URL: z.url().default("https://dev.khalti.com/api/v2"),
     SPARROW_SMS_TOKEN: optional,
     SPARROW_SMS_FROM: optional,
   })
   .refine((e) => e.NODE_ENV !== "production" || e.SMS_PROVIDER !== "console", {
     message: "SMS_PROVIDER must be a real provider in production",
     path: ["SMS_PROVIDER"],
+  })
+  .refine(
+    (e) => e.NODE_ENV !== "production" || e.PAYMENTS_PROVIDER !== "mock",
+    {
+      message: "PAYMENTS_PROVIDER must be a real provider in production",
+      path: ["PAYMENTS_PROVIDER"],
+    },
+  )
+  .refine((e) => e.PAYMENTS_PROVIDER !== "khalti" || e.KHALTI_SECRET_KEY, {
+    message: "KHALTI_SECRET_KEY is required",
+    path: ["KHALTI_SECRET_KEY"],
   })
   .refine(
     (e) =>
