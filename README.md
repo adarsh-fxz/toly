@@ -37,7 +37,7 @@ Session cookies are therefore first-party, and server components call the API di
 ## Security model
 
 - **Sign-in:** phone OTP (Nepali mobiles only), passkeys (WebAuthn, including autofill), optional Google. No passwords.
-- **OTP:** 6 digits, 5-minute expiry, 5 attempts, 3 sends per 10 minutes per IP, optional Cloudflare Turnstile. With Redis, codes never touch Postgres; identifiers are stored hashed.
+- **OTP:** 6 digits, 5-minute expiry, 5 attempts, 3 sends per 10 minutes per IP in production (local dev has no edge proxy to supply the IP), optional Cloudflare Turnstile. With Redis, codes never touch Postgres; identifiers are stored hashed.
 - **Sessions:** `toly`-prefixed HttpOnly cookies, `Secure` in production, 30 days with daily rotation; users can see and revoke devices.
 - **Admins** must have a passkey; the role is re-read from the database on every admin request.
 - **CSRF:** Better Auth origin checks plus Hono's CSRF middleware on `/api/v1`.
