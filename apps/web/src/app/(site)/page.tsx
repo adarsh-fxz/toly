@@ -1,4 +1,6 @@
 import { MERCHANT_CATEGORIES } from "@toly/shared/merchant";
+import { formatRs } from "@toly/shared/money";
+import { Dices } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { SeatDots } from "@/components/brand/seat-dots";
@@ -55,6 +57,10 @@ export default function HomePage({ searchParams }: PageProps<"/">) {
           <Deals searchParams={searchParams} />
         </Suspense>
       </section>
+
+      <Suspense fallback={null}>
+        <SpinVenues />
+      </Suspense>
     </>
   );
 }
@@ -104,6 +110,42 @@ async function Deals({ searchParams }: Pick<PageProps<"/">, "searchParams">) {
         </ul>
       )}
     </>
+  );
+}
+
+async function SpinVenues() {
+  const wheels = await publicApi.api.v1.wheels
+    .$get()
+    .then((r) => (r.ok ? r.json() : []));
+  if (wheels.length === 0) return null;
+  return (
+    <section aria-labelledby="spin-heading" className="mt-16 space-y-4">
+      <h2 id="spin-heading" className="text-3xl font-extrabold">
+        Spin for a discount
+      </h2>
+      <p className="max-w-prose text-muted-foreground">
+        Going solo? Spin a venue's wheel. Every spin wins a voucher, and the
+        odds are shown before you pay.
+      </p>
+      <ul className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0">
+        {wheels.map((w) => (
+          <li key={w.slug} className="shrink-0">
+            <Link
+              href={`/spin/${w.slug}`}
+              className="flex w-64 items-center gap-3 rounded-2xl bg-prize p-4 text-prize-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
+              <Dices className="size-7 shrink-0" aria-hidden />
+              <span className="min-w-0">
+                <span className="block truncate font-semibold">{w.name}</span>
+                <span className="block text-sm">
+                  {w.area}, {formatRs(w.pricePaisa)} a spin
+                </span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
