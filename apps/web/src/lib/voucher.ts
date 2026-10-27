@@ -14,13 +14,13 @@ export function describeOffer(details: Details): string {
     return `${formatRs(details.groupPricePaisa)} for ${details.partySize ?? "the"} people, one bill`;
   }
   if (details.percentOff) {
-    const target = details.appliesTo ? details.appliesTo : "the whole bill";
     const cap = details.maxDiscountPaisa
       ? `, up to ${formatRs(details.maxDiscountPaisa)} off`
       : "";
-    return details.percentOff === 100
-      ? `${target} free${cap}`
-      : `${details.percentOff}% off ${target}${cap}`;
+    if (details.percentOff === 100) {
+      return `${details.appliesTo ?? "Whole bill"} free${cap}`;
+    }
+    return `${details.percentOff}% off ${details.appliesTo ?? "the whole bill"}${cap}`;
   }
   return "Voucher";
 }
