@@ -7,7 +7,7 @@ export const hasDatabase = Boolean(process.env.TEST_DATABASE_URI);
 export async function resetDatabase() {
   await runMigrations(db);
   await db.execute(
-    sql`truncate table vouchers, group_members, groups, deals, merchant_members, merchants, audit_logs, "user" cascade`,
+    sql`truncate table spin_prize_days, spins, spin_prizes, spin_wheels, vouchers, group_members, groups, deals, merchant_members, merchants, audit_logs, "user" cascade`,
   );
 }
 
