@@ -31,7 +31,7 @@ async function VenueHeader({
           <Badge variant="secondary">Not live yet</Badge>
         ) : null}
       </div>
-      <MerchantNav merchantId={merchant.id} />
+      <MerchantNav merchantId={merchant.id} role={merchant.role} />
     </div>
   );
 }
