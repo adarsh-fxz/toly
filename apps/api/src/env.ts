@@ -6,6 +6,7 @@ const schema = z.object({
     .default("development"),
   PORT: z.coerce.number().int().default(4000),
   WEB_URL: z.url().default("http://localhost:3000"),
+  DATABASE_URI: z.url(),
 });
 
 const parsed = schema.safeParse(process.env);
