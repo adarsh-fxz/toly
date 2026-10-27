@@ -79,6 +79,21 @@ export async function getPublicWheel(slug: string) {
   };
 }
 
+export async function listLiveWheels() {
+  return db
+    .select({
+      slug: merchants.slug,
+      name: merchants.name,
+      area: merchants.area,
+      pricePaisa: spinWheels.pricePaisa,
+    })
+    .from(spinWheels)
+    .innerJoin(merchants, eq(merchants.id, spinWheels.merchantId))
+    .where(and(eq(spinWheels.enabled, true), eq(merchants.status, "approved")))
+    .orderBy(asc(merchants.name))
+    .limit(20);
+}
+
 export async function getOwnerWheel(userId: string, merchantId: string) {
   await requireMembership(userId, merchantId, ["owner"]);
   const [wheel] = await db
