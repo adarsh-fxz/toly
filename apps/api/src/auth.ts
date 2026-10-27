@@ -40,7 +40,8 @@ export const auth = betterAuth({
         }
       : {},
   rateLimit: {
-    enabled: true,
+    // IP limits need the edge proxy's client IP header; locally every request would share one bucket.
+    enabled: isProd,
     window: 60,
     max: 60,
     storage: redisStorage ? "secondary-storage" : "database",
