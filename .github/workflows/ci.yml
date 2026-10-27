@@ -16,8 +16,23 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: toly
+          POSTGRES_PASSWORD: toly
+          POSTGRES_DB: toly_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U toly"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     env:
       NEXT_TELEMETRY_DISABLED: 1
+      TEST_DATABASE_URI: postgresql://toly:toly@localhost:5432/toly_test
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
