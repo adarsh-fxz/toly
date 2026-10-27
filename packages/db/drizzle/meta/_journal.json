@@ -29,6 +29,13 @@
       "when": 1793078446578,
       "tag": "0003_groups_vouchers",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793079574469,
+      "tag": "0004_spins",
+      "breakpoints": true
     }
   ]
 }
