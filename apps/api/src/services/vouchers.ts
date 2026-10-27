@@ -1,5 +1,6 @@
-import { and, desc, eq, inArray, or, schema } from "@toly/db";
+import { and, desc, eq, inArray, or, schema, type Tx } from "@toly/db";
 import { db } from "../db";
+import { voucherCode } from "../lib/codes";
 import { notFound } from "../lib/errors";
 
 const { vouchers, groupMembers, merchants } = schema;
@@ -56,4 +57,24 @@ export async function getMyVoucher(userId: string, voucherId: string) {
     .limit(1);
   if (!voucher) throw notFound("Voucher not found");
   return voucher;
+}
+
+/** Expiry for a voucher valid for `days`, or null when it stays valid until used. */
+export function daysFromNow(days: number | null) {
+  return days ? new Date(Date.now() + days * 86_400_000) : null;
+}
+
+type NewVoucher = Omit<typeof vouchers.$inferInsert, "id" | "code">;
+
+/** Inserts a voucher with a fresh random code, retrying on the rare code collision. */
+export async function insertVoucher(tx: Tx, values: NewVoucher) {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const [row] = await tx
+      .insert(vouchers)
+      .values({ ...values, code: voucherCode() })
+      .onConflictDoNothing({ target: vouchers.code })
+      .returning({ id: vouchers.id });
+    if (row) return row;
+  }
+  throw new Error("Could not generate a unique voucher code");
 }
