@@ -5,6 +5,7 @@ export class ApiError extends Error {
     readonly status: ContentfulStatusCode,
     readonly code: string,
     message: string,
+    readonly fields?: Record<string, string>,
   ) {
     super(message);
   }
@@ -18,3 +19,6 @@ export const forbidden = (message = "You don't have access to this") =>
 
 export const notFound = (message = "Not found") =>
   new ApiError(404, "NOT_FOUND", message);
+
+export const conflict = (code: string, message: string) =>
+  new ApiError(409, code, message);
