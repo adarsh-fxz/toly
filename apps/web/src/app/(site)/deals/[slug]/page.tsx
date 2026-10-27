@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { SeatDots } from "@/components/brand/seat-dots";
 import { DealFacts } from "@/components/deal/deal-facts";
+import { ViewBeacon } from "@/components/deal/view-beacon";
 import { StartTolyGate } from "@/components/group/start-toly-gate";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
@@ -45,6 +46,7 @@ async function Deal({ params }: Pick<PageProps<"/deals/[slug]">, "params">) {
 
   return (
     <article className="grid gap-10 py-10 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-x-12 md:py-14">
+      {available ? <ViewBeacon slug={deal.slug} /> : null}
       <header className="space-y-4 md:col-start-1">
         <Link
           href={`/v/${deal.merchant.slug}`}
