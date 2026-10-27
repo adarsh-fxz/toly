@@ -9,3 +9,7 @@ export type MerchantDeal = InferResponseType<
   (typeof api.api.v1.merchants)[":id"]["deals"][":dealId"]["$get"],
   200
 >;
+export type GroupView = InferResponseType<
+  (typeof api.api.v1.groups)[":id"]["$get"],
+  200
+>;
