@@ -17,6 +17,7 @@ import { publicDealRoutes } from "./routes/deals";
 import { groupRoutes } from "./routes/groups";
 import { meRoutes } from "./routes/me";
 import { merchantRoutes } from "./routes/merchants";
+import { spinRoutes } from "./routes/spins";
 
 const v1 = new Hono<AppEnv>()
   .use(csrf({ origin: env.WEB_URL }))
@@ -25,6 +26,7 @@ const v1 = new Hono<AppEnv>()
   .route("/", publicDealRoutes)
   .route("/me", meRoutes)
   .route("/groups", groupRoutes)
+  .route("/", spinRoutes)
   .route("/merchants", merchantRoutes)
   .route("/merchants", counterRoutes)
   .route("/admin", adminRoutes);
