@@ -132,3 +132,7 @@
 @utility tabular {
   font-variant-numeric: tabular-nums;
 }
+
+@utility font-wide {
+  font-variation-settings: "wdth" 115;
+}
