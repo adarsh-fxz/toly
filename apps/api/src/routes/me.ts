@@ -1,6 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
+import { ApiError } from "../lib/errors";
 import { validate } from "../lib/validate";
+import { issueVoucherToken } from "../lib/voucher-token";
 import { type AuthedEnv, requireUser } from "../middleware/session";
 import { listMyGroups } from "../services/groups";
 import { getMyVoucher, listMyVouchers } from "../services/vouchers";
@@ -25,4 +27,22 @@ export const meRoutes = new Hono<AuthedEnv>()
     validate("param", z.object({ id: z.uuid() })),
     async (c) =>
       c.json(await getMyVoucher(c.get("user").id, c.req.valid("param").id)),
+  )
+  .get(
+    "/vouchers/:id/token",
+    validate("param", z.object({ id: z.uuid() })),
+    async (c) => {
+      const voucher = await getMyVoucher(
+        c.get("user").id,
+        c.req.valid("param").id,
+      );
+      if (voucher.status !== "issued") {
+        throw new ApiError(
+          409,
+          "NOT_REDEEMABLE",
+          "This voucher can't be redeemed any more",
+        );
+      }
+      return c.json(issueVoucherToken(voucher.id));
+    },
   );
