@@ -37,10 +37,13 @@ const schema = z
       path: ["SPARROW_SMS_TOKEN"],
     },
   )
-  .refine((e) => Boolean(e.GOOGLE_CLIENT_ID) === Boolean(e.GOOGLE_CLIENT_SECRET), {
-    message: "Set both GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET",
-    path: ["GOOGLE_CLIENT_ID"],
-  });
+  .refine(
+    (e) => Boolean(e.GOOGLE_CLIENT_ID) === Boolean(e.GOOGLE_CLIENT_SECRET),
+    {
+      message: "Set both GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET",
+      path: ["GOOGLE_CLIENT_ID"],
+    },
+  );
 
 const parsed = schema.safeParse(process.env);
 
