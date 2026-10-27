@@ -5,6 +5,7 @@ export default defineConfig({
   platform: "node",
   target: "node24",
   format: "esm",
-  noExternal: [/^@toly\//],
+  // Bundle every dependency so the runtime image needs no node_modules.
+  noExternal: [/.*/],
   sourcemap: true,
 });
