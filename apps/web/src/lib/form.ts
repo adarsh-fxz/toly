@@ -14,3 +14,8 @@ export async function toFormErrors(res: Response): Promise<FormErrors> {
 export function formValues(form: HTMLFormElement) {
   return Object.fromEntries(new FormData(form)) as Record<string, string>;
 }
+
+/** Name of the field that fired an event bubbling up to the form. */
+export function eventFieldName(event: React.SyntheticEvent) {
+  return (event.target as Element).getAttribute("name") ?? "";
+}
