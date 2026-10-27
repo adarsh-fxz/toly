@@ -1,0 +1,11 @@
+import type { InferResponseType } from "hono/client";
+import type { api } from "./api";
+
+export type PublicDeal = InferResponseType<
+  (typeof api.api.v1.deals)[":slug"]["$get"],
+  200
+>;
+export type MerchantDeal = InferResponseType<
+  (typeof api.api.v1.merchants)[":id"]["deals"][":dealId"]["$get"],
+  200
+>;
