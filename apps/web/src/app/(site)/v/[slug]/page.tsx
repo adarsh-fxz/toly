@@ -2,7 +2,10 @@ import {
   MERCHANT_CATEGORIES,
   type MerchantCategory,
 } from "@toly/shared/merchant";
+import { formatRs } from "@toly/shared/money";
+import { Dices } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { DealListSkeleton } from "@/components/deal/deal-list-skeleton";
@@ -42,7 +45,13 @@ export default function VenuePage({ params }: PageProps<"/v/[slug]">) {
 }
 
 async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
-  const venue = await fetchVenue((await params).slug);
+  const { slug } = await params;
+  const [venue, wheel] = await Promise.all([
+    fetchVenue(slug),
+    publicApi.api.v1.venues[":slug"].wheel
+      .$get({ param: { slug } })
+      .then((r) => (r.ok ? r.json() : null)),
+  ]);
   if (!venue) notFound();
 
   return (
@@ -58,6 +67,22 @@ async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
           <p className="max-w-prose text-lg">{venue.description}</p>
         ) : null}
       </header>
+      {wheel ? (
+        <Link
+          href={`/spin/${venue.slug}`}
+          className="mt-10 flex items-center gap-4 rounded-3xl bg-prize p-5 text-prize-foreground transition-transform focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99] sm:max-w-xl"
+        >
+          <Dices className="size-8 shrink-0" aria-hidden />
+          <span className="min-w-0 flex-1">
+            <span className="block text-lg font-bold">Toly Spin</span>
+            <span className="block text-sm">
+              {formatRs(wheel.pricePaisa)} a spin. Every spin wins a discount
+              here.
+            </span>
+          </span>
+          <span className="font-semibold">Spin</span>
+        </Link>
+      ) : null}
       <section aria-labelledby="venue-deals" className="mt-12 space-y-4">
         <h2 id="venue-deals" className="text-3xl font-extrabold">
           Group deals
