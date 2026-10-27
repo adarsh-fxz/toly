@@ -13,3 +13,7 @@ export type GroupView = InferResponseType<
   (typeof api.api.v1.groups)[":id"]["$get"],
   200
 >;
+export type PublicWheel = InferResponseType<
+  (typeof api.api.v1.venues)[":slug"]["wheel"]["$get"],
+  200
+>;
