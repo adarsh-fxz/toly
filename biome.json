@@ -47,7 +47,8 @@
       "linter": {
         "rules": {
           "a11y": {
-            "noLabelWithoutControl": "off"
+            "noLabelWithoutControl": "off",
+            "useSemanticElements": "off"
           }
         }
       }
