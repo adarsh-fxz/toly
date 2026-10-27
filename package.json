@@ -1,0 +1,24 @@
+{
+  "name": "toly",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.5.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "lint": "biome check",
+    "format": "biome check --write",
+    "db:generate": "pnpm --filter @toly/db generate",
+    "db:migrate": "pnpm --filter @toly/db migrate",
+    "db:seed": "pnpm --filter @toly/db seed"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.3",
+    "turbo": "^2.11.10"
+  }
+}
