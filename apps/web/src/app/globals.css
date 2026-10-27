@@ -136,3 +136,15 @@
 @utility font-wide {
   font-variation-settings: "wdth" 115;
 }
+
+@media print {
+  @page {
+    size: A5;
+    margin: 0;
+  }
+  body:has(#poster) header,
+  body:has(#poster) nav,
+  body:has(#poster) main > div > div:first-child {
+    display: none;
+  }
+}
