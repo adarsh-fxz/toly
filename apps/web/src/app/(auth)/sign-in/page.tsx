@@ -21,7 +21,7 @@ async function SignIn({
   searchParams,
 }: Pick<PageProps<"/sign-in">, "searchParams">) {
   const { next } = await searchParams;
-  const nextPath = safeNextPath(typeof next === "string" ? next : null);
+  const nextPath = safeNextPath(typeof next === "string" ? next : null, "/me");
 
   const [user, config] = await Promise.all([
     getCurrentUser(),
