@@ -10,14 +10,18 @@ import { db } from "./db";
 import { env } from "./env";
 import { ApiError } from "./lib/errors";
 import { type AppEnv, withSession } from "./middleware/session";
+import { adminRoutes } from "./routes/admin";
 import { authConfigRoutes } from "./routes/auth-config";
 import { meRoutes } from "./routes/me";
+import { merchantRoutes } from "./routes/merchants";
 
 const v1 = new Hono<AppEnv>()
   .use(csrf({ origin: env.WEB_URL }))
   .use(withSession)
   .route("/auth/config", authConfigRoutes)
-  .route("/me", meRoutes);
+  .route("/me", meRoutes)
+  .route("/merchants", merchantRoutes)
+  .route("/admin", adminRoutes);
 
 const app = new Hono()
   .use(requestId())
@@ -37,7 +41,10 @@ app.notFound((c) =>
 
 app.onError((err, c) => {
   if (err instanceof ApiError) {
-    return c.json({ error: err.code, message: err.message }, err.status);
+    return c.json(
+      { error: err.code, message: err.message, fields: err.fields },
+      err.status,
+    );
   }
   if (err instanceof HTTPException) {
     return c.json({ error: "HTTP_ERROR", message: err.message }, err.status);

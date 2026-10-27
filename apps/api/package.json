@@ -10,11 +10,13 @@
     "dev": "tsx watch --env-file-if-exists=../../.env src/index.ts",
     "build": "tsdown",
     "start": "node --env-file-if-exists=../../.env dist/index.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "admin:grant": "tsx --env-file-if-exists=../../.env src/scripts/grant-admin.ts"
   },
   "dependencies": {
     "@better-auth/passkey": "^1.7.13",
     "@hono/node-server": "^2.1.5",
+    "@hono/zod-validator": "^0.9.1",
     "@toly/db": "workspace:*",
     "@toly/shared": "workspace:*",
     "better-auth": "^1.7.13",
