@@ -11,8 +11,8 @@ import {
 } from "@toly/db";
 import type { DealSnapshot } from "@toly/db/schema";
 import { db } from "../db";
-import { voucherCode } from "../lib/codes";
 import { ApiError, conflict, notFound } from "../lib/errors";
+import { daysFromNow, insertVoucher } from "./vouchers";
 
 const { deals, groups, groupMembers, merchants, vouchers, user } = schema;
 
@@ -96,32 +96,21 @@ export async function startGroup(
 
 async function issueGroupVoucher(tx: Tx, group: typeof groups.$inferSelect) {
   const { snapshot } = group;
-  for (let attempt = 0; attempt < 5; attempt++) {
-    const inserted = await tx
-      .insert(vouchers)
-      .values({
-        code: voucherCode(),
-        kind: "group",
-        merchantId: group.merchantId,
-        holderId: group.organizerId,
-        groupId: group.id,
-        title: snapshot.title,
-        details: {
-          groupPricePaisa: snapshot.groupPricePaisa,
-          basePricePaisa: snapshot.basePricePaisa,
-          partySize: group.partySize,
-          includes: snapshot.includes,
-          terms: snapshot.terms,
-        },
-        expiresAt: snapshot.validityDays
-          ? sql`now() + make_interval(days => ${snapshot.validityDays})`
-          : null,
-      })
-      .onConflictDoNothing({ target: vouchers.code })
-      .returning({ id: vouchers.id });
-    if (inserted.length > 0) return;
-  }
-  throw new Error("Could not generate a unique voucher code");
+  await insertVoucher(tx, {
+    kind: "group",
+    merchantId: group.merchantId,
+    holderId: group.organizerId,
+    groupId: group.id,
+    title: snapshot.title,
+    details: {
+      groupPricePaisa: snapshot.groupPricePaisa,
+      basePricePaisa: snapshot.basePricePaisa,
+      partySize: group.partySize,
+      includes: snapshot.includes,
+      terms: snapshot.terms,
+    },
+    expiresAt: daysFromNow(snapshot.validityDays),
+  });
 }
 
 /**
