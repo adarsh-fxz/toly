@@ -1,11 +1,14 @@
 "use client";
 
-import { LayoutGrid } from "lucide-react";
+import { LayoutGrid, Tag } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const items = [{ href: "", label: "Overview", icon: LayoutGrid }];
+const items = [
+  { href: "", label: "Overview", icon: LayoutGrid },
+  { href: "/deals", label: "Deals", icon: Tag },
+];
 
 // Bottom tab bar on phones (thumb reach at a busy counter), inline tabs on larger screens.
 export function MerchantNav({ merchantId }: { merchantId: string }) {
