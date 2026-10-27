@@ -3,6 +3,7 @@ import { createClient } from "@toly/api/client";
 import { headers } from "next/headers";
 
 const apiUrl = process.env.API_URL ?? "http://localhost:4000";
+const webUrl = process.env.WEB_URL ?? "http://localhost:3000";
 
 // Server client: forwards the visitor's cookies so the API sees the same session.
 export async function serverApi() {
@@ -10,7 +11,10 @@ export async function serverApi() {
   return createClient(apiUrl, {
     headers: {
       cookie: incoming.get("cookie") ?? "",
-      "x-forwarded-for": incoming.get("x-forwarded-for") ?? "",
+      // Server-side calls come from this app, so they carry its origin through the API's CSRF check.
+      origin: webUrl,
+      // Set by the edge proxy in production (see deploy/Caddyfile); passed on so rate limits see the visitor.
+      "x-real-ip": incoming.get("x-real-ip") ?? "",
     },
     init: { cache: "no-store" },
   });
