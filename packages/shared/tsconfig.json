@@ -1,0 +1,4 @@
+{
+  "extends": "@toly/tsconfig/base.json",
+  "include": ["src"]
+}
