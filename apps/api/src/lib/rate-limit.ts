@@ -11,7 +11,8 @@ return value
 
 const memory = new Map<string, { count: number; resetAt: number }>();
 
-async function hit(key: string, windowSeconds: number) {
+/** Counts a hit in a fixed window and returns the running total. */
+export async function hit(key: string, windowSeconds: number) {
   if (redis)
     return Number(await redis.eval(INCREMENT, 1, `rl:${key}`, windowSeconds));
   const now = Date.now();
