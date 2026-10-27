@@ -8,6 +8,7 @@ import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -56,28 +57,30 @@ export function UserMenu({ user }: { user: CurrentUser | null }) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="truncate">
-          {user.name || "Your account"}
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem render={<Link href="/me" />}>
-          <Ticket aria-hidden />
-          My tolys and vouchers
-        </DropdownMenuItem>
-        <DropdownMenuItem render={<Link href="/account" />}>
-          <Settings aria-hidden />
-          Account and security
-        </DropdownMenuItem>
-        <DropdownMenuItem render={<Link href="/merchant" />}>
-          <Store aria-hidden />
-          For venues
-        </DropdownMenuItem>
-        {user.role === "admin" ? (
-          <DropdownMenuItem render={<Link href="/admin" />}>
-            <ShieldCheck aria-hidden />
-            Admin
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="truncate">
+            {user.name || "Your account"}
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem render={<Link href="/me" />}>
+            <Ticket aria-hidden />
+            My tolys and vouchers
           </DropdownMenuItem>
-        ) : null}
+          <DropdownMenuItem render={<Link href="/account" />}>
+            <Settings aria-hidden />
+            Account and security
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/merchant" />}>
+            <Store aria-hidden />
+            For venues
+          </DropdownMenuItem>
+          {user.role === "admin" ? (
+            <DropdownMenuItem render={<Link href="/admin" />}>
+              <ShieldCheck aria-hidden />
+              Admin
+            </DropdownMenuItem>
+          ) : null}
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={signOut}>
           <LogOut aria-hidden />
