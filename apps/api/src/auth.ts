@@ -53,7 +53,7 @@ export const auth = betterAuth({
   advanced: {
     cookiePrefix: "toly",
     useSecureCookies: isProd,
-    ipAddress: { ipAddressHeaders: ["cf-connecting-ip", "x-forwarded-for"] },
+    ipAddress: { ipAddressHeaders: [env.CLIENT_IP_HEADER] },
   },
   plugins: [
     phoneNumber({

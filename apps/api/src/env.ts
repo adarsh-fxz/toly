@@ -15,6 +15,8 @@ const schema = z
     WEB_URL: z.url().default("http://localhost:3000"),
     DATABASE_URI: z.url(),
     REDIS_URL: z.url().optional(),
+    // Header your edge proxy overwrites with the real client IP. Never trust a header clients can set themselves.
+    CLIENT_IP_HEADER: z.string().toLowerCase().default("x-real-ip"),
     BETTER_AUTH_SECRET: z.string().min(32),
     GOOGLE_CLIENT_ID: optional,
     GOOGLE_CLIENT_SECRET: optional,

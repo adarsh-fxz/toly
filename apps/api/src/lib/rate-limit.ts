@@ -1,4 +1,5 @@
 import { createMiddleware } from "hono/factory";
+import { env } from "../env";
 import { ApiError } from "./errors";
 import { redis } from "./redis";
 
@@ -23,15 +24,12 @@ async function hit(key: string, windowSeconds: number) {
   return entry.count;
 }
 
-/** Fixed-window limit per signed-in user (falls back to client IP). */
+/** Fixed-window limit per signed-in user, falling back to the client IP set by the edge proxy. */
 export const rateLimit = (name: string, max: number, windowSeconds: number) =>
   createMiddleware<{ Variables: { user: { id: string } | null } }>(
     async (c, next) => {
       const who =
-        c.get("user")?.id ??
-        c.req.header("cf-connecting-ip") ??
-        c.req.header("x-forwarded-for")?.split(",")[0]?.trim() ??
-        "anonymous";
+        c.get("user")?.id ?? c.req.header(env.CLIENT_IP_HEADER) ?? "anonymous";
       if ((await hit(`${name}:${who}`, windowSeconds)) > max) {
         throw new ApiError(
           429,
