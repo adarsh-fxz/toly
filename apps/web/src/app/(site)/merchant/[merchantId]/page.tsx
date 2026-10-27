@@ -1,39 +1,61 @@
-import { ScanLine } from "lucide-react";
+import { Printer, ScanLine } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { Insights } from "@/components/insights/insights";
 import { VenueForm } from "@/components/merchant/venue-form";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { serverApi } from "@/lib/api-server";
 import { getMerchant } from "@/lib/merchant";
 
-export default function MerchantOverviewPage({
-  params,
-}: PageProps<"/merchant/[merchantId]">) {
+type Props = PageProps<"/merchant/[merchantId]">;
+
+export default function MerchantOverviewPage({ params, searchParams }: Props) {
   return (
-    <Suspense fallback={<Skeleton className="h-96 w-full max-w-xl" />}>
-      <Overview params={params} />
+    <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+      <Overview params={params} searchParams={searchParams} />
     </Suspense>
   );
 }
 
 async function Overview({
   params,
-}: Pick<PageProps<"/merchant/[merchantId]">, "params">) {
-  const { merchantId } = await params;
+  searchParams,
+}: Pick<Props, "params" | "searchParams">) {
+  const [{ merchantId }, { days }] = await Promise.all([params, searchParams]);
   const merchant = await getMerchant(merchantId);
+  const isOwner = merchant.role === "owner";
 
   return (
-    <div className="space-y-12">
-      <Link
-        href={`/merchant/${merchant.id}/scan`}
-        className={buttonVariants({
-          size: "lg",
-          className: "w-full sm:w-auto",
-        })}
-      >
-        <ScanLine aria-hidden />
-        Scan a voucher
-      </Link>
+    <div className="space-y-14">
+      <div className="flex flex-wrap gap-3">
+        <Link
+          href={`/merchant/${merchant.id}/scan`}
+          className={buttonVariants({ size: "lg" })}
+        >
+          <ScanLine aria-hidden />
+          Scan a voucher
+        </Link>
+        {isOwner && merchant.status === "approved" ? (
+          <Link
+            href={`/merchant/${merchant.id}/poster`}
+            className={buttonVariants({ size: "lg", variant: "outline" })}
+          >
+            <Printer aria-hidden />
+            Counter poster
+          </Link>
+        ) : null}
+      </div>
+
+      {isOwner ? (
+        <Suspense fallback={<Skeleton className="h-80 w-full" />}>
+          <VenueInsights
+            merchantId={merchant.id}
+            days={days === "7" ? 7 : days === "90" ? 90 : 30}
+          />
+        </Suspense>
+      ) : null}
+
       <section className="max-w-xl space-y-6">
         <div className="space-y-1">
           <h2 className="font-sans text-xl font-semibold [font-variation-settings:normal]">
@@ -43,17 +65,30 @@ async function Overview({
             Customers see these on every deal you publish.
           </p>
         </div>
-        {merchant.role === "owner" ? (
+        {isOwner ? (
           <VenueForm venue={merchant} />
         ) : (
-          <dl className="space-y-3">
-            <div>
-              <dt className="text-sm text-muted-foreground">Address</dt>
-              <dd>{merchant.address}</dd>
-            </div>
-          </dl>
+          <p>
+            {merchant.address}, {merchant.area}
+          </p>
         )}
       </section>
     </div>
   );
+}
+
+async function VenueInsights({
+  merchantId,
+  days,
+}: {
+  merchantId: string;
+  days: 7 | 30 | 90;
+}) {
+  const client = await serverApi();
+  const res = await client.api.v1.merchants[":id"].insights.$get({
+    param: { id: merchantId },
+    query: { days: String(days) },
+  });
+  if (!res.ok) return null;
+  return <Insights data={await res.json()} merchantId={merchantId} />;
 }
