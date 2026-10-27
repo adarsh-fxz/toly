@@ -1,11 +1,13 @@
 import { sql } from "drizzle-orm";
 import {
   check,
+  date,
   index,
   integer,
   jsonb,
   pgEnum,
   pgTable,
+  primaryKey,
   smallint,
   text,
   timestamp,
@@ -61,4 +63,17 @@ export const deals = pgTable(
       sql`${t.groupPricePaisa} > 0 and ${t.groupPricePaisa} < ${t.basePricePaisa}`,
     ),
   ],
+);
+
+/** Deal page views per Kathmandu day, deduplicated per visitor before they're counted. */
+export const dealDailyViews = pgTable(
+  "deal_daily_views",
+  {
+    dealId: uuid()
+      .notNull()
+      .references(() => deals.id, { onDelete: "cascade" }),
+    day: date().notNull(),
+    views: integer().notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.dealId, t.day] })],
 );

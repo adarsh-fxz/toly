@@ -36,6 +36,13 @@
       "when": 1793079574469,
       "tag": "0004_spins",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793080726288,
+      "tag": "0005_deal_views",
+      "breakpoints": true
     }
   ]
 }
