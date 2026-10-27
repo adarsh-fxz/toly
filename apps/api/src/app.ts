@@ -12,6 +12,7 @@ import { ApiError } from "./lib/errors";
 import { type AppEnv, withSession } from "./middleware/session";
 import { adminRoutes } from "./routes/admin";
 import { authConfigRoutes } from "./routes/auth-config";
+import { counterRoutes } from "./routes/counter";
 import { publicDealRoutes } from "./routes/deals";
 import { groupRoutes } from "./routes/groups";
 import { meRoutes } from "./routes/me";
@@ -25,6 +26,7 @@ const v1 = new Hono<AppEnv>()
   .route("/me", meRoutes)
   .route("/groups", groupRoutes)
   .route("/merchants", merchantRoutes)
+  .route("/merchants", counterRoutes)
   .route("/admin", adminRoutes);
 
 const app = new Hono()
