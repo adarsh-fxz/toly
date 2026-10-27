@@ -16,6 +16,7 @@ import {
   getOwnerWheel,
   getPublicWheel,
   getSpin,
+  listLiveWheels,
   playSpin,
   saveWheel,
   startSpin,
@@ -30,6 +31,7 @@ function userOf(c: { get(key: "user"): AppEnv["Variables"]["user"] }) {
 }
 
 export const spinRoutes = new Hono<AppEnv>()
+  .get("/wheels", async (c) => c.json(await listLiveWheels()))
   .get(
     "/venues/:slug/wheel",
     validate("param", z.object({ slug: z.string().min(1).max(80) })),
