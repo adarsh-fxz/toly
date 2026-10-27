@@ -4,6 +4,7 @@ import { z } from "zod";
 import { rateLimit } from "../lib/rate-limit";
 import { validate } from "../lib/validate";
 import { type AuthedEnv, requireUser } from "../middleware/session";
+import { getInsights } from "../services/insights";
 import {
   lookupVoucher,
   recentRedemptions,
@@ -110,4 +111,26 @@ export const counterRoutes = new Hono<AuthedEnv>()
       await removeStaff(c.get("user").id, id, userId);
       return c.json({ ok: true });
     },
+  )
+  .get(
+    "/:id/insights",
+    validate("param", idParam),
+    validate(
+      "query",
+      z.object({
+        days: z.coerce
+          .number()
+          .int()
+          .pipe(z.union([z.literal(7), z.literal(30), z.literal(90)]))
+          .default(30),
+      }),
+    ),
+    async (c) =>
+      c.json(
+        await getInsights(
+          c.get("user").id,
+          c.req.valid("param").id,
+          c.req.valid("query").days,
+        ),
+      ),
   );
