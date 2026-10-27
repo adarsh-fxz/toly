@@ -17,3 +17,7 @@ export type PublicWheel = InferResponseType<
   (typeof api.api.v1.venues)[":slug"]["wheel"]["$get"],
   200
 >;
+export type VenueInsights = InferResponseType<
+  (typeof api.api.v1.merchants)[":id"]["insights"]["$get"],
+  200
+>;
