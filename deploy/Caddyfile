@@ -1,0 +1,18 @@
+# Edge proxy for production. Caddy handles TLS, sends /api straight to the API and everything else to Next.
+# X-Real-IP is overwritten with the connecting address, so clients can't spoof the IP used for rate limits.
+# Behind Cloudflare, set `trusted_proxies` and use {http.request.header.CF-Connecting-IP} instead.
+{$TOLY_DOMAIN:localhost} {
+	encode zstd gzip
+
+	handle /api/* {
+		reverse_proxy api:4000 {
+			header_up X-Real-IP {remote_host}
+		}
+	}
+
+	handle {
+		reverse_proxy web:3000 {
+			header_up X-Real-IP {remote_host}
+		}
+	}
+}
