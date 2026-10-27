@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutGrid, ScanLine, Tag, Users } from "lucide-react";
+import { Dices, LayoutGrid, ScanLine, Tag, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,7 @@ const items = [
   { href: "", label: "Overview", icon: LayoutGrid, ownerOnly: false },
   { href: "/scan", label: "Scan", icon: ScanLine, ownerOnly: false },
   { href: "/deals", label: "Deals", icon: Tag, ownerOnly: false },
+  { href: "/spin", label: "Spin", icon: Dices, ownerOnly: true },
   { href: "/team", label: "Team", icon: Users, ownerOnly: true },
 ];
 
@@ -41,7 +42,7 @@ export function MerchantNav({
                   href={target}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex min-h-14 min-w-16 flex-col items-center justify-center gap-0.5 px-3 text-xs font-medium text-muted-foreground transition-colors md:min-h-11 md:flex-row md:gap-2 md:border-b-2 md:border-transparent md:text-sm",
+                    "flex min-h-14 min-w-14 flex-col items-center justify-center gap-0.5 px-2 text-xs font-medium text-muted-foreground transition-colors md:min-h-11 md:flex-row md:gap-2 md:border-b-2 md:border-transparent md:text-sm",
                     "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
                     active && "text-foreground md:border-primary",
                   )}
