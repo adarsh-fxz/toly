@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { SeatDots } from "@/components/brand/seat-dots";
 import { DealFacts } from "@/components/deal/deal-facts";
+import { StartTolyGate } from "@/components/group/start-toly-gate";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
 import type { PublicDeal } from "@/lib/types";
@@ -144,6 +145,13 @@ function PriceCard({
               : "This deal isn't taking new tolys right now."}
           </p>
         </div>
+        {available ? (
+          <Suspense
+            fallback={<Skeleton className="h-12 w-full bg-ink-foreground/15" />}
+          >
+            <StartTolyGate dealSlug={deal.slug} />
+          </Suspense>
+        ) : null}
         <p className="border-t border-ink-foreground/15 pt-4 text-sm text-ink-foreground/80 dark:border-border dark:text-muted-foreground">
           You pay {deal.merchant.name} directly at the counter. Toly never takes
           payment for the bill.
