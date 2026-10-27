@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, Settings, Ticket } from "lucide-react";
+import { LogOut, Settings, ShieldCheck, Store, Ticket } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -68,6 +68,16 @@ export function UserMenu({ user }: { user: CurrentUser | null }) {
           <Settings aria-hidden />
           Account and security
         </DropdownMenuItem>
+        <DropdownMenuItem render={<Link href="/merchant" />}>
+          <Store aria-hidden />
+          For venues
+        </DropdownMenuItem>
+        {user.role === "admin" ? (
+          <DropdownMenuItem render={<Link href="/admin" />}>
+            <ShieldCheck aria-hidden />
+            Admin
+          </DropdownMenuItem>
+        ) : null}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={signOut}>
           <LogOut aria-hidden />
