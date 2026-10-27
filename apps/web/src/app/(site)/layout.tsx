@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
@@ -7,6 +8,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 md:px-6">
         {children}
       </main>
+      <SiteFooter />
     </>
   );
 }
