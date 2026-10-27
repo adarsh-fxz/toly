@@ -13,7 +13,12 @@ import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/lib/api";
-import { type FormErrors, formValues, toFormErrors } from "@/lib/form";
+import {
+  eventFieldName,
+  type FormErrors,
+  formValues,
+  toFormErrors,
+} from "@/lib/form";
 
 type Venue = {
   id: string;
@@ -30,6 +35,14 @@ export function VenueForm({ venue }: { venue?: Venue }) {
   const router = useRouter();
   const [errors, setErrors] = useState<FormErrors>({});
   const [pending, setPending] = useState(false);
+
+  function clearError(name: string) {
+    setErrors((current) => {
+      if (!current[name]) return current;
+      const { [name]: _, ...rest } = current;
+      return rest as FormErrors;
+    });
+  }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -75,7 +88,12 @@ export function VenueForm({ venue }: { venue?: Venue }) {
   }
 
   return (
-    <form onSubmit={submit} className="space-y-5" noValidate>
+    <form
+      onSubmit={submit}
+      onChange={(e) => clearError(eventFieldName(e))}
+      className="space-y-5"
+      noValidate
+    >
       <FormField id="name" label="Venue name" error={errors.name}>
         <Input
           {...fieldA11y("name", errors.name)}
