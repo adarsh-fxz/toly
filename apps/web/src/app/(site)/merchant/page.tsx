@@ -34,7 +34,7 @@ async function MerchantHome() {
   return (
     <div className="max-w-3xl py-12 max-sm:py-7">
       <h1 className="text-h1 font-semibold max-sm:text-[36px]">Your venues</h1>
-      <ul className="mt-8 space-y-4">
+      <ul className="kit-list mt-8 space-y-4">
         {venues.map((v) => (
           <li
             key={v.id}
@@ -80,7 +80,7 @@ function StatusBadge({ status }: { status: string }) {
     suspended: "Paused by Toly",
   }[status];
   return (
-    <Badge variant={status === "pending" ? "secondary" : "destructive"}>
+    <Badge variant={status === "pending" ? "warning" : "destructive"}>
       {label ?? status}
     </Badge>
   );
@@ -121,7 +121,7 @@ function Pitch() {
           <ArrowUpRight aria-hidden />
         </Link>
       </div>
-      <ul className="mt-16 grid gap-10 md:grid-cols-3">
+      <ul className="kit-list mt-16 grid gap-10 md:grid-cols-3">
         {promises.map(({ icon: Icon, title, body }) => (
           <li key={title} className="space-y-4 rounded-xl bg-card p-7 shadow-1">
             <Icon className="size-6 text-accent-foreground" aria-hidden />

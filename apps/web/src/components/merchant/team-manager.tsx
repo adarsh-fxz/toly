@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 import { toast } from "sonner";
 import { PersonAvatar } from "@/components/brand/person-avatar";
+import { InlineConfirm } from "@/components/feedback/inline-confirm";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,7 +30,6 @@ export function TeamManager({
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [confirming, setConfirming] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   async function add(event: React.FormEvent) {
@@ -56,15 +56,16 @@ export function TeamManager({
     });
     if (!res.ok) {
       toast.error((await readError(res)).message);
-      return;
+      return false;
     }
     toast.success(`${member.name || "Staff member"} can no longer scan`);
     router.refresh();
+    return true;
   }
 
   return (
     <div className="max-w-2xl space-y-8">
-      <ul className="divide-y rounded-xl bg-card px-6 shadow-1">
+      <ul className="kit-list divide-y rounded-xl bg-card px-6 shadow-1">
         {members.map((m) => (
           <li
             key={m.userId}
@@ -92,33 +93,14 @@ export function TeamManager({
               </div>
             </div>
             {m.role === "staff" ? (
-              confirming === m.userId ? (
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-sm text-ink-2">Remove access?</p>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setConfirming(null)}
-                  >
-                    Keep
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => remove(m)}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setConfirming(m.userId)}
-                >
-                  Remove
-                </Button>
-              )
+              <InlineConfirm
+                trigger="Remove"
+                title={`Remove ${m.name || "this staff member"}?`}
+                body="They won't be able to scan vouchers for this venue."
+                keepLabel="Keep"
+                confirmLabel="Remove"
+                onConfirm={() => remove(m)}
+              />
             ) : null}
           </li>
         ))}

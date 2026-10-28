@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { InlineConfirm } from "@/components/feedback/inline-confirm";
 import { Button } from "@/components/ui/button";
 import { api, readError } from "@/lib/api";
 
@@ -48,25 +49,37 @@ export function DealStatusActions({
     setPending(null);
     if (!res.ok) {
       toast.error((await readError(res)).message);
-      return;
+      return false;
     }
     toast.success(labels[next].done);
     router.refresh();
+    return true;
   }
 
   return (
     <>
-      {options.map((next) => (
-        <Button
-          key={next}
-          size="sm"
-          variant={next === "live" ? "default" : "outline"}
-          disabled={pending !== null}
-          onClick={() => change(next)}
-        >
-          {pending === next ? "Saving…" : labels[next].action}
-        </Button>
-      ))}
+      {options.map((next) =>
+        next === "ended" ? (
+          <InlineConfirm
+            key={next}
+            trigger="End deal"
+            title="End this deal?"
+            body="New groups will no longer be able to start this deal."
+            confirmLabel="End deal"
+            onConfirm={() => change(next)}
+          />
+        ) : (
+          <Button
+            key={next}
+            size="sm"
+            variant={next === "live" ? "default" : "outline"}
+            disabled={pending !== null}
+            onClick={() => change(next)}
+          >
+            {pending === next ? "Saving…" : labels[next].action}
+          </Button>
+        ),
+      )}
     </>
   );
 }

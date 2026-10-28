@@ -3,11 +3,14 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { EmptyState } from "@/components/feedback/empty-state";
 import { DealStatusActions } from "@/components/merchant/deal-status-actions";
+import { DealTile } from "@/components/toly/deal-card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { serverApi } from "@/lib/api-server";
+import { dealCategory } from "@/lib/deal-view";
 import { getMerchant } from "@/lib/merchant";
 import { formatRs } from "@/lib/money";
 
@@ -65,76 +68,87 @@ async function Deals({
         </p>
       ) : null}
       {deals.length === 0 ? (
-        <div className="rounded-2xl border border-dashed px-6 py-14 text-center">
-          <p className="font-semibold">No deals yet</p>
-          <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
-            Start with one bundle for your quietest hours, like a weekday
-            afternoon set for four.
-          </p>
-          {isOwner ? (
-            <Link
-              href={`/merchant/${merchantId}/deals/new`}
-              className={buttonVariants({ className: "mt-5" })}
-            >
-              Create your first deal
-            </Link>
-          ) : null}
-        </div>
+        <EmptyState
+          title="No deals yet"
+          body="Start with one bundle for your quietest hours, like a weekday afternoon set for four."
+          action={
+            isOwner ? (
+              <Link
+                href={`/merchant/${merchantId}/deals/new`}
+                className={buttonVariants()}
+              >
+                Create your first deal
+              </Link>
+            ) : undefined
+          }
+        />
       ) : (
-        <ul className="grid gap-5 min-[61.3125rem]:grid-cols-2">
+        <ul className="kit-list grid gap-5 min-[61.3125rem]:grid-cols-2">
           {deals.map((deal) => (
             <li
               key={deal.id}
-              className="flex flex-wrap items-center justify-between gap-4 rounded-xl bg-card p-6 shadow-1"
+              className="overflow-hidden rounded-xl bg-card shadow-1"
             >
-              <div className="min-w-0 space-y-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="font-display text-h4 font-semibold">
-                    {deal.title}
+              <DealTile
+                category={dealCategory(merchant.category)}
+                partySize={deal.partySize}
+              />
+              <div className="flex flex-wrap items-center justify-between gap-4 p-6">
+                <div className="min-w-0 space-y-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-display text-h4 font-semibold">
+                      {deal.title}
+                    </p>
+                    <Badge
+                      variant={
+                        deal.status === "live"
+                          ? "success"
+                          : deal.status === "paused"
+                            ? "warning"
+                            : "secondary"
+                      }
+                    >
+                      {statusLabel[deal.status]}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    <span className="tabular">
+                      {formatRs(deal.groupPricePaisa)}
+                    </span>{" "}
+                    for {deal.partySize}, {describeDays(deal.availableDays)}
                   </p>
-                  <Badge
-                    variant={deal.status === "live" ? "default" : "secondary"}
-                  >
-                    {statusLabel[deal.status]}
-                  </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  <span className="tabular">
-                    {formatRs(deal.groupPricePaisa)}
-                  </span>{" "}
-                  for {deal.partySize}, {describeDays(deal.availableDays)}
-                </p>
-              </div>
-              {isOwner ? (
-                <div className="flex flex-wrap gap-2">
-                  {deal.status === "live" ? (
+                {isOwner ? (
+                  <div className="flex flex-wrap gap-2">
+                    {deal.status === "live" ? (
+                      <Link
+                        href={`/deals/${deal.slug}`}
+                        className={buttonVariants({
+                          size: "sm",
+                          variant: "ghost",
+                        })}
+                      >
+                        View
+                      </Link>
+                    ) : null}
                     <Link
-                      href={`/deals/${deal.slug}`}
+                      href={`/merchant/${merchantId}/deals/${deal.id}`}
                       className={buttonVariants({
                         size: "sm",
-                        variant: "ghost",
+                        variant: "outline",
                       })}
                     >
-                      View
+                      Edit
                     </Link>
-                  ) : null}
-                  <Link
-                    href={`/merchant/${merchantId}/deals/${deal.id}`}
-                    className={buttonVariants({
-                      size: "sm",
-                      variant: "outline",
-                    })}
-                  >
-                    Edit
-                  </Link>
-                  <DealStatusActions
-                    merchantId={merchantId}
-                    dealId={deal.id}
-                    status={deal.status}
-                    canPublish={merchant.status === "approved"}
-                  />
-                </div>
-              ) : null}
+                    <DealStatusActions
+                      merchantId={merchantId}
+                      dealId={deal.id}
+                      status={deal.status}
+                      canPublish={merchant.status === "approved"}
+                    />
+                  </div>
+                ) : null}
+              </div>
             </li>
           ))}
         </ul>
