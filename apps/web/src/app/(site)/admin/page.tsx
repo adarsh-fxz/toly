@@ -97,7 +97,7 @@ async function Queue({
                 </th>
               </tr>
             </thead>
-            <tbody className="block divide-y min-[61.3125rem]:table-row-group">
+            <tbody className="kit-list block divide-y min-[61.3125rem]:table-row-group">
               {venues.map((v) => (
                 <tr
                   key={v.id}

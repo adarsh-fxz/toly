@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 import { toast } from "sonner";
+import { Banner } from "@/components/feedback/banner";
+import { InlineConfirm } from "@/components/feedback/inline-confirm";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,7 +34,7 @@ export function ReviewActions({
   async function review(decision: Decision) {
     if (decision !== "approved" && note.trim().length < 5) {
       setError("Add a short reason. The venue will see it.");
-      return;
+      return false;
     }
     setPending(decision);
     setError(null);
@@ -43,10 +45,11 @@ export function ReviewActions({
     setPending(null);
     if (!res.ok) {
       setError((await readError(res)).message);
-      return;
+      return false;
     }
     toast.success(done[decision]);
     router.refresh();
+    return true;
   }
 
   return (
@@ -62,40 +65,40 @@ export function ReviewActions({
           aria-describedby={error ? `${id}-error` : undefined}
         />
         {error ? (
-          <p
-            id={`${id}-error`}
-            role="alert"
-            className="text-sm text-destructive"
-          >
-            {error}
-          </p>
+          <div id={`${id}-error`}>
+            <Banner tone="danger">{error}</Banner>
+          </div>
         ) : null}
       </div>
       <div className="flex flex-wrap gap-2">
         {status !== "approved" ? (
           <Button
+            variant="success"
             onClick={() => review("approved")}
             disabled={pending !== null}
+            aria-busy={pending === "approved"}
           >
             {pending === "approved" ? "Approving…" : "Approve"}
           </Button>
         ) : (
-          <Button
-            variant="outline"
-            onClick={() => review("suspended")}
-            disabled={pending !== null}
-          >
-            {pending === "suspended" ? "Pausing…" : "Pause venue"}
-          </Button>
+          <InlineConfirm
+            trigger="Pause venue"
+            title="Pause this venue?"
+            body="Customers won't be able to start new tolys here."
+            keepLabel="Keep live"
+            confirmLabel="Pause venue"
+            onConfirm={() => review("suspended")}
+          />
         )}
         {status === "pending" ? (
-          <Button
-            variant="outline"
-            onClick={() => review("rejected")}
-            disabled={pending !== null}
-          >
-            {pending === "rejected" ? "Declining…" : "Decline"}
-          </Button>
+          <InlineConfirm
+            trigger="Decline"
+            title="Decline this venue?"
+            body="The venue will see the reason above."
+            keepLabel="Keep reviewing"
+            confirmLabel="Decline"
+            onConfirm={() => review("rejected")}
+          />
         ) : null}
       </div>
     </div>

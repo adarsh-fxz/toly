@@ -26,7 +26,12 @@ export function MockCheckout({ reference }: { reference: string }) {
 
   return (
     <div className="grid gap-2">
-      <Button size="lg" onClick={() => settle("completed")} disabled={pending}>
+      <Button
+        size="lg"
+        onClick={() => settle("completed")}
+        disabled={pending}
+        aria-busy={pending}
+      >
         Pay
       </Button>
       <Button
