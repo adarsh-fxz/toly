@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "@toly/api/client";
 import { headers } from "next/headers";
+import { frontendPreview, previewFetch } from "./frontend-preview";
 
 const apiUrl = process.env.API_URL ?? "http://localhost:4000";
 const webUrl = process.env.WEB_URL ?? "http://localhost:3000";
@@ -9,6 +10,7 @@ const webUrl = process.env.WEB_URL ?? "http://localhost:3000";
 export async function serverApi() {
   const incoming = await headers();
   return createClient(apiUrl, {
+    ...(frontendPreview ? { fetch: previewFetch } : {}),
     headers: {
       cookie: incoming.get("cookie") ?? "",
       // Server-side calls come from this app, so they carry its origin through the API's CSRF check.
@@ -21,4 +23,7 @@ export async function serverApi() {
 }
 
 // For public, cookie-free reads.
-export const publicApi = createClient(apiUrl, { init: { cache: "no-store" } });
+export const publicApi = createClient(apiUrl, {
+  ...(frontendPreview ? { fetch: previewFetch } : {}),
+  init: { cache: "no-store" },
+});

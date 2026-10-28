@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
 import { dealCategory } from "@/lib/deal-view";
+import { frontendPreview } from "@/lib/frontend-preview";
 import { formatRs, percentOff } from "@/lib/money";
 import type { PublicDeal } from "@/lib/types";
 
@@ -55,7 +56,7 @@ async function Deal({ params }: Pick<PageProps<"/deals/[slug]">, "params">) {
         All deals
       </BackLink>
       <article className="grid gap-9 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px] min-[61.3125rem]:gap-x-12">
-        {available ? <ViewBeacon slug={deal.slug} /> : null}
+        {available && !frontendPreview ? <ViewBeacon slug={deal.slug} /> : null}
         <header className="space-y-0 min-[61.3125rem]:col-start-1">
           <Link
             href={`/v/${deal.merchant.slug}`}

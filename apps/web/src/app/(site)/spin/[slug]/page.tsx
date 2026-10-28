@@ -8,6 +8,7 @@ import { PrizeOdds } from "@/components/spin/prize-odds";
 import { SpinPlayer } from "@/components/spin/spin-player";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi, serverApi } from "@/lib/api-server";
+import { frontendPreview } from "@/lib/frontend-preview";
 import { getCurrentUser } from "@/lib/session";
 import { prizeView } from "@/lib/spin-view";
 
@@ -54,7 +55,13 @@ async function Spin({
       wheel={wheel}
       readySpinId={readySpinId}
       canSpin={Boolean(user?.phoneNumberVerified)}
-      gateLabel={user ? "Verify your number to spin" : "Sign in to spin"}
+      gateLabel={
+        frontendPreview
+          ? "Interactive spins coming soon"
+          : user
+            ? "Verify your number to spin"
+            : "Sign in to spin"
+      }
       signInHref={
         user
           ? "/account"
