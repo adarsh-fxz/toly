@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useState } from "react";
 import { toast } from "sonner";
 import { PhoneOtpForm } from "@/components/auth/phone-otp-form";
+import { InlineConfirm } from "@/components/feedback/inline-confirm";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -115,10 +117,10 @@ export function PhoneSection({
       {phoneNumber ? (
         <p className="inline-flex items-center gap-2 text-lg font-medium tabular">
           {formatNepaliPhone(phoneNumber)}
-          <span className="inline-flex items-center gap-1 text-sm font-medium text-success">
+          <Badge variant="success" className="gap-1">
             <BadgeCheck className="size-4" aria-hidden />
             Verified
-          </span>
+          </Badge>
         </p>
       ) : (
         <PhoneOtpForm
@@ -158,10 +160,11 @@ export function PasskeysSection() {
     const { error } = await authClient.passkey.deletePasskey({ id });
     if (error) {
       toast.error(authErrorMessage(error));
-      return;
+      return false;
     }
     toast.success("Passkey removed");
     refetch();
+    return true;
   }
 
   return (
@@ -173,11 +176,11 @@ export function PasskeysSection() {
         {isPending ? (
           <Skeleton className="h-14 w-full" />
         ) : passkeys && passkeys.length > 0 ? (
-          <ul className="divide-y rounded-xl border bg-card">
+          <ul className="kit-list divide-y rounded-xl border bg-card">
             {passkeys.map((p) => (
               <li
                 key={p.id}
-                className="flex items-center justify-between gap-3 px-4 py-3"
+                className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
               >
                 <span className="flex min-w-0 items-center gap-3">
                   <KeyRound
@@ -193,9 +196,14 @@ export function PasskeysSection() {
                     </span>
                   </span>
                 </span>
-                <Button variant="ghost" size="sm" onClick={() => remove(p.id)}>
-                  Remove
-                </Button>
+                <InlineConfirm
+                  trigger="Remove"
+                  title="Remove this passkey?"
+                  body="You can still sign in with another passkey or your mobile number."
+                  keepLabel="Keep"
+                  confirmLabel="Remove"
+                  onConfirm={() => remove(p.id)}
+                />
               </li>
             ))}
           </ul>
@@ -249,21 +257,23 @@ export function SessionsSection() {
     const { error } = await authClient.revokeSession({ token });
     if (error) {
       toast.error(authErrorMessage(error));
-      return;
+      return false;
     }
     toast.success("Signed out on that device");
     load();
+    return true;
   }
 
   async function revokeOthers() {
     const { error } = await authClient.revokeOtherSessions();
     if (error) {
       toast.error(authErrorMessage(error));
-      return;
+      return false;
     }
     toast.success("Signed out everywhere else");
     load();
     router.refresh();
+    return true;
   }
 
   return (
@@ -284,7 +294,7 @@ export function SessionsSection() {
         <Skeleton className="h-28 w-full" />
       ) : (
         <div className="space-y-4">
-          <ul className="divide-y rounded-xl border bg-card">
+          <ul className="kit-list divide-y rounded-xl border bg-card">
             {sessions.map((s) => {
               const isCurrent = s.token === current?.session.token;
               const mobile = /mobile|android|iphone/i.test(s.userAgent ?? "");
@@ -292,7 +302,7 @@ export function SessionsSection() {
               return (
                 <li
                   key={s.id}
-                  className="flex items-center justify-between gap-3 px-4 py-3"
+                  className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
                 >
                   <span className="flex min-w-0 items-center gap-3">
                     <Icon
@@ -311,22 +321,27 @@ export function SessionsSection() {
                     </span>
                   </span>
                   {isCurrent ? null : (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => revoke(s.token)}
-                    >
-                      Sign out
-                    </Button>
+                    <InlineConfirm
+                      trigger="Sign out"
+                      title="Sign out on that device?"
+                      keepLabel="Keep signed in"
+                      confirmLabel="Sign out"
+                      onConfirm={() => revoke(s.token)}
+                    />
                   )}
                 </li>
               );
             })}
           </ul>
           {sessions.length > 1 ? (
-            <Button variant="outline" onClick={revokeOthers}>
-              Sign out of all other devices
-            </Button>
+            <InlineConfirm
+              trigger="Sign out of all other devices"
+              title="Sign out everywhere else?"
+              body="You'll stay signed in on this device."
+              keepLabel="Keep signed in"
+              confirmLabel="Sign out"
+              onConfirm={revokeOthers}
+            />
           ) : null}
         </div>
       )}
