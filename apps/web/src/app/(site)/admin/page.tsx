@@ -1,13 +1,14 @@
-import { formatNepaliPhone } from "@toly/shared/phone";
 import { KeyRound } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
+import { EmptyState } from "@/components/feedback/empty-state";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { readError } from "@/lib/api";
 import { serverApi } from "@/lib/api-server";
+import { formatDate, formatPhone as formatNepaliPhone } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { ReviewActions } from "./review-actions";
 
@@ -24,8 +25,10 @@ type Status = (typeof tabs)[number]["status"];
 
 export default function AdminPage({ searchParams }: PageProps<"/admin">) {
   return (
-    <div className="py-10">
-      <h1 className="text-4xl font-extrabold md:text-5xl">Venue reviews</h1>
+    <div className="py-12 max-sm:py-7">
+      <h1 className="text-h1 font-semibold max-sm:text-[36px]">
+        Venue reviews
+      </h1>
       <Suspense fallback={<Skeleton className="mt-8 h-64 w-full" />}>
         <Queue searchParams={searchParams} />
       </Suspense>
@@ -55,7 +58,7 @@ async function Queue({
     <>
       <nav
         aria-label="Review status"
-        className="mt-6 flex gap-1 overflow-x-auto border-b"
+        className="mt-8 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full bg-secondary p-1.5"
       >
         {tabs.map((t) => (
           <Link
@@ -63,8 +66,8 @@ async function Queue({
             href={`/admin?status=${t.status}`}
             aria-current={t.status === status ? "page" : undefined}
             className={cn(
-              "border-b-2 border-transparent px-3 py-3 text-sm font-medium whitespace-nowrap text-muted-foreground",
-              t.status === status && "border-primary text-foreground",
+              "inline-flex min-h-11 items-center rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap text-muted-foreground",
+              t.status === status && "bg-card text-foreground shadow-1",
             )}
           >
             {t.label}
@@ -72,44 +75,69 @@ async function Queue({
         ))}
       </nav>
       {venues.length === 0 ? (
-        <p className="py-16 text-center text-muted-foreground">
-          Nothing here right now.
-        </p>
+        <EmptyState
+          className="mt-7"
+          title="All caught up"
+          body="There are no venues in this queue right now."
+        />
       ) : (
-        <ul className="divide-y">
-          {venues.map((v) => (
-            <li
-              key={v.id}
-              className="grid gap-4 py-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-start"
-            >
-              <div className="min-w-0 space-y-1">
-                <p className="text-lg font-semibold">{v.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {v.area}, {v.address}
-                </p>
-                <p className="text-sm">
-                  Counter{" "}
-                  <span className="tabular">{formatNepaliPhone(v.phone)}</span>
-                  {v.panNumber ? (
-                    <>
-                      , PAN <span className="tabular">{v.panNumber}</span>
-                    </>
-                  ) : null}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Applied by {v.applicantName || "unnamed user"} on{" "}
-                  {new Date(v.createdAt).toLocaleDateString("en-NP", {
-                    dateStyle: "medium",
-                  })}
-                </p>
-                {v.description ? (
-                  <p className="max-w-prose pt-2">{v.description}</p>
-                ) : null}
-              </div>
-              <ReviewActions merchantId={v.id} status={v.status} />
-            </li>
-          ))}
-        </ul>
+        <div className="mt-7 overflow-hidden rounded-xl bg-card shadow-1">
+          <table className="block w-full text-left text-sm min-[981px]:table">
+            <caption className="sr-only">Venue reviews</caption>
+            <thead className="hidden bg-secondary text-ink-2 min-[981px]:table-header-group">
+              <tr>
+                <th scope="col" className="p-5 font-medium">
+                  Venue
+                </th>
+                <th scope="col" className="p-5 font-medium">
+                  Application
+                </th>
+                <th scope="col" className="p-5 font-medium">
+                  Review
+                </th>
+              </tr>
+            </thead>
+            <tbody className="block divide-y min-[981px]:table-row-group">
+              {venues.map((v) => (
+                <tr
+                  key={v.id}
+                  className="block align-top min-[981px]:table-row"
+                >
+                  <td className="block p-5 min-[981px]:table-cell">
+                    <p className="font-display text-h4 font-semibold">
+                      {v.name}
+                    </p>
+                    <p className="mt-2 text-ink-2">
+                      {v.area}, {v.address}
+                    </p>
+                    <p className="mt-3 tabular-nums">
+                      Counter {formatNepaliPhone(v.phone)}
+                    </p>
+                    {v.panNumber ? (
+                      <p className="mt-1 text-muted-foreground tabular-nums">
+                        PAN {v.panNumber}
+                      </p>
+                    ) : null}
+                    {v.description ? (
+                      <p className="mt-3 max-w-prose text-ink-2">
+                        {v.description}
+                      </p>
+                    ) : null}
+                  </td>
+                  <td className="block px-5 pb-5 text-ink-2 min-[981px]:table-cell min-[981px]:pt-5">
+                    <p>{v.applicantName || "Unnamed user"}</p>
+                    <time className="mt-1 block text-[13px] text-muted-foreground">
+                      {formatDate(v.createdAt)}
+                    </time>
+                  </td>
+                  <td className="block p-5 pt-0 min-[981px]:table-cell min-[981px]:pt-5">
+                    <ReviewActions merchantId={v.id} status={v.status} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </>
   );
@@ -117,7 +145,7 @@ async function Queue({
 
 function PasskeyRequired() {
   return (
-    <div className="mt-8 max-w-lg space-y-4 rounded-2xl border bg-card p-6">
+    <div className="mt-8 max-w-lg space-y-4 rounded-xl bg-card p-7 shadow-1">
       <KeyRound className="size-6 text-primary" aria-hidden />
       <p className="text-lg font-semibold">Add a passkey to use admin tools</p>
       <p className="text-muted-foreground">
