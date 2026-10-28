@@ -55,36 +55,46 @@ async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
   if (!venue) notFound();
 
   return (
-    <div className="py-10 md:py-14">
-      <header className="max-w-3xl space-y-3">
-        <p className="text-sm font-medium text-muted-foreground">
-          {MERCHANT_CATEGORIES[venue.category as MerchantCategory]} in{" "}
-          {venue.area}
-        </p>
-        <h1 className="text-5xl font-extrabold md:text-7xl">{venue.name}</h1>
-        <p className="text-muted-foreground">{venue.address}</p>
-        {venue.description ? (
-          <p className="max-w-prose text-lg">{venue.description}</p>
-        ) : null}
-      </header>
-      {wheel ? (
-        <Link
-          href={`/spin/${venue.slug}`}
-          className="mt-10 flex items-center gap-4 rounded-3xl bg-prize p-5 text-prize-foreground transition-transform focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99] sm:max-w-xl"
-        >
-          <Dices className="size-8 shrink-0" aria-hidden />
-          <span className="min-w-0 flex-1">
-            <span className="block text-lg font-bold">Toly Spin</span>
-            <span className="block text-sm">
-              {formatRs(wheel.pricePaisa)} a spin. Every spin wins a discount
-              here.
+    <div className="py-12 max-sm:py-7">
+      <Link
+        href="/#deals"
+        className="mb-4 inline-flex min-h-11 items-center text-sm font-medium text-ink-2"
+      >
+        All deals
+      </Link>
+      <div className="grid gap-6 min-[981px]:grid-cols-[minmax(0,1fr)_380px]">
+        <header className="space-y-5 rounded-[32px] bg-tint-a p-10 max-sm:p-6">
+          <p className="text-sm font-medium text-muted-foreground">
+            {MERCHANT_CATEGORIES[venue.category as MerchantCategory]} in{" "}
+            {venue.area}
+          </p>
+          <h1 className="text-h1 font-semibold max-sm:text-[36px]">
+            {venue.name}
+          </h1>
+          <p className="text-muted-foreground">{venue.address}</p>
+          {venue.description ? (
+            <p className="max-w-prose text-lg">{venue.description}</p>
+          ) : null}
+        </header>
+        {wheel ? (
+          <Link
+            href={`/spin/${venue.slug}`}
+            className="night flex flex-col items-start justify-center gap-5 rounded-[32px] p-8 transition-transform focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99] "
+          >
+            <Dices className="size-8 shrink-0" aria-hidden />
+            <span className="min-w-0 flex-1">
+              <span className="block text-lg font-bold">Toly Spin</span>
+              <span className="block text-sm">
+                {formatRs(wheel.pricePaisa)} a spin. Every spin wins a discount
+                here.
+              </span>
             </span>
-          </span>
-          <span className="font-semibold">Spin</span>
-        </Link>
-      ) : null}
+            <span className="font-semibold">Spin</span>
+          </Link>
+        ) : null}
+      </div>
       <section aria-labelledby="venue-deals" className="mt-12 space-y-4">
-        <h2 id="venue-deals" className="text-3xl font-extrabold">
+        <h2 id="venue-deals" className="text-h3 font-semibold">
           Group deals
         </h2>
         {venue.deals.length === 0 ? (
@@ -92,7 +102,7 @@ async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
             No deals running right now. Check back soon.
           </p>
         ) : (
-          <ul className="divide-y border-y">
+          <ul className="grid gap-5 sm:grid-cols-2 min-[981px]:grid-cols-3">
             {venue.deals.map((deal) => (
               <li key={deal.id}>
                 <DealRow deal={deal} />
