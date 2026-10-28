@@ -7,10 +7,11 @@ import { Banner } from "@/components/feedback/banner";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { api, readError } from "@/lib/api";
 import { formatRs } from "@/lib/money";
+import { segmentLabel } from "@/lib/spin-view";
 import type { PublicWheel } from "@/lib/types";
 import { describeOffer } from "@/lib/voucher";
 import { PrizeReveal } from "./prize-reveal";
-import { landingRotation, segmentLabel, Wheel } from "./wheel";
+import { landingRotation, Wheel } from "./wheel";
 
 type Phase =
   | { name: "idle" }

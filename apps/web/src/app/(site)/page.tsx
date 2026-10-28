@@ -8,9 +8,10 @@ import { HomeHero } from "@/components/home/hero";
 import { HowItWorks } from "@/components/home/how-it-works";
 import { Container } from "@/components/layout/container";
 import { CurrentUserMenu } from "@/components/site-header";
-import { segmentLabel, Wheel } from "@/components/spin/wheel";
+import { Wheel } from "@/components/spin/wheel";
 import { publicApi } from "@/lib/api-server";
 import { formatRs } from "@/lib/money";
+import { segmentLabel } from "@/lib/spin-view";
 import { cn } from "@/lib/utils";
 
 export default function HomePage({ searchParams }: PageProps<"/">) {

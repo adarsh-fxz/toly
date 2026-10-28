@@ -9,10 +9,11 @@ import { Suspense } from "react";
 import { DealListSkeleton } from "@/components/deal/deal-list-skeleton";
 import { DealRow } from "@/components/deal/deal-row";
 import { EmptyState } from "@/components/feedback/empty-state";
-import { segmentLabel, Wheel } from "@/components/spin/wheel";
+import { Wheel } from "@/components/spin/wheel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
 import { formatRs } from "@/lib/money";
+import { segmentLabel } from "@/lib/spin-view";
 
 async function fetchVenue(slug: string) {
   const res = await publicApi.api.v1.venues[":slug"].$get({ param: { slug } });
