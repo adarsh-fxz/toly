@@ -2,7 +2,6 @@ import {
   MERCHANT_CATEGORIES,
   type MerchantCategory,
 } from "@toly/shared/merchant";
-import { formatRs } from "@toly/shared/money";
 import { Dices } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -12,6 +11,7 @@ import { DealListSkeleton } from "@/components/deal/deal-list-skeleton";
 import { DealRow } from "@/components/deal/deal-row";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
+import { formatRs } from "@/lib/money";
 
 async function fetchVenue(slug: string) {
   const res = await publicApi.api.v1.venues[":slug"].$get({ param: { slug } });

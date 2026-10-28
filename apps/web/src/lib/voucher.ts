@@ -1,4 +1,4 @@
-import { formatRs } from "@toly/shared/money";
+import { formatRs } from "@/lib/money";
 
 type Details = {
   groupPricePaisa?: number;

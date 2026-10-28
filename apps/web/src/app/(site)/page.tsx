@@ -1,5 +1,4 @@
 import { MERCHANT_CATEGORIES } from "@toly/shared/merchant";
-import { formatRs } from "@toly/shared/money";
 import { Dices, Info } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -11,6 +10,7 @@ import { Container } from "@/components/layout/container";
 import { CurrentUserMenu } from "@/components/site-header";
 import { segmentLabel, Wheel } from "@/components/spin/wheel";
 import { publicApi } from "@/lib/api-server";
+import { formatRs } from "@/lib/money";
 import { cn } from "@/lib/utils";
 
 export default function HomePage({ searchParams }: PageProps<"/">) {

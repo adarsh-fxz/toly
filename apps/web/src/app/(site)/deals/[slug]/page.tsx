@@ -1,4 +1,3 @@
-import { formatRs, percentOff } from "@toly/shared/money";
 import { Check } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -12,6 +11,7 @@ import { SeatRing } from "@/components/toly/seat-ring";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
 import { dealCategory } from "@/lib/deal-view";
+import { formatRs, percentOff } from "@/lib/money";
 import type { PublicDeal } from "@/lib/types";
 
 async function fetchDeal(slug: string): Promise<PublicDeal | null> {
