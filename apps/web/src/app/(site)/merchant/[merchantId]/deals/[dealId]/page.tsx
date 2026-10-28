@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { DealForm } from "@/components/merchant/deal-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { serverApi } from "@/lib/api-server";
+import { getMerchant } from "@/lib/merchant";
 
 export default function EditDealPage({
   params,
@@ -32,5 +33,11 @@ async function Edit({
     param: { id: merchantId, dealId },
   });
   if (!res.ok) notFound();
-  return <DealForm merchantId={merchantId} deal={await res.json()} />;
+  return (
+    <DealForm
+      merchantId={merchantId}
+      deal={await res.json()}
+      venue={await getMerchant(merchantId)}
+    />
+  );
 }
