@@ -48,15 +48,15 @@ async function Spin({
   }
 
   return (
-    <div className="grid gap-8 py-10 md:grid-cols-2 md:items-start md:gap-x-14 md:py-14">
-      <header className="space-y-4 md:col-start-2">
+    <div className="grid gap-8 py-12 max-sm:py-7 min-[981px]:grid-cols-2 min-[981px]:items-start min-[981px]:gap-x-14">
+      <header className="space-y-4 min-[981px]:col-start-2">
         <Link
           href={`/v/${wheel.merchant.slug}`}
           className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
         >
           {wheel.merchant.name}, {wheel.merchant.area}
         </Link>
-        <h1 className="text-5xl font-extrabold md:text-7xl">
+        <h1 className="text-h1 font-semibold max-sm:text-[36px]">
           Spin for a discount
         </h1>
         <p className="max-w-prose text-lg text-muted-foreground">
@@ -64,7 +64,7 @@ async function Spin({
           {wheel.merchant.name}. {describeValidity(wheel.validityDays)}.
         </p>
       </header>
-      <div className="md:sticky md:top-24 md:col-start-1 md:row-span-2 md:row-start-1">
+      <div className="min-[981px]:sticky min-[981px]:top-24 min-[981px]:col-start-1 min-[981px]:row-span-2 min-[981px]:row-start-1">
         <SpinPlayer
           wheel={wheel}
           readySpinId={readySpinId}
@@ -77,14 +77,17 @@ async function Spin({
           }
         />
       </div>
-      <section aria-labelledby="odds" className="space-y-3 md:col-start-2">
+      <section
+        aria-labelledby="odds"
+        className="space-y-3 min-[981px]:col-start-2"
+      >
         <h2
           id="odds"
           className="font-sans text-lg font-semibold [font-variation-settings:normal]"
         >
           Prizes and chances
         </h2>
-        <ul className="divide-y border-y">
+        <ul className="divide-y overflow-hidden rounded-xl bg-card px-5 shadow-1">
           {wheel.prizes.map((p) => (
             <li
               key={p.id}
@@ -108,10 +111,10 @@ async function Spin({
           ))}
         </ul>
         <p className="text-sm text-muted-foreground">
-          The prize is drawn on our server when you spin, using these chances.
-          When a limited prize runs out for the day, its chance moves to the
-          others. The spin fee is paid to Toly and isn't refundable once you've
-          spun.
+          These are the chances for each prize. When a limited prize runs out
+          for the day, its chance moves to the others. You pay the venue
+          directly for your bill. The spin fee is paid to Toly and isn't
+          refundable once you've spun.
         </p>
       </section>
     </div>
@@ -120,7 +123,7 @@ async function Spin({
 
 function SpinSkeleton() {
   return (
-    <div className="grid gap-10 py-10 md:grid-cols-2" aria-hidden>
+    <div className="grid gap-10 py-10 min-[981px]:grid-cols-2" aria-hidden>
       <Skeleton className="mx-auto aspect-square w-full max-w-sm rounded-full" />
       <div className="space-y-4">
         <Skeleton className="h-14 w-3/4" />

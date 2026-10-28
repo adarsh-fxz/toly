@@ -1,6 +1,6 @@
-import { formatRs } from "@toly/shared/money";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { formatRs } from "@/lib/money";
 import { MockCheckout } from "./mock-checkout";
 
 export default function MockPayPage({ searchParams }: PageProps<"/pay/mock">) {

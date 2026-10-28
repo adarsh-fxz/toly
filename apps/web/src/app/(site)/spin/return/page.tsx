@@ -9,7 +9,7 @@ export default function SpinReturnPage({
   searchParams,
 }: PageProps<"/spin/return">) {
   return (
-    <div className="mx-auto max-w-md py-16">
+    <div className="mx-auto max-w-[520px] py-16">
       <Suspense fallback={<Skeleton className="h-40 w-full" />}>
         <Confirm searchParams={searchParams} />
       </Suspense>
@@ -44,8 +44,8 @@ async function Confirm({
 
   const back = state.merchantSlug ? `/spin/${state.merchantSlug}` : "/";
   return status === "pending" ? (
-    <div className="space-y-4">
-      <h1 className="text-4xl font-extrabold">Waiting for your payment</h1>
+    <div className="space-y-5 rounded-xl bg-card p-8 shadow-2">
+      <h1 className="text-h3 font-semibold">Waiting for your payment</h1>
       <p className="text-muted-foreground">
         The payment provider hasn't confirmed it yet. This usually takes a few
         seconds.
@@ -58,8 +58,8 @@ async function Confirm({
       </Link>
     </div>
   ) : (
-    <div className="space-y-4">
-      <h1 className="text-4xl font-extrabold">Payment didn't go through</h1>
+    <div className="space-y-5 rounded-xl bg-card p-8 shadow-2">
+      <h1 className="text-h3 font-semibold">Payment didn't go through</h1>
       <p className="text-muted-foreground">
         You weren't charged for a spin. You can try again.
       </p>

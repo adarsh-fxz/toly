@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { RedeemedStamp } from "@/components/voucher/redeemed-stamp";
 import { RotatingQr } from "@/components/voucher/rotating-qr";
+import { Wordmark } from "@/components/wordmark";
 import { serverApi } from "@/lib/api-server";
 import { formatDateTime } from "@/lib/dates";
 import { cn } from "@/lib/utils";
@@ -16,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function VoucherPage({ params }: PageProps<"/vouchers/[id]">) {
   return (
-    <div className="mx-auto max-w-md py-8">
+    <div className="mx-auto max-w-[520px] py-12 max-sm:py-7">
       <Suspense
         fallback={<Skeleton className="h-[34rem] w-full rounded-3xl" />}
       >
@@ -41,44 +43,57 @@ async function Voucher({
     (!v.expiresAt || new Date(v.expiresAt) > new Date());
 
   return (
-    <article className="overflow-hidden rounded-3xl border bg-card shadow-sm">
-      <header className="space-y-3 bg-ink p-6 text-ink-foreground dark:bg-secondary dark:text-secondary-foreground">
+    <article className="force-light overflow-hidden rounded-[32px] bg-card shadow-2">
+      <header className="space-y-4 p-8 max-sm:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <Wordmark />
+          <span className="rounded-full bg-success-soft px-3 py-1 text-xs font-semibold text-success">
+            {usable
+              ? "Ready to use"
+              : v.status === "redeemed"
+                ? "Redeemed"
+                : "Closed"}
+          </span>
+        </div>
         <Link
           href={`/v/${v.merchant.slug}`}
           className="text-sm opacity-80 underline-offset-4 hover:underline"
         >
           {v.merchant.name}, {v.merchant.area}
         </Link>
-        <h1 className="text-4xl font-extrabold">{v.title}</h1>
-        <p className="text-lg font-semibold">{describeOffer(v.details)}</p>
+        <h1 className="text-[30px] font-semibold leading-tight tracking-tight">
+          {v.title}
+        </h1>
+        <p className="text-lg font-semibold text-success">
+          {describeOffer(v.details)}
+        </p>
       </header>
 
-      {/* Perforation: the ticket tears here. */}
-      <div aria-hidden className="relative h-6">
-        <span className="absolute top-1/2 -left-3 size-6 -translate-y-1/2 rounded-full border bg-background" />
-        <span className="absolute top-1/2 right-6 left-6 border-t-2 border-dashed" />
-        <span className="absolute top-1/2 -right-3 size-6 -translate-y-1/2 rounded-full border bg-background" />
-      </div>
+      <div aria-hidden className="ticket-cut my-4" />
 
       <div className="relative space-y-6 px-6 pb-8">
         {usable ? (
           <RotatingQr voucherId={v.id} />
         ) : (
-          <div className="grid aspect-square w-full max-w-64 mx-auto place-items-center rounded-xl border-2 border-dashed">
-            <p
-              className={cn(
-                "-rotate-12 rounded-lg border-4 px-4 py-2 font-display text-3xl font-extrabold uppercase font-condensed",
-                v.status === "redeemed"
-                  ? "border-success text-success"
-                  : "border-muted-foreground text-muted-foreground",
-              )}
-            >
-              {v.status === "redeemed"
-                ? "Redeemed"
-                : v.status === "void"
-                  ? "Cancelled"
-                  : "Expired"}
-            </p>
+          <div className="relative mx-auto grid aspect-square w-full max-w-64 place-items-center rounded-xl bg-secondary">
+            {v.status === "redeemed" && v.redeemedAt ? (
+              <RedeemedStamp at={v.redeemedAt} />
+            ) : (
+              <p
+                className={cn(
+                  "-rotate-12 rounded-lg border-4 px-4 py-2 font-display text-3xl font-extrabold uppercase font-condensed",
+                  v.status === "redeemed"
+                    ? "border-success text-success"
+                    : "border-muted-foreground text-muted-foreground",
+                )}
+              >
+                {v.status === "redeemed"
+                  ? "Redeemed"
+                  : v.status === "void"
+                    ? "Cancelled"
+                    : "Expired"}
+              </p>
+            )}
           </div>
         )}
 
@@ -86,7 +101,7 @@ async function Voucher({
           <p className="text-sm text-muted-foreground">
             {usable ? "Or tell staff this code" : "Code"}
           </p>
-          <p className="font-display text-4xl font-bold tracking-wider tabular font-wide">
+          <p className="font-display text-[clamp(24px,7vw,40px)] font-semibold tracking-[0.06em] tabular-nums">
             {formatCode(v.code)}
           </p>
         </div>
