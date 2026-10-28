@@ -40,20 +40,26 @@ export function DealStatusActions({
 
   async function change(next: Next) {
     setPending(next);
-    const res = await api.api.v1.merchants[":id"].deals[":dealId"].status.$post(
-      {
+    try {
+      const res = await api.api.v1.merchants[":id"].deals[
+        ":dealId"
+      ].status.$post({
         param: { id: merchantId, dealId },
         json: { status: next },
-      },
-    );
-    setPending(null);
-    if (!res.ok) {
-      toast.error((await readError(res)).message);
+      });
+      if (!res.ok) {
+        toast.error((await readError(res)).message);
+        return false;
+      }
+      toast.success(labels[next].done);
+      router.refresh();
+      return true;
+    } catch {
+      toast.error("Couldn't update this deal. Try again.");
       return false;
+    } finally {
+      setPending(null);
     }
-    toast.success(labels[next].done);
-    router.refresh();
-    return true;
   }
 
   return (

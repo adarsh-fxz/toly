@@ -38,18 +38,24 @@ export function ReviewActions({
     }
     setPending(decision);
     setError(null);
-    const res = await api.api.v1.admin.merchants[":id"].review.$post({
-      param: { id: merchantId },
-      json: { decision, note: note.trim() || undefined },
-    });
-    setPending(null);
-    if (!res.ok) {
-      setError((await readError(res)).message);
+    try {
+      const res = await api.api.v1.admin.merchants[":id"].review.$post({
+        param: { id: merchantId },
+        json: { decision, note: note.trim() || undefined },
+      });
+      if (!res.ok) {
+        setError((await readError(res)).message);
+        return false;
+      }
+      toast.success(done[decision]);
+      router.refresh();
+      return true;
+    } catch {
+      setError("Couldn't save the review. Try again.");
       return false;
+    } finally {
+      setPending(null);
     }
-    toast.success(done[decision]);
-    router.refresh();
-    return true;
   }
 
   return (
