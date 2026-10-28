@@ -48,7 +48,7 @@ async function MerchantHome() {
 
   return (
     <div className="py-12 max-sm:py-7">
-      <BackLink href="/" className="mb-4">
+      <BackLink href="/deals" className="mb-4">
         All deals
       </BackLink>
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -163,7 +163,7 @@ const promises = [
 function Pitch() {
   return (
     <div className="py-12 max-sm:py-7">
-      <BackLink href="/" className="mb-4">
+      <BackLink href="/deals" className="mb-4">
         All deals
       </BackLink>
       <section

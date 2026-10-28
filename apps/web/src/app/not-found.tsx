@@ -16,7 +16,7 @@ export default function NotFound() {
         ended may have been removed.
       </p>
       <Link
-        href="/"
+        href="/deals"
         className={buttonVariants({ size: "lg", className: "w-fit" })}
       >
         Browse deals

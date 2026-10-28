@@ -1,9 +1,8 @@
-import { MERCHANT_CATEGORIES } from "@toly/shared/merchant";
 import { Dices, Info } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { DealBrowser, selectedCategory } from "@/components/deal/deal-browser";
 import { DealListSkeleton } from "@/components/deal/deal-list-skeleton";
-import { DealRow } from "@/components/deal/deal-row";
 import { ClosingCta } from "@/components/home/closing-cta";
 import { HomeHero } from "@/components/home/hero";
 import { HowItWorks } from "@/components/home/how-it-works";
@@ -12,7 +11,6 @@ import { CurrentUserMenu } from "@/components/site-header";
 import { WheelDemo } from "@/components/spin/wheel-demo";
 import { publicApi } from "@/lib/api-server";
 import { formatRs } from "@/lib/money";
-import { cn } from "@/lib/utils";
 
 export default function HomePage({ searchParams }: PageProps<"/">) {
   return (
@@ -29,14 +27,22 @@ export default function HomePage({ searchParams }: PageProps<"/">) {
         <section
           id="deals"
           aria-labelledby="deals-heading"
-          className="space-y-7 scroll-mt-24"
+          className="space-y-7"
         >
-          <h2
-            id="deals-heading"
-            className="text-h2 font-semibold max-sm:text-[34px]"
-          >
-            Priced for the whole table.
-          </h2>
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
+            <h2
+              id="deals-heading"
+              className="text-h2 font-semibold max-sm:text-[34px]"
+            >
+              Priced for the whole table.
+            </h2>
+            <Link
+              href="/deals"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-ink-2 hover:bg-secondary"
+            >
+              View all deals
+            </Link>
+          </div>
           <Suspense fallback={<DealListSkeleton />}>
             <Deals searchParams={searchParams} />
           </Suspense>
@@ -52,51 +58,8 @@ export default function HomePage({ searchParams }: PageProps<"/">) {
 }
 
 async function Deals({ searchParams }: Pick<PageProps<"/">, "searchParams">) {
-  const { category: raw } = await searchParams;
-  const category =
-    typeof raw === "string" && raw in MERCHANT_CATEGORIES ? raw : undefined;
-  const deals = await publicApi.api.v1.deals
-    .$get({ query: { category } })
-    .then((r) => (r.ok ? r.json() : []));
-
-  return (
-    <>
-      <nav
-        aria-label="Filter by category"
-        className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0"
-      >
-        <CategoryChip href="/" active={!category} label="Everything" />
-        {Object.entries(MERCHANT_CATEGORIES)
-          .filter(([key]) => key !== "other")
-          .map(([key, label]) => (
-            <CategoryChip
-              key={key}
-              href={`/?category=${key}`}
-              active={category === key}
-              label={label}
-            />
-          ))}
-      </nav>
-      {deals.length === 0 ? (
-        <div className="rounded-2xl border border-dashed px-6 py-14 text-center">
-          <p className="font-semibold">No deals here yet</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {category
-              ? "Try another category."
-              : "New venues are joining every week. Check back soon."}
-          </p>
-        </div>
-      ) : (
-        <ul className="kit-list grid gap-5 sm:grid-cols-2 min-[61.3125rem]:grid-cols-3">
-          {deals.map((deal) => (
-            <li key={deal.id} className="flex flex-col [&>a]:flex-1">
-              <DealRow deal={deal} />
-            </li>
-          ))}
-        </ul>
-      )}
-    </>
-  );
+  const { category } = await searchParams;
+  return <DealBrowser category={selectedCategory(category)} preview />;
 }
 
 async function SpinVenues() {
@@ -152,32 +115,6 @@ async function SpinVenues() {
         <WheelDemo />
       </div>
     </section>
-  );
-}
-
-function CategoryChip({
-  href,
-  active,
-  label,
-}: {
-  href: string;
-  active: boolean;
-  label: string;
-}) {
-  return (
-    <Link
-      href={href}
-      scroll={false}
-      aria-current={active ? "page" : undefined}
-      className={cn(
-        "inline-flex h-11 shrink-0 items-center rounded-full border px-4 text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
-        active
-          ? "border-ink bg-ink text-ink-foreground"
-          : "bg-card shadow-1 hover:border-foreground/30",
-      )}
-    >
-      {label}
-    </Link>
   );
 }
 

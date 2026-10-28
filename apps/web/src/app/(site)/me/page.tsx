@@ -73,7 +73,7 @@ async function Me() {
         title="No tolys yet"
         body="Pick a deal, start a toly and send the link to your friends. Your vouchers will show up here."
         action={
-          <Link href="/" className={buttonVariants()}>
+          <Link href="/deals" className={buttonVariants()}>
             Browse deals
           </Link>
         }

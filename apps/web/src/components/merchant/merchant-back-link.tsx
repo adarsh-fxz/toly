@@ -6,7 +6,9 @@ export function MerchantBackLink({ merchantId }: { merchantId: string }) {
   const base = `/merchant/${merchantId}`;
   const editor = pathname.startsWith(`${base}/deals/`);
   return (
-    <BackLink href={editor ? `${base}/deals` : pathname === base ? "/" : base}>
+    <BackLink
+      href={editor ? `${base}/deals` : pathname === base ? "/deals" : base}
+    >
       {editor
         ? "Venue deals"
         : pathname === base

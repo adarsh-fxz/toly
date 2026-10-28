@@ -3,7 +3,7 @@ import { LogoLink } from "@/components/brand/logo";
 import { Container } from "@/components/layout/container";
 
 const LINKS = [
-  { href: "/#deals", label: "Deals" },
+  { href: "/deals", label: "Deals" },
   { href: "/me", label: "My tolys" },
   { href: "/merchant", label: "For venues" },
   { href: "/account", label: "Account and security" },

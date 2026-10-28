@@ -63,7 +63,7 @@ async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
 
   return (
     <div className="py-12 max-sm:py-7">
-      <BackLink href="/#deals" className="mb-4">
+      <BackLink href="/deals" className="mb-4">
         All deals
       </BackLink>
       <div className="grid gap-6 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px]">

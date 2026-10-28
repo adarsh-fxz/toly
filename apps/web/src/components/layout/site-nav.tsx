@@ -11,7 +11,7 @@ import { useScrollHeader } from "@/components/layout/use-scroll-header";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/", label: "Deals" },
+  { href: "/deals", label: "Deals" },
   { href: "/me", label: "My tolys" },
   { href: "/merchant", label: "For venues" },
 ];
@@ -23,7 +23,7 @@ export function SiteNav({ account }: { account: ReactNode }) {
   const { visible, headerRef, ...interactions } = useScrollHeader(pathname);
   const navLinks = home
     ? [
-        { href: "/#deals", label: "Deals" },
+        { href: "/deals", label: "Deals" },
         { href: "/#how", label: "How it works" },
         { href: "/#spin", label: "Toly Spin" },
         { href: "/merchant", label: "For venues" },
@@ -62,8 +62,10 @@ export function SiteNav({ account }: { account: ReactNode }) {
         <nav aria-label="Main" className="hidden gap-0.5 min-[61.3125rem]:flex">
           {navLinks.map(({ href, label }) => {
             const active =
-              href === "/"
-                ? pathname === "/" || pathname.startsWith("/deals/")
+              href === "/deals"
+                ? pathname === "/deals" ||
+                  pathname.startsWith("/deals/") ||
+                  pathname.startsWith("/v/")
                 : href === "/me"
                   ? pathname === "/me" ||
                     pathname.startsWith("/g/") ||

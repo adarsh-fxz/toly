@@ -10,7 +10,7 @@ import { type ReactNode, Suspense, useEffect, useState } from "react";
 const options: LenisOptions = {
   autoRaf: true,
   autoToggle: true,
-  anchors: { offset: -96 },
+  anchors: true,
   stopInertiaOnNavigate: true,
   lerp: 0.085,
   smoothWheel: true,
@@ -73,7 +73,8 @@ function ScrollControls() {
             if (lenis)
               lenis.scrollTo(0, {
                 duration: 1.1,
-                lerp: undefined,
+                lerp: 0,
+                easing: (value) => 1 - (1 - value) ** 4,
                 immediate: Boolean(reduce),
                 onComplete: focusHero,
               });

@@ -48,14 +48,14 @@ export function HomeHero({
         <nav aria-label="Main" className="hidden min-[61.3125rem]:block">
           <ul className="flex gap-0.5">
             {[
-              ["#deals", "Deals"],
+              ["/deals", "Deals"],
               ["#how", "How it works"],
               ["#spin", "Toly Spin"],
               ["/merchant", "For venues"],
             ].map(([href, label]) => (
               <li key={href}>
                 <Link
-                  href={href ?? "#deals"}
+                  href={href ?? "/deals"}
                   className="inline-flex min-h-11 items-center rounded-full px-[15px] text-[15px] font-medium text-ink-2 transition-colors hover:bg-glass hover:text-foreground"
                 >
                   {label}
@@ -107,7 +107,7 @@ export function HomeHero({
         <div className="mt-8 flex flex-wrap justify-center gap-3 max-sm:w-full">
           <Button
             asLink
-            href="#deals"
+            href="/deals"
             size="lg"
             className="max-sm:flex-[1_1_100%]"
           >
@@ -209,7 +209,7 @@ function HeroCard({ t }: { t: HeroToly }) {
         </span>
         <Button
           asLink
-          href={t.href ?? "#deals"}
+          href={t.href ?? "/deals"}
           variant="ink"
           size="sm"
           className="mt-3"

@@ -14,7 +14,12 @@ export function ClosingCta() {
             key={name}
             className={`grid size-[52px] place-items-center rounded-full shadow-[0_0_0_4px_#0E0F24] ${i ? "-ml-2.5" : ""}`}
           >
-            <PersonAvatar name={name} seed={name} size={52} decorative />
+            <PersonAvatar
+              name={name}
+              src={`/avatars/avatar-${[1, 3, 4][i]}.svg`}
+              size={52}
+              decorative
+            />
           </span>
         ))}
         <span className="-ml-2.5 grid size-[52px] place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_0_0_4px_#0E0F24]">
@@ -33,7 +38,7 @@ export function ClosingCta() {
       </p>
       <Button
         asLink
-        href="#deals"
+        href="/deals"
         size="lg"
         className="relative mt-8 h-14 px-7 text-[17px]"
       >

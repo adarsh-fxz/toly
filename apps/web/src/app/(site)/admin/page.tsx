@@ -27,7 +27,7 @@ type Status = (typeof tabs)[number]["status"];
 export default function AdminPage({ searchParams }: PageProps<"/admin">) {
   return (
     <div className="py-12 max-sm:py-7">
-      <BackLink href="/" className="mb-4">
+      <BackLink href="/deals" className="mb-4">
         All deals
       </BackLink>
       <h1 className="text-h1 font-semibold max-sm:text-[36px]">

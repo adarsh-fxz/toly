@@ -51,7 +51,7 @@ async function Deal({ params }: Pick<PageProps<"/deals/[slug]">, "params">) {
 
   return (
     <div className="py-12 max-sm:py-7">
-      <BackLink href="/#deals" className="mb-4">
+      <BackLink href="/deals" className="mb-4">
         All deals
       </BackLink>
       <article className="grid gap-9 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px] min-[61.3125rem]:gap-x-12">
