@@ -2,6 +2,7 @@
 
 import { normalizeNepaliPhone } from "@toly/shared/phone";
 import { useEffect, useId, useState } from "react";
+import { MotionRegion } from "@/components/feedback/motion-region";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -124,6 +125,20 @@ export function PhoneOtpForm({
     onDone();
   }
 
+  const stepDots = (
+    <span
+      className="inline-flex gap-1.5"
+      role="img"
+      aria-label={`Step ${step === "phone" ? 1 : step === "code" ? 2 : 3} of 3`}
+    >
+      {["phone", "code", "name"].map((value) => (
+        <i
+          key={value}
+          className={`size-1.5 rounded-full ${value === step ? "bg-primary" : "bg-input"}`}
+        />
+      ))}
+    </span>
+  );
   const errorId = `${id}-error`;
   const errorNode = error ? (
     <p id={errorId} role="alert" className="text-sm text-destructive">
@@ -133,115 +148,126 @@ export function PhoneOtpForm({
 
   if (step === "name") {
     return (
-      <form onSubmit={submitName} className="space-y-4" noValidate>
-        <div className="space-y-1.5">
-          <Label htmlFor={`${id}-name`}>What should friends call you?</Label>
-          <Input
-            id={`${id}-name`}
-            autoComplete="name"
-            autoFocus
-            maxLength={60}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            aria-invalid={error ? true : undefined}
-            aria-describedby={error ? errorId : `${id}-name-hint`}
-          />
-          <p id={`${id}-name-hint`} className="text-sm text-muted-foreground">
-            Shown to people in your toly. You can change it later.
-          </p>
-        </div>
-        {errorNode}
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          disabled={pending}
-          aria-busy={pending}
-        >
-          {pending ? "Saving…" : "Continue"}
-        </Button>
-      </form>
+      <MotionRegion key="name">
+        <form onSubmit={submitName} className="space-y-4" noValidate>
+          <div className="space-y-1.5">
+            <Label htmlFor={`${id}-name`}>
+              What should friends call you?{" "}
+              <span className="ml-2">{stepDots}</span>
+            </Label>
+            <Input
+              id={`${id}-name`}
+              autoComplete="name"
+              autoFocus
+              maxLength={60}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? errorId : `${id}-name-hint`}
+            />
+            <p id={`${id}-name-hint`} className="text-sm text-muted-foreground">
+              Shown to people in your toly. You can change it later.
+            </p>
+          </div>
+          {errorNode}
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full"
+            disabled={pending}
+            aria-busy={pending}
+          >
+            {pending ? "Saving…" : "Continue"}
+          </Button>
+        </form>
+      </MotionRegion>
     );
   }
 
   if (step === "code") {
     return (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          submitCode();
-        }}
-        className="space-y-4"
-        noValidate
-      >
-        <div className="space-y-2">
-          <Label htmlFor={`${id}-code`}>Enter the 6-digit code</Label>
-          <p className="text-sm text-muted-foreground">
-            Sent to{" "}
-            <span className="font-medium text-foreground tabular">
-              {formatNepaliPhone(phone)}
-            </span>
-          </p>
-          <InputOTP
-            id={`${id}-code`}
-            maxLength={6}
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            autoFocus
-            pattern="^[0-9]+$"
-            value={code}
-            onChange={setCode}
-            onComplete={submitCode}
-            aria-invalid={error ? true : undefined}
-            aria-describedby={error ? errorId : undefined}
-          >
-            <InputOTPGroup>
-              {[0, 1, 2, 3, 4, 5].map((i) => (
-                <InputOTPSlot key={i} index={i} />
-              ))}
-            </InputOTPGroup>
-          </InputOTP>
-        </div>
-        {errorNode}
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          disabled={pending || code.length !== 6}
-          aria-busy={pending}
+      <MotionRegion key="code">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitCode();
+          }}
+          className="space-y-4"
+          noValidate
         >
-          {pending ? "Checking…" : "Verify"}
-        </Button>
-        <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+          <div className="space-y-2">
+            <Label htmlFor={`${id}-code`}>
+              Enter the 6-digit code <span className="ml-2">{stepDots}</span>
+            </Label>
+            <p className="text-sm text-muted-foreground">
+              Sent to{" "}
+              <span className="font-medium text-foreground tabular">
+                {formatNepaliPhone(phone)}
+              </span>
+            </p>
+            <InputOTP
+              id={`${id}-code`}
+              maxLength={6}
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              autoFocus
+              pattern="^[0-9]+$"
+              value={code}
+              onChange={setCode}
+              onComplete={submitCode}
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? errorId : undefined}
+            >
+              <InputOTPGroup>
+                {[0, 1, 2, 3, 4, 5].map((i) => (
+                  <InputOTPSlot key={i} index={i} />
+                ))}
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+          {errorNode}
           <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setStep("phone");
-              setError(null);
-            }}
+            type="submit"
+            size="lg"
+            className="w-full"
+            disabled={pending || code.length !== 6}
+            aria-busy={pending}
           >
-            Use a different number
+            {pending ? "Checking…" : "Verify"}
           </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            disabled={resendIn > 0 || pending}
-            onClick={() => sendCode(phone)}
-          >
-            {resendIn > 0 ? `Resend in ${resendIn}s` : "Resend code"}
-          </Button>
-        </div>
-      </form>
+          <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setStep("phone");
+                setError(null);
+              }}
+            >
+              Use a different number
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={resendIn > 0 || pending}
+              onClick={() => sendCode(phone)}
+            >
+              {resendIn > 0 ? `Resend in ${resendIn}s` : "Resend code"}
+            </Button>
+          </div>
+        </form>
+      </MotionRegion>
     );
   }
 
   return (
     <form onSubmit={submitPhone} className="space-y-4" noValidate>
       <div className="space-y-1.5">
-        <Label htmlFor={`${id}-phone`}>Mobile number</Label>
+        <Label htmlFor={`${id}-phone`}>
+          Mobile number <span className="ml-2">{stepDots}</span>
+        </Label>
         <div className="flex">
           <span className="inline-flex h-[52px] items-center rounded-l-md border border-r-0 border-input bg-muted px-3 text-base text-muted-foreground tabular">
             +977

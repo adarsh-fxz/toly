@@ -10,6 +10,8 @@ import {
 import { useRouter } from "next/navigation";
 import type QrScannerType from "qr-scanner";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { MotionRegion } from "@/components/feedback/motion-region";
+import { Confetti } from "@/components/toly/confetti";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -175,14 +177,16 @@ export function Scanner({ merchantId }: { merchantId: string }) {
             </p>
           </>
         ) : (
-          <ResultPanel
-            state={state}
-            bill={bill}
-            setBill={setBill}
-            redeeming={redeeming}
-            onRedeem={redeem}
-            onReset={reset}
-          />
+          <MotionRegion key={state.step} kind="scan">
+            <ResultPanel
+              state={state}
+              bill={bill}
+              setBill={setBill}
+              redeeming={redeeming}
+              onRedeem={redeem}
+              onReset={reset}
+            />
+          </MotionRegion>
         )}
       </section>
 
@@ -274,8 +278,9 @@ function ResultPanel({
     return (
       <div
         role="status"
-        className="space-y-4 rounded-xl bg-success-soft p-6 text-foreground"
+        className="relative overflow-hidden space-y-4 rounded-xl bg-success p-6 text-success-foreground"
       >
+        <Confetti pieces={8} />
         <BadgeCheck className="size-12" aria-hidden />
         <p className="font-display text-h2 font-semibold">Redeemed</p>
         <p className="text-lg">
@@ -360,6 +365,7 @@ function ResultPanel({
             </Button>
             <Button
               size="lg"
+              variant="success"
               onClick={() => onRedeem(voucher)}
               disabled={redeeming}
               aria-busy={redeeming}
