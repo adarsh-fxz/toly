@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { InlineConfirm } from "@/components/feedback/inline-confirm";
 import { Button } from "@/components/ui/button";
 import { api, readError } from "@/lib/api";
 
@@ -26,7 +27,7 @@ export function JoinToly({ groupId }: { groupId: string }) {
     const { status } = await res.json();
     toast.success(
       status === "unlocked"
-        ? "You filled the last seat. Deal unlocked!"
+        ? "You filled the last seat. Deal unlocked."
         : "You're in",
     );
     router.refresh();
@@ -60,46 +61,33 @@ export function LeaveToly({
   isOrganizer: boolean;
 }) {
   const router = useRouter();
-  const [confirming, setConfirming] = useState(false);
-  const [pending, setPending] = useState(false);
 
   async function leave() {
-    setPending(true);
     const res = await api.api.v1.groups[":id"].leave.$post({
       param: { id: groupId },
     });
-    setPending(false);
     if (!res.ok) {
       toast.error((await readError(res)).message);
-      return;
+      return false;
     }
     toast.success(isOrganizer ? "Toly cancelled" : "You left the toly");
     router.refresh();
+    return true;
   }
 
-  if (!confirming) {
-    return (
-      <Button variant="ghost" onClick={() => setConfirming(true)}>
-        {isOrganizer ? "Cancel this toly" : "Leave this toly"}
-      </Button>
-    );
-  }
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-xl border p-3">
-      <p className="mr-auto text-sm">
-        {isOrganizer ? "Cancel for everyone who joined?" : "Give up your seat?"}
-      </p>
-      <Button variant="ghost" size="sm" onClick={() => setConfirming(false)}>
-        Keep it
-      </Button>
-      <Button
-        variant="destructive"
-        size="sm"
-        onClick={leave}
-        disabled={pending}
-      >
-        {pending ? "Working…" : isOrganizer ? "Cancel toly" : "Leave"}
-      </Button>
-    </div>
+    <InlineConfirm
+      trigger={isOrganizer ? "Cancel this toly" : "Leave this toly"}
+      title={
+        isOrganizer ? "Cancel for everyone who joined?" : "Give up your seat?"
+      }
+      body={
+        isOrganizer
+          ? "Everyone who joined will see that the toly was cancelled."
+          : "Your seat opens up for someone else."
+      }
+      confirmLabel={isOrganizer ? "Cancel toly" : "Leave"}
+      onConfirm={leave}
+    />
   );
 }

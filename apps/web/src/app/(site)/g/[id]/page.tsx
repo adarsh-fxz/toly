@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { AutoRefresh } from "@/components/group/auto-refresh";
 import { Countdown } from "@/components/group/countdown";
 import { ShareToly } from "@/components/group/share-toly";
+import { StatusHeadline } from "@/components/group/status-headline";
 import { JoinToly, LeaveToly } from "@/components/group/toly-actions";
 import { UnlockMoment } from "@/components/group/unlock-moment";
 import { SeatTable } from "@/components/toly/seat-table";
@@ -49,9 +50,9 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
   }[group.status];
 
   return (
-    <div className="grid gap-10 py-12 max-sm:py-7 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px] min-[61.3125rem]:gap-x-12">
+    <div className="grid grid-cols-1 gap-10 py-12 max-sm:py-7 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px] min-[61.3125rem]:gap-x-12">
       {group.status === "forming" ? <AutoRefresh /> : null}
-      <section className="space-y-8">
+      <section className="min-w-0 space-y-8">
         <div className="space-y-3">
           <Link
             href={`/deals/${deal.dealSlug}`}
@@ -59,12 +60,7 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
           >
             {deal.title} at {deal.merchantName}
           </Link>
-          <h1
-            className="text-h1 font-semibold max-sm:text-[36px]"
-            aria-live="polite"
-          >
-            {headline}
-          </h1>
+          <StatusHeadline>{headline}</StatusHeadline>
           {group.status === "forming" ? (
             <p className="text-muted-foreground">
               Closes in <Countdown until={String(group.expiresAt)} /> if the
@@ -109,7 +105,7 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
         </div>
       </section>
 
-      <aside className="space-y-4 min-[61.3125rem]:sticky min-[61.3125rem]:top-[92px] min-[61.3125rem]:self-start">
+      <aside className="min-w-0 space-y-4 min-[61.3125rem]:sticky min-[61.3125rem]:top-[92px] min-[61.3125rem]:self-start">
         <dl className="grid gap-3 [&>div]:rounded-[18px] [&>div]:bg-secondary [&>div]:px-5 [&>div]:py-4">
           <div>
             <dt className="text-sm text-muted-foreground">
@@ -155,7 +151,7 @@ async function Actions({ group, left }: { group: GroupView; left: number }) {
           href={`/vouchers/${group.voucherId}`}
           className={buttonVariants({
             size: "lg",
-            variant: "secondary",
+            variant: "ink",
             className: "w-full",
           })}
         >
