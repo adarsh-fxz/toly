@@ -16,8 +16,8 @@ export default function ErrorPage({
   }, [error]);
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center gap-6 px-4 py-24">
-      <h1 className="text-5xl font-extrabold">
+    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-6 px-5 py-24 text-center">
+      <h1 className="text-h1 font-semibold max-sm:text-[36px]">
         Something went wrong on our side.
       </h1>
       <p className="text-lg text-muted-foreground">
