@@ -32,3 +32,9 @@
     animation-name: none;
   }
 }
+
+/* Keep the highlighted prize readable on the kit's dark wheel segment. */
+.dark .wheel-label.hot b,
+.dark .wheel-label.hot span {
+  color: #fff5e8;
+}

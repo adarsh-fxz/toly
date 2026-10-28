@@ -78,15 +78,3 @@ export function Wheel({
     </div>
   );
 }
-
-export function segmentLabel(prize: {
-  percentOff: number;
-  appliesTo?: string | null;
-}) {
-  const item = prize.appliesTo?.trim();
-  return {
-    hot: prize.percentOff === 100 && !item,
-    short: prize.percentOff === 100 ? "FREE" : `${prize.percentOff}%`,
-    sub: item ? (item.length > 12 ? `${item.slice(0, 11)}…` : item) : "bill",
-  };
-}
