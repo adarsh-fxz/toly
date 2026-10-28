@@ -6,13 +6,15 @@ import { Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 import { toast } from "sonner";
-import { segmentLabel, Wheel } from "@/components/spin/wheel";
+import { Banner } from "@/components/feedback/banner";
+import { Wheel } from "@/components/spin/wheel";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
 import { api, readError } from "@/lib/api";
+import { segmentLabel, wheelColor } from "@/lib/spin-view";
 
 type PrizeRow = {
   key: string;
@@ -230,7 +232,18 @@ export function WheelEditor({
                 className="space-y-4 rounded-xl bg-card p-6 shadow-1"
               >
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-semibold">
+                  <p className="flex flex-wrap items-center gap-2 text-sm font-semibold">
+                    <i
+                      className="inline-block size-5 shrink-0 rounded-[7px] shadow-[inset_0_0_0_1px_var(--input)]"
+                      style={{
+                        background: wheelColor(
+                          i,
+                          Number(row.percentOff) === 100 &&
+                            !row.appliesTo.trim(),
+                        ),
+                      }}
+                      aria-hidden
+                    />
                     Prize {i + 1}{" "}
                     <span className="font-normal text-muted-foreground">
                       ({odds[i] ?? 0}% chance)
@@ -382,9 +395,9 @@ export function WheelEditor({
           </div>
         </div>
         {error ? (
-          <p role="alert" className="text-sm text-destructive">
+          <Banner tone="danger" title="Check the wheel settings">
             {error}
-          </p>
+          </Banner>
         ) : null}
         <Button
           type="submit"

@@ -5,8 +5,10 @@ import { Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Banner } from "@/components/feedback/banner";
 import { FormField, fieldA11y } from "@/components/form-field";
 import { DealCard } from "@/components/toly/deal-card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -150,6 +152,11 @@ export function DealForm({
         className="min-w-0 space-y-6"
         noValidate
       >
+        {Object.keys(errors).length > 0 ? (
+          <Banner tone="danger" title="Check the highlighted fields">
+            {errors._form ?? "A few details need fixing before you can save."}
+          </Banner>
+        ) : null}
         <section
           aria-label="The offer"
           className="space-y-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px]"
@@ -463,11 +470,6 @@ export function DealForm({
           </FormField>
         </section>
 
-        {errors._form ? (
-          <p role="alert" className="text-sm text-destructive">
-            {errors._form}
-          </p>
-        ) : null}
         <div className="flex flex-wrap gap-3">
           <Button
             type="submit"
@@ -488,7 +490,12 @@ export function DealForm({
         </div>
       </form>
       <aside className="space-y-4 min-[61.3125rem]:sticky min-[61.3125rem]:top-24">
-        <h3 className="text-sm font-semibold text-ink-2">Customer preview</h3>
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="text-sm font-semibold text-ink-2">Customer preview</h3>
+          <Badge variant="secondary">
+            {deal?.status === "live" ? "Live" : "Draft"}
+          </Badge>
+        </div>
         <div inert>
           <DealCard
             href={`/merchant/${merchantId}/deals`}

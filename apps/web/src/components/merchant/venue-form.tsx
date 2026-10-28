@@ -7,6 +7,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Banner } from "@/components/feedback/banner";
 import { FormField, fieldA11y } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -94,6 +95,11 @@ export function VenueForm({ venue }: { venue?: Venue }) {
       className="space-y-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px]"
       noValidate
     >
+      {Object.keys(errors).length > 0 ? (
+        <Banner tone="danger" title="Check the highlighted fields">
+          {errors._form ?? "A few details need fixing before you can save."}
+        </Banner>
+      ) : null}
       <FormField id="name" label="Venue name" error={errors.name}>
         <Input
           {...fieldA11y("name", errors.name)}
@@ -183,11 +189,7 @@ export function VenueForm({ venue }: { venue?: Venue }) {
           defaultValue={venue?.description}
         />
       </FormField>
-      {errors._form ? (
-        <p role="alert" className="text-sm text-destructive">
-          {errors._form}
-        </p>
-      ) : null}
+
       <Button
         type="submit"
         size="lg"
