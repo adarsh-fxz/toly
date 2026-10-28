@@ -90,6 +90,8 @@ TEST_DATABASE_URI=postgresql://toly:toly@localhost:5432/toly_test pnpm test
 
 ## Deploy
 
+For the mock demo at `toly.page` on Netlify, Render Free and Neon Free, see [the demo deployment guide](docs/demo-deployment.md). It uses an explicit `DEMO_MODE=true` flag and a separate synthetic database while keeping production cookies and rate limits enabled.
+
 The repo builds two small images: the API bundles every dependency (around 10 MB of JavaScript, no `node_modules`), and the web app uses Next's standalone output. CI builds both on every pull request.
 
 ```bash

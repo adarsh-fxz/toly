@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: toly-demo-api
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: corepack enable && corepack pnpm install --frozen-lockfile --prod=false --filter @toly/api... && corepack pnpm --filter @toly/api build
+    startCommand: corepack pnpm db:migrate && corepack pnpm db:seed && node --enable-source-maps apps/api/dist/index.mjs
+    healthCheckPath: /health/ready
+    envVars:
+      - key: NODE_VERSION
+        value: 24.21.0
+      - key: NODE_ENV
+        value: production
+      - key: DEMO_MODE
+        value: "true"
+      - key: WEB_URL
+        value: https://toly.page
+      - key: SMS_PROVIDER
+        value: console
+      - key: PAYMENTS_PROVIDER
+        value: mock
+      - key: CLIENT_IP_HEADER
+        value: x-forwarded-for
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      - key: DATABASE_URI
+        sync: false

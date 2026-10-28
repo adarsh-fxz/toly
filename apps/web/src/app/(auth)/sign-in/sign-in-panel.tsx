@@ -9,10 +9,12 @@ import { BackLink } from "@/components/layout/back-link";
 
 export function SignInPanel({
   next,
+  demo,
   google,
   turnstileSiteKey,
 }: {
   next: string;
+  demo: boolean;
   google: boolean;
   turnstileSiteKey: string | null;
 }) {
@@ -33,18 +35,23 @@ export function SignInPanel({
       </div>
       <PhoneOtpForm
         mode="sign-in"
+        demo={demo}
         turnstileSiteKey={turnstileSiteKey}
         onDone={done}
       />
-      <div className="flex items-center gap-3 text-sm text-muted-foreground">
-        <span className="h-px flex-1 bg-border" />
-        or
-        <span className="h-px flex-1 bg-border" />
-      </div>
-      <div className="space-y-3">
-        {google ? <GoogleSignIn next={next} /> : null}
-        <PasskeySignIn onDone={done} />
-      </div>
+      {demo ? null : (
+        <>
+          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            <span className="h-px flex-1 bg-border" />
+            or
+            <span className="h-px flex-1 bg-border" />
+          </div>
+          <div className="space-y-3">
+            {google ? <GoogleSignIn next={next} /> : null}
+            <PasskeySignIn onDone={done} />
+          </div>
+        </>
+      )}
     </div>
   );
 }

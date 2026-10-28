@@ -83,7 +83,7 @@ export const spinRoutes = new Hono<AppEnv>()
         ),
       ),
   )
-  // Stands in for a real checkout during local development; never mounted with a real provider.
+  // Available only in development or an explicitly configured mock demo.
   .post(
     "/payments/mock/:ref",
     validate(
@@ -92,7 +92,8 @@ export const spinRoutes = new Hono<AppEnv>()
     ),
     validate("json", z.object({ outcome: z.enum(["completed", "failed"]) })),
     (c) => {
-      if (isProd || env.PAYMENTS_PROVIDER !== "mock") throw notFound();
+      if ((isProd && !env.DEMO_MODE) || env.PAYMENTS_PROVIDER !== "mock")
+        throw notFound();
       const returnUrl = mockPayments.settle(
         c.req.valid("param").ref,
         c.req.valid("json").outcome,

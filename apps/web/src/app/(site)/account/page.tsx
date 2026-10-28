@@ -41,10 +41,11 @@ async function Account() {
     <div className="mt-9 space-y-5">
       <ProfileSection name={user.name} />
       <PhoneSection
+        demo={config.demo}
         phoneNumber={user.phoneNumberVerified ? user.phoneNumber : null}
         turnstileSiteKey={config.turnstileSiteKey}
       />
-      <PasskeysSection />
+      {config.demo ? null : <PasskeysSection />}
       <SessionsSection />
     </div>
   );

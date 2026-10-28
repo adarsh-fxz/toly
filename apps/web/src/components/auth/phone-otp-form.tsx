@@ -1,5 +1,6 @@
 "use client";
 
+import { isDemoPhone } from "@toly/shared/demo";
 import { normalizeNepaliPhone } from "@toly/shared/phone";
 import { useEffect, useId, useState } from "react";
 import { MotionRegion } from "@/components/feedback/motion-region";
@@ -22,11 +23,13 @@ type Step = "phone" | "code" | "name";
 
 export function PhoneOtpForm({
   mode,
+  demo = false,
   turnstileSiteKey,
   onDone,
 }: {
   /** "sign-in" creates a session; "link" adds the number to the signed-in account. */
   mode: "sign-in" | "link";
+  demo?: boolean;
   turnstileSiteKey: string | null;
   onDone: () => void;
 }) {
@@ -40,6 +43,7 @@ export function PhoneOtpForm({
   const [pending, setPending] = useState(false);
   const [captcha, setCaptcha] = useState<string | null>(null);
   const [resendIn, setResendIn] = useState(0);
+  const [demoCode, setDemoCode] = useState<string | null>(null);
 
   useEffect(() => {
     if (resendIn <= 0) return;
@@ -50,11 +54,15 @@ export function PhoneOtpForm({
   async function sendCode(target: string) {
     setPending(true);
     setError(null);
+    setDemoCode(null);
     const { error } = await authClient.phoneNumber.sendOtp({
       phoneNumber: target,
-      fetchOptions: captcha
-        ? { headers: { "x-captcha-response": captcha } }
-        : undefined,
+      fetchOptions: {
+        ...(captcha ? { headers: { "x-captcha-response": captcha } } : {}),
+        onSuccess: ({ response }) => {
+          if (demo) setDemoCode(response.headers.get("x-toly-demo-code"));
+        },
+      },
     });
     setPending(false);
     if (error) {
@@ -70,6 +78,10 @@ export function PhoneOtpForm({
     const normalized = normalizeNepaliPhone(rawPhone);
     if (!normalized) {
       setError("Enter a Nepali mobile number, like 98XXXXXXXX.");
+      return;
+    }
+    if (demo && !isDemoPhone(normalized)) {
+      setError("Use a demo number from 9800000000 to 9800000999.");
       return;
     }
     if (turnstileSiteKey && !captcha) {
@@ -202,11 +214,18 @@ export function PhoneOtpForm({
               Enter the 6-digit code <span className="ml-2">{stepDots}</span>
             </Label>
             <p className="text-sm text-muted-foreground">
-              Sent to{" "}
+              {demo ? "Demo number: " : "Sent to "}
               <span className="font-medium text-foreground tabular">
                 {formatNepaliPhone(phone)}
               </span>
             </p>
+            {demoCode ? (
+              <p role="status" className="text-sm text-muted-foreground">
+                Your test code is{" "}
+                <strong className="text-foreground tabular">{demoCode}</strong>.
+                No SMS was sent.
+              </p>
+            ) : null}
             <InputOTP
               id={`${id}-code`}
               maxLength={6}
@@ -281,7 +300,7 @@ export function PhoneOtpForm({
             autoComplete={
               mode === "sign-in" ? "tel-national webauthn" : "tel-national"
             }
-            placeholder="98XXXXXXXX"
+            placeholder={demo ? "9800000002" : "98XXXXXXXX"}
             spellCheck={false}
             className="rounded-l-none tabular"
             value={rawPhone}
@@ -291,7 +310,9 @@ export function PhoneOtpForm({
           />
         </div>
         <p id={`${id}-phone-hint`} className="text-sm text-muted-foreground">
-          NTC or Ncell. We only use it for codes and toly updates.
+          {demo
+            ? "Use 9800000000–9800000999. Demo accounts are shared; use a made-up name. No SMS is sent."
+            : "NTC or Ncell. We only use it for codes and toly updates."}
         </p>
       </div>
       {turnstileSiteKey ? (

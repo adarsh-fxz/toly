@@ -52,7 +52,17 @@ const nextConfig: NextConfig = {
     return [{ source: "/api/:path*", destination: `${apiUrl}/api/:path*` }];
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          ...securityHeaders,
+          ...(process.env.DEMO_MODE === "true"
+            ? [{ key: "X-Robots-Tag", value: "noindex, nofollow" }]
+            : []),
+        ],
+      },
+    ];
   },
 };
 
