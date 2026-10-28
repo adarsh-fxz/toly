@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -56,9 +57,15 @@ export function SiteNav({ account }: { account: ReactNode }) {
 }
 
 export function SiteBody({ children }: { children: ReactNode }) {
-  const home = usePathname() === "/";
+  const pathname = usePathname();
+  const home = pathname === "/";
+  const reduce = useReducedMotion();
   return (
-    <main
+    <motion.main
+      key={pathname}
+      initial={{ opacity: 0, y: 0 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: reduce ? 0.12 : 0.2 }}
       id="main"
       tabIndex={-1}
       className={cn(
@@ -67,6 +74,6 @@ export function SiteBody({ children }: { children: ReactNode }) {
       )}
     >
       {children}
-    </main>
+    </motion.main>
   );
 }
