@@ -2,13 +2,14 @@ import {
   MERCHANT_CATEGORIES,
   type MerchantCategory,
 } from "@toly/shared/merchant";
-import { Dices } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { DealListSkeleton } from "@/components/deal/deal-list-skeleton";
 import { DealRow } from "@/components/deal/deal-row";
+import { EmptyState } from "@/components/feedback/empty-state";
+import { segmentLabel, Wheel } from "@/components/spin/wheel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
 import { formatRs } from "@/lib/money";
@@ -81,7 +82,15 @@ async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
             href={`/spin/${venue.slug}`}
             className="night flex flex-col items-start justify-center gap-5 rounded-[32px] p-8 transition-transform focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99] "
           >
-            <Dices className="size-8 shrink-0" aria-hidden />
+            <Wheel
+              segments={wheel.prizes.map((p) => ({
+                id: p.id,
+                ...segmentLabel(p),
+              }))}
+              rotation={0}
+              spinning={false}
+              className="!w-36 !max-w-full self-center"
+            />
             <span className="min-w-0 flex-1">
               <span className="block text-lg font-bold">Toly Spin</span>
               <span className="block text-sm">
@@ -98,11 +107,12 @@ async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
           Group deals
         </h2>
         {venue.deals.length === 0 ? (
-          <p className="text-muted-foreground">
-            No deals running right now. Check back soon.
-          </p>
+          <EmptyState
+            title="No deals running right now"
+            body="Check back soon for the next table to fill."
+          />
         ) : (
-          <ul className="grid gap-5 sm:grid-cols-2 min-[61.3125rem]:grid-cols-3">
+          <ul className="kit-list grid gap-5 sm:grid-cols-2 min-[61.3125rem]:grid-cols-3">
             {venue.deals.map((deal) => (
               <li key={deal.id}>
                 <DealRow deal={deal} />

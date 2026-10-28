@@ -3,11 +3,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { SeatDots } from "@/components/brand/seat-dots";
 import { DealFacts } from "@/components/deal/deal-facts";
 import { ViewBeacon } from "@/components/deal/view-beacon";
 import { StartTolyGate } from "@/components/group/start-toly-gate";
 import { DealTile } from "@/components/toly/deal-card";
-import { SeatRing } from "@/components/toly/seat-ring";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
 import { dealCategory } from "@/lib/deal-view";
@@ -135,6 +136,9 @@ function PriceCard({
     <aside className="min-[61.3125rem]:col-start-2 min-[61.3125rem]:row-span-2 min-[61.3125rem]:row-start-1 min-[61.3125rem]:sticky min-[61.3125rem]:top-[92px] min-[61.3125rem]:self-start">
       <div className="space-y-6 rounded-xl bg-card p-7 shadow-2 max-sm:p-[22px]">
         <div className="space-y-1">
+          <Badge variant="success" className="mb-3">
+            {off}% off together
+          </Badge>
           <p className="font-display text-[48px] font-semibold leading-none tracking-[-0.04em] tabular-nums max-sm:text-[40px]">
             {formatRs(deal.groupPricePaisa)}
           </p>
@@ -149,17 +153,13 @@ function PriceCard({
           </p>
         </div>
         <div className="space-y-2">
-          <div className="flex items-center gap-4">
-            <SeatRing
-              members={[]}
-              size={deal.partySize}
-              className="origin-left scale-75 -my-6 -mr-12"
+          <div className="rounded-[18px] bg-secondary p-4">
+            <SeatDots
+              filled={0}
+              total={deal.partySize}
+              size="lg"
+              className="[&>span]:border-input [&>span]:bg-card"
             />
-            <p className="text-sm text-ink-2">
-              {deal.partySize} friends.
-              <br />
-              One table.
-            </p>
           </div>
           <p className="text-sm text-ink-2">
             {available
