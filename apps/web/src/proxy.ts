@@ -3,6 +3,8 @@ import { type NextRequest, NextResponse } from "next/server";
 
 // Optimistic check only: the API authorizes every request on its own.
 export function proxy(request: NextRequest) {
+  // The venue introduction is public; every management route still requires a session.
+  if (request.nextUrl.pathname === "/merchant") return NextResponse.next();
   const hasSession = getSessionCookie(request, { cookiePrefix: "toly" });
   if (hasSession) return NextResponse.next();
 

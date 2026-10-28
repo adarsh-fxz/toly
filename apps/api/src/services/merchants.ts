@@ -75,6 +75,7 @@ export async function listMyMerchants(userId: string) {
       slug: merchants.slug,
       name: merchants.name,
       area: merchants.area,
+      category: merchants.category,
       status: merchants.status,
       reviewNote: merchants.reviewNote,
       role: merchantMembers.role,

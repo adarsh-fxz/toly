@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { MerchantBackLink } from "@/components/merchant/merchant-back-link";
 import { MerchantNav } from "@/components/merchant/merchant-nav";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -25,6 +26,7 @@ async function VenueHeader({
   const merchant = await getMerchant(merchantId);
   return (
     <div className="space-y-5 pt-12 max-sm:pt-7">
+      <MerchantBackLink merchantId={merchant.id} />
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="text-h3 font-semibold max-sm:text-[25px]">
           {merchant.name}

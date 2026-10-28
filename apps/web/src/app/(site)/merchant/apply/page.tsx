@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { BackLink } from "@/components/layout/back-link";
 import { VenueForm } from "@/components/merchant/venue-form";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,6 +13,9 @@ export const metadata: Metadata = { title: "List your venue" };
 export default function ApplyPage() {
   return (
     <div className="mx-auto max-w-[760px] py-12 max-sm:py-7">
+      <BackLink href="/merchant" className="mb-4">
+        For venues
+      </BackLink>
       <h1 className="text-h1 font-semibold max-sm:text-[36px]">
         List your venue
       </h1>
