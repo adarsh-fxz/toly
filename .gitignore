@@ -9,3 +9,7 @@ next-env.d.ts
 .env*
 !.env.example
 *.log
+
+# Local design reference; publish only integrated app files.
+/toly-revamp-kit/
+/revamp-review/

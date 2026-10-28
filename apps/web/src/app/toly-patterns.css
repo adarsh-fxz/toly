@@ -1,0 +1,738 @@
+/* Toly · app/toly-patterns.css
+   Patterns that are awkward as Tailwind utilities: the hero scene, seat rings,
+   the prize wheel, ticket notches, confetti, skeleton shimmer, scanner frame.
+   Imported once from globals.css. Uses only the tokens defined there. */
+
+/* plain CSS variables used by the patterns below (Tailwind @theme inline values are not emitted as vars) */
+:root {
+  --t-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --t-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-ease-spring: cubic-bezier(0.3, 1.6, 0.5, 1);
+  --t-ease-spin: cubic-bezier(0.12, 0.75, 0.12, 1);
+  --t-display:
+    var(--font-bricolage), var(--font-inter), var(--font-devanagari), system-ui,
+    sans-serif;
+}
+
+/* ---------- hero / auth scene (components/brand/hero-scene.tsx) ---------- */
+:root {
+  --sky1: #d3e0ee;
+  --sky2: #eae4ea;
+  --sky3: #f8e6d2;
+  --glowc: #fff4e4;
+  --glow-o: 0.95;
+  --far1: #f4f0f5;
+  --far2: #ded7e4;
+  --snow: #ffffff;
+  --mid: #d1c7d8;
+  --near: #c0b4c9;
+  --front: #afa2ba;
+  --sil: #9584a3;
+  --flag-o: 0.85;
+  --star-o: 0;
+  --lamp-o: 0;
+  --moon-o: 0;
+  --hero-sub: #6b6676;
+}
+.dark {
+  --sky1: #06071a;
+  --sky2: #10112e;
+  --sky3: #2b1d3c;
+  --glowc: #f2a23a;
+  --glow-o: 0.3;
+  --far1: #2c2850;
+  --far2: #1e1b3b;
+  --snow: #4c4776;
+  --mid: #1a1833;
+  --near: #131228;
+  --front: #0d0c1e;
+  --sil: #090814;
+  --flag-o: 0.5;
+  --star-o: 0.9;
+  --lamp-o: 1;
+  --moon-o: 1;
+  --hero-sub: #a7a2b5;
+}
+.scene .sk1 {
+  stop-color: var(--sky1);
+}
+.scene .sk2 {
+  stop-color: var(--sky2);
+}
+.scene .sk3 {
+  stop-color: var(--sky3);
+}
+.scene .gl1 {
+  stop-color: var(--glowc);
+  stop-opacity: var(--glow-o);
+}
+.scene .gl2 {
+  stop-color: var(--glowc);
+  stop-opacity: 0;
+}
+.scene .fr1 {
+  stop-color: var(--far1);
+}
+.scene .fr2 {
+  stop-color: var(--far2);
+}
+.scene .c-snow {
+  fill: var(--snow);
+}
+.scene .c-mid {
+  fill: var(--mid);
+}
+.scene .c-near {
+  fill: var(--near);
+}
+.scene .c-front {
+  fill: var(--front);
+}
+.scene .c-sil {
+  fill: var(--sil);
+}
+.scene .c-str {
+  stroke: var(--sil);
+}
+.scene .flags {
+  opacity: var(--flag-o);
+}
+.scene .stars {
+  opacity: var(--star-o);
+}
+.scene .stars circle {
+  fill: #ffffff;
+}
+.scene .stars circle:nth-child(3n) {
+  animation: tw 4.5s ease-in-out infinite;
+}
+.scene .stars circle:nth-child(3n + 1) {
+  animation: tw 6s ease-in-out 1.2s infinite;
+}
+.scene .moon {
+  opacity: var(--moon-o);
+}
+.scene .lamps {
+  opacity: var(--lamp-o);
+  filter: drop-shadow(0 0 3px rgb(255 186 90 / 0.95));
+}
+.scene .lamps circle,
+.scene .lamps rect {
+  fill: #ffc56e;
+}
+.scene .city {
+  opacity: calc(var(--lamp-o) * 0.75);
+}
+.scene .city circle {
+  fill: #ffc978;
+}
+
+/* hand-drawn underline under "toly." in the hero headline */
+.swash {
+  position: relative;
+  display: inline-block;
+}
+.swash svg {
+  position: absolute;
+  left: -2%;
+  bottom: -0.1em;
+  width: 104%;
+  height: 0.26em;
+  overflow: visible;
+}
+.swash path {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: draw 1.4s var(--t-ease-inout) 0.4s forwards;
+}
+
+/* night panel used for Toly Spin stages and closing CTAs (same in both themes) */
+.night {
+  color: #f3f1ec;
+  background-color: #0e0f24;
+  background-image:
+    radial-gradient(
+      ellipse 70% 60% at 50% 115%,
+      rgb(242 162 58 / 0.32),
+      rgb(242 162 58 / 0) 70%
+    ),
+    radial-gradient(
+      1.2px 1.2px at 12% 22%,
+      rgb(255 255 255 / 0.8) 50%,
+      transparent 51%
+    ),
+    radial-gradient(
+      1px 1px at 28% 64%,
+      rgb(255 255 255 / 0.6) 50%,
+      transparent 51%
+    ),
+    radial-gradient(
+      1.4px 1.4px at 44% 16%,
+      rgb(255 255 255 / 0.8) 50%,
+      transparent 51%
+    ),
+    radial-gradient(
+      1px 1px at 63% 38%,
+      rgb(255 255 255 / 0.6) 50%,
+      transparent 51%
+    ),
+    radial-gradient(
+      1.3px 1.3px at 79% 18%,
+      rgb(255 255 255 / 0.8) 50%,
+      transparent 51%
+    ),
+    radial-gradient(
+      1px 1px at 90% 58%,
+      rgb(255 255 255 / 0.55) 50%,
+      transparent 51%
+    );
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+/* ---------- glass ---------- */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  box-shadow:
+    inset 0 0 0 1px var(--glass-line),
+    0 30px 80px -30px rgb(60 40 80 / 0.38);
+}
+.dark .glass {
+  box-shadow:
+    inset 0 0 0 1px var(--glass-line),
+    0 30px 80px -30px rgb(0 0 0 / 0.85);
+}
+
+/* ---------- wordmark dots (components/brand/logo.tsx) ---------- */
+.wm-dots circle {
+  fill: var(--primary);
+  transition:
+    transform 0.45s var(--t-ease-spring),
+    fill 0.3s ease;
+}
+.wm-dots circle:nth-child(2) {
+  transition-delay: 0.05s;
+}
+.wm-dots circle:nth-child(3) {
+  transition-delay: 0.1s;
+}
+.wm-dots .open {
+  fill: transparent;
+  stroke: var(--primary);
+  stroke-width: 1.6;
+}
+.group:hover .wm-dots circle {
+  transform: translateY(-2px);
+}
+.group:hover .wm-dots .open {
+  fill: var(--primary);
+}
+
+/* ---------- deal tile seat ring (components/toly/deal-tile.tsx) ---------- */
+.tile-ring {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: 0;
+  height: 0;
+}
+.tile-ring > i {
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: inset 0 0 0 1.5px var(--seat-line);
+}
+
+/* ---------- big seat table (components/toly/seat-table.tsx) ---------- */
+.seat-table {
+  --R: 150px;
+  --S: 76px;
+  position: relative;
+  width: calc(var(--R) * 2 + var(--S) + 40px);
+  height: calc(var(--R) * 2 + var(--S) + 100px);
+  margin: 0 auto;
+}
+@media (max-width: 640px) {
+  .seat-table {
+    --R: 112px;
+    --S: 60px;
+  }
+}
+.seat-table .seat {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--S);
+  margin-left: calc(var(--S) / -2);
+  margin-top: calc(var(--S) / -2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transform: translate(calc(var(--x) * var(--R)), calc(var(--y) * var(--R)));
+}
+.seat-table .seat-av {
+  width: var(--S);
+  height: var(--S);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 4px var(--background),
+    0 12px 24px -12px rgb(23 22 28 / 0.5);
+}
+.seat-table .seat.me .seat-av {
+  box-shadow:
+    0 0 0 3px var(--primary),
+    0 0 0 7px var(--background),
+    0 12px 24px -12px rgb(23 22 28 / 0.5);
+}
+.seat-table .seat-open {
+  width: var(--S);
+  height: var(--S);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--card);
+  box-shadow: inset 0 0 0 2px var(--seat-line);
+  color: var(--muted-foreground);
+  position: relative;
+}
+.seat-table .seat-open::after,
+.seat-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: pulse2 2.4s ease-out infinite;
+}
+.seat-table .table-top {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--R) * 1.25);
+  height: calc(var(--R) * 1.25);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow:
+    0 30px 60px -30px rgb(40 25 70 / 0.45),
+    inset 0 0 0 1px var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  padding: 16px;
+}
+.seat-table .table-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.seat-table.closed .seat,
+.seat-table.closed .table-top {
+  opacity: 0.5;
+  filter: grayscale(0.6);
+}
+
+/* ---------- prize wheel (components/spin/spin-wheel.tsx) ---------- */
+.wheel-wrap {
+  --ws: 460px;
+  --lr: 140px;
+  --dr: 226px;
+  --rim: #24212e;
+  position: relative;
+  width: var(--ws);
+  height: var(--ws);
+  flex: none;
+}
+.dark .wheel-wrap {
+  --rim: #2b2840;
+}
+@media (max-width: 640px) {
+  .wheel-wrap {
+    --ws: 310px;
+    --lr: 92px;
+    --dr: 151px;
+  }
+}
+.wheel-wrap.sm {
+  --ws: 300px;
+  --lr: 88px;
+  --dr: 146px;
+}
+.wheel-disc {
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 12px var(--rim),
+    0 40px 80px -30px rgb(40 25 70 / 0.5);
+}
+.wheel-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 96px;
+  text-align: center;
+  line-height: 1.1;
+  color: var(--foreground);
+  transform: translate(-50%, -50%) rotate(var(--a))
+    translateY(calc(var(--lr) * -1)) rotate(calc(var(--a) * -1));
+}
+.wheel-label b {
+  font-family: var(--t-display);
+  font-size: 28px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+.wheel-label span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  margin-top: 2px;
+}
+.wheel-label.hot b,
+.wheel-label.hot span {
+  color: #17161c;
+}
+@media (max-width: 640px) {
+  .wheel-label {
+    width: 80px;
+  }
+  .wheel-label b {
+    font-size: 19px;
+  }
+  .wheel-label span {
+    font-size: 11px;
+  }
+}
+.wheel-dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.wheel-dots i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 6px rgb(242 162 58 / 0.8);
+  transform: rotate(var(--a)) translateY(calc(var(--dr) * -1));
+}
+.wheel-dots i:nth-child(odd) {
+  animation: blink 2.4s ease-in-out infinite;
+}
+.wheel-dots i:nth-child(even) {
+  animation: blink 2.4s ease-in-out 1.2s infinite;
+}
+.wheel-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 68px;
+  height: 68px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--card);
+  display: grid;
+  place-items: center;
+  box-shadow:
+    0 0 0 6px var(--rim),
+    0 8px 20px -6px rgb(0 0 0 / 0.4);
+}
+.wheel-pointer {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 38px;
+  filter: drop-shadow(0 4px 6px rgb(0 0 0 / 0.3));
+  z-index: 2;
+}
+/* wheel segment colours */
+:root {
+  --seg-a: #fce4c2;
+  --seg-b: #ffffff;
+  --seg-c: #f8dce6;
+  --seg-d: #dce7f4;
+  --seg-e: #f2a23a;
+}
+.dark {
+  --seg-a: #3a2d19;
+  --seg-b: #1d1b29;
+  --seg-c: #3a1f2d;
+  --seg-d: #1c2740;
+  --seg-e: #8a5a1c;
+}
+
+/* ---------- voucher ticket ---------- */
+.ticket-cut {
+  position: relative;
+  height: 0;
+  border-top: 2px dashed var(--input);
+  margin: 0 28px;
+}
+.ticket-cut::before,
+.ticket-cut::after {
+  content: "";
+  position: absolute;
+  top: -15px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--background);
+}
+.ticket-cut::before {
+  left: -44px;
+}
+.ticket-cut::after {
+  right: -44px;
+}
+
+/* ---------- scanner viewfinder ---------- */
+.viewfinder-frame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(56%, 260px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 24px;
+  box-shadow: 0 0 0 9999px rgb(8 8 14 / 0.45);
+}
+.viewfinder-frame i {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border: 4px solid #ffffff;
+}
+.viewfinder-frame i:nth-child(1) {
+  left: -2px;
+  top: -2px;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 18px 0 0 0;
+}
+.viewfinder-frame i:nth-child(2) {
+  right: -2px;
+  top: -2px;
+  border-left: 0;
+  border-bottom: 0;
+  border-radius: 0 18px 0 0;
+}
+.viewfinder-frame i:nth-child(3) {
+  left: -2px;
+  bottom: -2px;
+  border-right: 0;
+  border-top: 0;
+  border-radius: 0 0 0 18px;
+}
+.viewfinder-frame i:nth-child(4) {
+  right: -2px;
+  bottom: -2px;
+  border-left: 0;
+  border-top: 0;
+  border-radius: 0 0 18px 0;
+}
+.viewfinder-line {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--primary);
+  box-shadow: 0 0 14px 2px rgb(242 162 58 / 0.7);
+  animation: scanline 2.2s var(--t-ease-inout) infinite alternate;
+}
+
+/* ---------- skeleton ---------- */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--secondary) 0%,
+    var(--surface-2) 45%,
+    var(--secondary) 90%
+  );
+  background-size: 220% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 10px;
+}
+.dark .skeleton {
+  background-image: linear-gradient(
+    90deg,
+    #1e1c2a 0%,
+    #2a2738 45%,
+    #1e1c2a 90%
+  );
+}
+
+/* ---------- confetti (components/toly/confetti.tsx) ---------- */
+.confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+.confetti i {
+  position: absolute;
+  top: -12px;
+  left: var(--l);
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--c);
+  opacity: 0;
+  animation: fall var(--dur, 2.4s) var(--t-ease-out) var(--dl, 0s) both;
+}
+.confetti i:nth-child(3n) {
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+}
+
+/* ---------- keyframes ---------- */
+@keyframes tw {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes pulse2 {
+  0% {
+    box-shadow: 0 0 0 0 rgb(242 162 58 / 0.5);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 12px rgb(242 162 58 / 0);
+  }
+}
+@keyframes scanline {
+  from {
+    top: 22%;
+  }
+  to {
+    top: 76%;
+  }
+}
+@keyframes fall {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0);
+  }
+  8% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(560px) rotate(540deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swash path {
+    stroke-dashoffset: 0;
+  }
+  .confetti {
+    display: none;
+  }
+}
+
+/* ---------- light island ----------
+   The voucher ticket stays bright in dark mode so it is easy to scan and read at a counter.
+   Wrap it in .force-light to reset the colour tokens to their light values. */
+.force-light {
+  --background: #faf9f7;
+  --foreground: #17161c;
+  --card: #ffffff;
+  --card-foreground: #17161c;
+  --secondary: #f2f0eb;
+  --muted: #f2f0eb;
+  --muted-foreground: #6d6975;
+  --ink-2: #4a4752;
+  --accent: #fcebd2;
+  --accent-foreground: #985300;
+  --primary: #f2a23a;
+  --primary-foreground: #17161c;
+  --border: rgb(23 22 28 / 0.08);
+  --input: rgb(23 22 28 / 0.16);
+  --success: #1e7b4e;
+  --success-soft: #e3f3ea;
+  --warning: #8a5300;
+  --warning-soft: #fff1d6;
+  --destructive: #b42a20;
+  --destructive-soft: #fce8e6;
+  color: var(--foreground);
+  color-scheme: light;
+}
+.dark .force-light .ticket-cut::before,
+.dark .force-light .ticket-cut::after {
+  background: #0b0b13;
+}
+
+/* QR refresh timer ring (components/voucher/voucher-qr.tsx) */
+.qr-timer circle {
+  fill: none;
+  stroke-width: 3;
+}
+.qr-timer .track {
+  stroke: var(--input);
+}
+.qr-timer .tick {
+  stroke: var(--primary);
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  animation: qrTick var(--qr-ms, 30000ms) linear forwards;
+}
+@keyframes qrTick {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 100;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .qr-timer .tick {
+    animation: none;
+  }
+}
