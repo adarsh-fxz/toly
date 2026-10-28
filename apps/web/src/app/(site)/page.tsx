@@ -54,7 +54,7 @@ export default function HomePage({ searchParams }: PageProps<"/">) {
           </p>
           <Link
             href="#deals"
-            className="relative mt-7 inline-flex min-h-[52px] items-center rounded-full bg-primary px-6 font-semibold text-primary-foreground"
+            className="relative mt-7 inline-flex min-h-[52px] items-center rounded-full bg-primary px-6 font-semibold shadow-action text-primary-foreground"
           >
             See deals near you
           </Link>
@@ -100,7 +100,7 @@ async function Deals({ searchParams }: Pick<PageProps<"/">, "searchParams">) {
           </p>
         </div>
       ) : (
-        <ul className="grid gap-5 sm:grid-cols-2 min-[61.3125rem]:grid-cols-3">
+        <ul className="kit-list grid gap-5 sm:grid-cols-2 min-[61.3125rem]:grid-cols-3">
           {deals.map((deal) => (
             <li key={deal.id} className="flex flex-col [&>a]:flex-1">
               <DealRow deal={deal} />
@@ -201,7 +201,7 @@ function CategoryChip({
         "inline-flex h-11 shrink-0 items-center rounded-full border px-4 text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
         active
           ? "border-ink bg-ink text-ink-foreground"
-          : "bg-card hover:border-foreground/30",
+          : "bg-card shadow-1 hover:border-foreground/30",
       )}
     >
       {label}

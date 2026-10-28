@@ -1,8 +1,10 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
+import { useReducedMotion } from "motion/react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { HeroScene } from "@/components/brand/hero-scene";
 import { LogoLink } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
@@ -145,7 +147,16 @@ export function HomeHero({
 }
 
 function HeroCard({ t }: { t: HeroToly }) {
-  const members = t.members;
+  const reduce = useReducedMotion();
+  const [demoFull, setDemoFull] = useState(false);
+  useEffect(() => {
+    if (reduce || t.members.length !== t.partySize - 1) return;
+    const timer = setInterval(() => setDemoFull((v) => !v), 4500);
+    return () => clearInterval(timer);
+  }, [reduce, t.members.length, t.partySize]);
+  const members = demoFull
+    ? [...t.members, { id: "illustrative-last-seat", firstName: "Sujan" }]
+    : t.members;
   const unlocked = members.length >= t.partySize;
   const off = percentOff(t.regularPrice, t.price);
 

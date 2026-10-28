@@ -9,6 +9,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./toly-patterns.css";
+@import "./toly-effects.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -350,4 +351,11 @@
     margin: 0;
     break-inside: avoid;
   }
+}
+
+@theme inline {
+  --shadow-action:
+    inset 0 1px 0 rgb(255 255 255 / 0.4),
+    0 12px 28px -12px rgb(242 162 58 / 0.85);
+  --shadow-success: 0 12px 28px -12px rgb(30 123 78 / 0.7);
 }
