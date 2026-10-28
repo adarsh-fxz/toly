@@ -1,14 +1,8 @@
 // Demo data for local development: `pnpm db:seed`. Sign in with any seeded number; codes print in the API log.
 import { eq } from "drizzle-orm";
+import { seedDemoWheel } from "./demo-wheel";
 import { createDb } from "./index";
-import {
-  deals,
-  merchantMembers,
-  merchants,
-  spinPrizes,
-  spinWheels,
-  user,
-} from "./schema";
+import { deals, merchantMembers, merchants, user } from "./schema";
 
 for (const file of ["../../.env"]) {
   try {
@@ -103,10 +97,13 @@ await db
 for (const venue of venues) {
   const { deals: venueDeals, ...fields } = venue;
   const [existing] = await db
-    .select({ id: merchants.id })
+    .select({ id: merchants.id, createdById: merchants.createdById })
     .from(merchants)
     .where(eq(merchants.slug, venue.slug));
-  if (existing) continue;
+  if (existing) {
+    if (existing.createdById === owner.id) await seedDemoWheel(db, existing.id);
+    continue;
+  }
 
   const [merchant] = await db
     .insert(merchants)
@@ -131,40 +128,7 @@ for (const venue of venues) {
     })),
   );
 
-  await db.insert(spinWheels).values({
-    merchantId: merchant.id,
-    enabled: true,
-    pricePaisa: 4900,
-    validityDays: 30,
-  });
-  await db.insert(spinPrizes).values([
-    {
-      merchantId: merchant.id,
-      label: "10% off the bill",
-      percentOff: 10,
-      maxDiscountPaisa: 20_000,
-      weight: 70,
-      sortOrder: 0,
-    },
-    {
-      merchantId: merchant.id,
-      label: "Free milk tea",
-      percentOff: 100,
-      appliesTo: "Milk tea",
-      weight: 25,
-      dailyStock: 20,
-      sortOrder: 1,
-    },
-    {
-      merchantId: merchant.id,
-      label: "Whole bill on us",
-      percentOff: 100,
-      maxDiscountPaisa: 150_000,
-      weight: 5,
-      dailyStock: 1,
-      sortOrder: 2,
-    },
-  ]);
+  await seedDemoWheel(db, merchant.id);
 }
 
 console.log(`Seeded ${venues.length} venues. Owner phone: ${owner.phone}`);
