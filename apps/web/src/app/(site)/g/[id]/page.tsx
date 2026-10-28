@@ -1,17 +1,19 @@
-import { formatRs } from "@toly/shared/money";
+import { Check } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { SeatDots } from "@/components/brand/seat-dots";
 import { AutoRefresh } from "@/components/group/auto-refresh";
 import { Countdown } from "@/components/group/countdown";
 import { ShareToly } from "@/components/group/share-toly";
 import { JoinToly, LeaveToly } from "@/components/group/toly-actions";
+import { UnlockMoment } from "@/components/group/unlock-moment";
+import { SeatTable } from "@/components/toly/seat-table";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { serverApi } from "@/lib/api-server";
 import { formatDay } from "@/lib/dates";
+import { formatRs } from "@/lib/money";
 import { getCurrentUser } from "@/lib/session";
 import type { GroupView } from "@/lib/types";
 
@@ -47,18 +49,18 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
   }[group.status];
 
   return (
-    <div className="grid gap-10 py-10 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-x-12 md:py-14">
+    <div className="grid gap-10 py-12 max-sm:py-7 min-[981px]:grid-cols-[minmax(0,1fr)_380px] min-[981px]:gap-x-12">
       {group.status === "forming" ? <AutoRefresh /> : null}
       <section className="space-y-8">
         <div className="space-y-3">
           <Link
             href={`/deals/${deal.dealSlug}`}
-            className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            className="inline-flex min-h-11 items-center text-sm font-medium text-ink-2 underline-offset-4 hover:text-foreground hover:underline"
           >
             {deal.title} at {deal.merchantName}
           </Link>
           <h1
-            className="text-5xl font-extrabold md:text-7xl"
+            className="text-h1 font-semibold max-sm:text-[36px]"
             aria-live="polite"
           >
             {headline}
@@ -71,22 +73,39 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
           ) : null}
         </div>
 
-        <div className="space-y-5">
-          <SeatDots filled={filled} total={group.partySize} size="lg" />
-          <ol className="flex flex-wrap gap-x-6 gap-y-2">
-            {group.members.map((m, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: members are listed in join order
-              <li key={i} className="font-medium">
-                {m.isYou ? "You" : m.name}
-                {m.isOrganizer ? (
-                  <span className="font-normal text-muted-foreground">
-                    {" "}
-                    (started it)
-                  </span>
-                ) : null}
-              </li>
-            ))}
-          </ol>
+        <div className="relative overflow-hidden rounded-[32px] bg-card px-2 py-6 shadow-1">
+          {group.status === "unlocked" ? (
+            <UnlockMoment groupId={group.id} />
+          ) : null}
+          <SeatTable
+            members={group.members.map((m, i) => ({
+              id: `${group.id}-${i}-${m.name}`,
+              firstName: m.name,
+              isYou: m.isYou,
+              isOrganiser: m.isOrganizer,
+            }))}
+            size={group.partySize}
+            status={group.status}
+          >
+            {group.status === "unlocked" ? (
+              <>
+                <Check className="mx-auto size-10 text-success" />
+                <span className="mt-1 font-semibold text-success">
+                  Unlocked
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-xs text-ink-2">For the table</span>
+                <strong className="mt-1 font-display text-[clamp(18px,5vw,32px)] font-semibold tabular-nums">
+                  {formatRs(deal.groupPricePaisa)}
+                </strong>
+                <span className="mt-1 text-xs text-ink-2">
+                  {filled} of {group.partySize} in
+                </span>
+              </>
+            )}
+          </SeatTable>
         </div>
 
         <dl className="grid gap-4 border-t pt-6 sm:grid-cols-3">
@@ -113,7 +132,7 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
         </dl>
       </section>
 
-      <aside className="space-y-4 md:sticky md:top-24 md:self-start">
+      <aside className="space-y-4 min-[981px]:sticky min-[981px]:top-[92px] min-[981px]:self-start">
         <Suspense fallback={<Skeleton className="h-28 w-full" />}>
           <Actions group={group} left={left} />
         </Suspense>
@@ -127,7 +146,7 @@ async function Actions({ group, left }: { group: GroupView; left: number }) {
 
   if (group.status === "unlocked") {
     return viewer.isMember && group.voucherId ? (
-      <div className="space-y-3 rounded-3xl bg-success p-6 text-success-foreground">
+      <div className="space-y-3 rounded-xl bg-success-soft p-7 text-foreground shadow-1">
         <p className="text-lg font-semibold">The group price is yours.</p>
         <p className="text-sm opacity-90">
           Show the voucher at the counter, then pay {deal.merchantName}{" "}
@@ -155,7 +174,7 @@ async function Actions({ group, left }: { group: GroupView; left: number }) {
   if (viewer.isMember) {
     const message = `Join my toly for ${deal.title} at ${deal.merchantName}: ${formatRs(deal.groupPricePaisa)} for ${group.partySize}. ${left} ${left === 1 ? "seat" : "seats"} left.`;
     return (
-      <div className="space-y-4 rounded-3xl border bg-card p-6">
+      <div className="space-y-4 rounded-xl bg-card p-7 shadow-2">
         <p className="font-semibold">Send the link to your friends</p>
         <ShareToly groupId={group.id} message={message} />
         <LeaveToly groupId={group.id} isOrganizer={viewer.isOrganizer} />
@@ -166,7 +185,7 @@ async function Actions({ group, left }: { group: GroupView; left: number }) {
   const user = await getCurrentUser();
   const next = encodeURIComponent(`/g/${group.id}`);
   return (
-    <div className="space-y-4 rounded-3xl border bg-card p-6">
+    <div className="space-y-4 rounded-xl bg-card p-7 shadow-2">
       <p className="font-semibold">You're invited</p>
       <p className="text-sm text-muted-foreground">
         Take a seat. When all {group.partySize} are filled, the group pays{" "}
@@ -196,7 +215,7 @@ async function Actions({ group, left }: { group: GroupView; left: number }) {
 
 function StartOwn({ slug, note }: { slug: string; note: string }) {
   return (
-    <div className="space-y-4 rounded-3xl border bg-card p-6">
+    <div className="space-y-4 rounded-xl bg-card p-7 shadow-2">
       <p className="text-muted-foreground">{note}</p>
       <Link
         href={`/deals/${slug}`}
