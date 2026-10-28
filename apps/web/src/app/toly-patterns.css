@@ -739,33 +739,112 @@
   }
 }
 
-/* Keep the kit wheel within its host card at every width. */
-/* biome-ignore lint/style/noDescendingSpecificity: responsive host sizing overrides only wheel geometry */
+/* Scale each kit wheel proportionally, including the compact preview's hub and pointer. */
+/* biome-ignore lint/style/noDescendingSpecificity: responsive sizing overrides geometry only, not the dark rim colour */
 .wheel-wrap {
-  --ws: min(100%, 420px);
-  --lr: 30cqw;
-  --dr: 48cqw;
-  width: min(100%, 420px);
+  --wheel-size: 460px;
+  width: min(100%, var(--wheel-size));
   height: auto;
   aspect-ratio: 1;
   container-type: inline-size;
 }
+.wheel-wrap .wheel-disc {
+  inset: 2.174cqw;
+  box-shadow:
+    0 0 0 2.609cqw var(--rim),
+    0 40px 80px -30px rgb(40 25 70 / 0.5);
+}
 .wheel-wrap .wheel-label {
-  --lr: 30cqw;
+  --lr: 30.435cqw;
   width: 24cqw;
 }
 .wheel-wrap .wheel-label b {
-  font-size: clamp(16px, 6cqw, 28px);
+  font-size: 6.087cqw;
 }
 .wheel-wrap .wheel-label span {
-  font-size: clamp(10px, 3cqw, 13px);
+  font-size: 2.826cqw;
 }
 .wheel-wrap .wheel-dots i {
-  --dr: 48cqw;
+  --dr: 49.13cqw;
+  width: 1.304cqw;
+  height: 1.304cqw;
+  margin: -0.652cqw 0 0 -0.652cqw;
 }
 .wheel-wrap .wheel-hub {
-  width: 15cqw;
-  height: 15cqw;
+  width: 14.783cqw;
+  height: 14.783cqw;
+  box-shadow:
+    0 0 0 1.304cqw var(--rim),
+    0 8px 20px -6px rgb(0 0 0 / 0.4);
+}
+.wheel-wrap .wheel-hub svg {
+  width: 7.391cqw;
+  height: 7.391cqw;
+}
+.wheel-wrap .wheel-pointer {
+  width: 6.522cqw;
+  height: 8.261cqw;
+  top: -1.304cqw;
+}
+.wheel-demo {
+  --wheel-size: 380px;
+}
+.wheel-demo .wheel-label {
+  --lr: 29.474cqw;
+}
+.wheel-demo .wheel-label b {
+  font-size: 6.316cqw;
+}
+.wheel-demo .wheel-label span {
+  font-size: 3.158cqw;
+}
+.wheel-demo .wheel-hub {
+  width: 17.895cqw;
+  height: 17.895cqw;
+  box-shadow:
+    0 0 0 1.579cqw var(--rim),
+    0 8px 20px -6px rgb(0 0 0 / 0.4);
+}
+.wheel-demo .wheel-hub svg {
+  width: 8.947cqw;
+  height: 8.947cqw;
+}
+.wheel-demo .wheel-pointer {
+  width: 7.895cqw;
+  height: 10cqw;
+  top: -1.579cqw;
+}
+.wheel-compact {
+  --wheel-size: 170px;
+}
+.wheel-compact .wheel-label {
+  --lr: 29.412cqw;
+  width: 28.235cqw;
+}
+.wheel-compact .wheel-label b {
+  font-size: 7.647cqw;
+}
+.wheel-compact .wheel-label span,
+.wheel-compact .wheel-hub svg {
+  display: none;
+}
+.wheel-compact .wheel-hub {
+  width: 20cqw;
+  height: 20cqw;
+  box-shadow: 0 0 0 2.353cqw var(--rim);
+}
+.wheel-compact .wheel-disc {
+  box-shadow: 0 0 0 4.118cqw var(--rim);
+}
+.wheel-compact .wheel-dots i {
+  width: 2.353cqw;
+  height: 2.353cqw;
+  margin: -1.176cqw 0 0 -1.176cqw;
+}
+.wheel-compact .wheel-pointer {
+  width: 11.765cqw;
+  height: 15.294cqw;
+  top: -2.353cqw;
 }
 
 /* Fit the supplied table to narrow phones without clipping any seats. */

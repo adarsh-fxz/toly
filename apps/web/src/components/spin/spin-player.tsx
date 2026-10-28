@@ -214,13 +214,13 @@ export function SpinPlayer({
         </div>
       </section>
       <aside className="min-w-0 min-[61.3125rem]:sticky min-[61.3125rem]:top-24 min-[61.3125rem]:col-start-2 min-[61.3125rem]:row-span-2 min-[61.3125rem]:row-start-1">
-        <div className="night flex min-h-[600px] flex-col items-center justify-center gap-8 rounded-[32px] px-7 py-10 shadow-2 max-sm:min-h-0 max-sm:px-5">
+        <div className="night flex min-h-[600px] flex-col items-center justify-between gap-6 rounded-[40px] px-6 pt-14 pb-10 shadow-2 max-sm:min-h-0 max-sm:px-5">
           <Wheel
             segments={segments}
             rotation={rotation}
             spinning={phase.name === "spinning"}
           />
-          <p className="relative max-w-[26em] text-center text-sm text-white/75">
+          <p className="relative max-w-[30em] text-center text-sm text-white/75">
             Slices on the wheel are equal in size. The real chances are listed
             in Prizes and chances.
           </p>

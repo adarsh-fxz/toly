@@ -4,14 +4,14 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { DealListSkeleton } from "@/components/deal/deal-list-skeleton";
 import { DealRow } from "@/components/deal/deal-row";
+import { ClosingCta } from "@/components/home/closing-cta";
 import { HomeHero } from "@/components/home/hero";
 import { HowItWorks } from "@/components/home/how-it-works";
 import { Container } from "@/components/layout/container";
 import { CurrentUserMenu } from "@/components/site-header";
-import { Wheel } from "@/components/spin/wheel";
+import { WheelDemo } from "@/components/spin/wheel-demo";
 import { publicApi } from "@/lib/api-server";
 import { formatRs } from "@/lib/money";
-import { segmentLabel } from "@/lib/spin-view";
 import { cn } from "@/lib/utils";
 
 export default function HomePage({ searchParams }: PageProps<"/">) {
@@ -45,21 +45,7 @@ export default function HomePage({ searchParams }: PageProps<"/">) {
         <Suspense fallback={null}>
           <SpinVenues />
         </Suspense>
-        <section className="night mt-28 rounded-2xl px-10 py-16 text-center max-sm:px-6 max-sm:py-12">
-          <h2 className="relative text-h2 font-semibold max-sm:text-[34px]">
-            Got a crew? Get the group price.
-          </h2>
-          <p className="relative mx-auto mt-5 max-w-lg text-white/70">
-            Pick a deal, start a toly and send the link to your group. When the
-            last seat fills, the table is yours.
-          </p>
-          <Link
-            href="#deals"
-            className="relative mt-7 inline-flex min-h-[52px] items-center rounded-full bg-primary px-6 font-semibold shadow-action text-primary-foreground"
-          >
-            See deals near you
-          </Link>
-        </section>
+        <ClosingCta />
       </Container>
     </>
   );
@@ -118,12 +104,6 @@ async function SpinVenues() {
     .$get()
     .then((r) => (r.ok ? r.json() : []));
   if (wheels.length === 0) return null;
-  const first = wheels[0];
-  const detail = first
-    ? await publicApi.api.v1.venues[":slug"].wheel
-        .$get({ param: { slug: first.slug } })
-        .then((r) => (r.ok ? r.json() : null))
-    : null;
   return (
     <section
       id="spin"
@@ -164,22 +144,13 @@ async function SpinVenues() {
         </ul>
         <p className="mt-5 flex items-start gap-2 text-[13px] text-muted-foreground">
           <Info className="size-4 shrink-0" aria-hidden />
-          Every prize and its exact chance is listed before you pay.
+          Example wheel shown. Every venue lists its own prizes and exact
+          chances before you pay.
         </p>
       </div>
-      {detail ? (
-        <div className="min-w-0 py-6">
-          <Wheel
-            segments={detail.prizes.map((p) => ({
-              id: p.id,
-              ...segmentLabel(p),
-            }))}
-            rotation={0}
-            spinning={false}
-            className="home-wheel"
-          />
-        </div>
-      ) : null}
+      <div className="min-w-0 py-6">
+        <WheelDemo />
+      </div>
     </section>
   );
 }

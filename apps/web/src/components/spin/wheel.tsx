@@ -24,18 +24,20 @@ export function Wheel({
   rotation,
   spinning,
   className,
+  size = "lg",
 }: {
   segments: Segment[];
   rotation: number;
   spinning: boolean;
   className?: string;
+  size?: "lg" | "demo" | "compact";
 }) {
   const reduce = useReducedMotion();
   const slice = 360 / segments.length;
   const background = `conic-gradient(${segments.map((segment, i) => `${wheelColor(i, segment.hot)} ${i * slice}deg ${(i + 1) * slice}deg`).join(",")})`;
   return (
     <div
-      className={cn("wheel-wrap mx-auto", className)}
+      className={cn("wheel-wrap mx-auto", `wheel-${size}`, className)}
       role="img"
       aria-label={`Prize wheel: ${segments.map((s) => `${s.short} ${s.sub}`).join(", ")}`}
     >
@@ -58,9 +60,16 @@ export function Wheel({
         ))}
       </motion.div>
       <div className="wheel-dots" aria-hidden="true">
-        {Array.from({ length: 24 }, (_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: fixed rim lights
-          <i key={i} style={{ ["--a" as string]: `${i * 15}deg` }} />
+        {Array.from(
+          { length: size === "compact" ? 12 : 24 },
+          (_, position) => position,
+        ).map((i) => (
+          <i
+            key={i}
+            style={{
+              ["--a" as string]: `${i * (size === "compact" ? 30 : 15)}deg`,
+            }}
+          />
         ))}
       </div>
       <span className="wheel-hub" aria-hidden="true">

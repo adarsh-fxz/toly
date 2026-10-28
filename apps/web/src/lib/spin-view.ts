@@ -36,6 +36,6 @@ export function segmentLabel(prize: {
   return {
     hot: prize.percentOff === 100 && !item,
     short: prize.percentOff === 100 ? "FREE" : `${prize.percentOff}%`,
-    sub: item ? (item.length > 12 ? `${item.slice(0, 11)}…` : item) : "bill",
+    sub: item ? (item.length > 12 ? `${item.slice(0, 11)}…` : item) : "Bill",
   };
 }

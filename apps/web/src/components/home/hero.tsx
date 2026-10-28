@@ -77,16 +77,6 @@ export function HomeHero({
       </header>
 
       <div className="relative flex flex-col items-center px-6 pt-[140px] text-center max-sm:px-4 max-sm:pt-[104px]">
-        <p className="inline-flex items-center gap-2.5 rounded-full bg-glass py-[5px] pl-[5px] pr-4 text-sm font-medium text-ink-2 shadow-[inset_0_0_0_1px_var(--glass-line)] backdrop-blur-[14px] max-sm:text-[13px]">
-          <b
-            lang="ne"
-            className="rounded-full bg-primary px-[11px] py-[3px] font-nepali text-sm font-semibold leading-[1.35] text-primary-foreground"
-          >
-            टोली
-          </b>
-          Nepali for your crew of friends
-        </p>
-
         <h1
           id="hero-h"
           className="mt-[26px] font-display text-[74px] font-semibold leading-none tracking-[-0.045em] text-foreground max-[61.25rem]:text-[58px] max-sm:text-[42px] max-sm:tracking-[-0.04em]"
