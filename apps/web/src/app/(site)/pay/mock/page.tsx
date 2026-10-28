@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Banner } from "@/components/feedback/banner";
+import { frontendPreview } from "@/lib/frontend-preview";
 import { formatRs } from "@/lib/money";
 import { MockCheckout } from "./mock-checkout";
 
 export default function MockPayPage({ searchParams }: PageProps<"/pay/mock">) {
+  if (frontendPreview) notFound();
   if (process.env.NODE_ENV === "production" && process.env.DEMO_MODE !== "true")
     notFound();
   return (
