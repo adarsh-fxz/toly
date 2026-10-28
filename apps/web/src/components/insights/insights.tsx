@@ -10,7 +10,7 @@ const RANGES = [7, 30, 90] as const;
 
 const hourLabel = (h: number) => {
   const end = (h + 1) % 24;
-  const fmt = (n: number) => `${String(n).padStart(2,"0")}:00`;
+  const fmt = (n: number) => `${String(n).padStart(2, "0")}:00`;
   return `${fmt(h)} to ${fmt(end)}`;
 };
 

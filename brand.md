@@ -1,54 +1,45 @@
 # Brand — Toly
 
-_Status: active_
+Toly (टोली, "toli") is a crew of friends. Friends unlock one price for the whole table at local Kathmandu Valley venues, then pay the venue directly.
 
-**Toly** (from टोली, "toli") is Nepali for a crew of friends. The product helps a toli unlock group deals at
-neighbourhood cafés and venues in Kathmandu Valley, spin for discounts, and redeem at the counter.
+## Kathmandu evening
 
-## Audience and job
+The frontend follows the approved Kathmandu evening design: a valley scene, warm daylight surfaces, lamp-lit night colours, and seats around a table. The marigold accent identifies the main action and seat progress. Glass is reserved for content over the valley scene.
 
-- **Customers:** 18–30, on Android phones, coordinating plans in WhatsApp/Viber. Job: get a clear,
-  honest price for going out together.
-- **Merchants:** small café and venue owners and their counter staff. Job: fill quiet hours and
-  redeem vouchers in seconds without training.
+| Role | Light | Dark |
+| --- | --- | --- |
+| Page | `#FAF9F7` | `#0B0B13` |
+| Text | `#17161C` | `#F3F1EC` |
+| Card | `#FFFFFF` | `#16151F` |
+| Marigold | `#F2A23A` | `#F5B04A` |
+| Secondary text | `#4A4752` | `#C4C0CC` |
+| Success | `#1E7B4E` | `#5CD39A` |
 
-## Palette
+Use the semantic tokens in `apps/web/src/app/globals.css`. Pattern geometry and scene colours live in `toly-patterns.css`; do not introduce a separate page palette.
 
-Taken from the Nepali flag (crimson field, blue border) and the dhaka weave, not from SaaS defaults.
+## Typography and layout
 
-| Token        | Light     | Dark      | Use                                                    |
-| ------------ | --------- | --------- | ------------------------------------------------------ |
-| Neel (ink)   | `#1A1D3A` | `#ECEDF5` | Text, icons, the default dark surface                  |
-| Mist         | `#F6F7FA` | `#11132A` | Page background                                        |
-| Sindoor      | `#C8102E` | `#FF5C70` | The one action colour: primary buttons, seat dots      |
-| Besar        | `#F2B705` | `#F7C948` | Prize moments only (spin wheel, won discounts)         |
-| Tulsi        | `#157A55` | `#3CC48F` | Success: unlocked, redeemed                            |
-| Line         | `#DCDFEA` | `#2E335E` | Borders and dividers                                   |
+Bricolage Grotesque is the display face, Inter the body face, and Noto Sans Devanagari the Nepali face. Fonts are self-hosted through `next/font`. Use `lang="ne"` for Nepali text.
 
-Rules: Sindoor is the only accent for actions. Besar never appears on a button. Status colours carry
-meaning only.
-
-## Typography
-
-- **Anek Devanagari** (variable, `wdth` 75–125) for display. Headlines are set condensed
-  (`wdth` 75–85) and heavy, like hand-painted Kathmandu shop signs. Covers Latin and Devanagari.
-- **Mukta** for body and UI. Humanist, legible on low-end Android screens, also covers Devanagari.
-- Prices use tabular figures. Currency is written `Rs 1,200`.
+Containers are 1160px with 40px gutters, or 20px on phones. Customer pages collapse below 981px. Venue navigation becomes a bottom bar below 981px; its content reserves space for that bar. Controls have at least 44px targets. Cards use 28px corners; inputs use 14px; buttons are pills.
 
 ## Signature elements
 
-- **Seat dots:** a row of circles showing how many friends have joined (filled Sindoor) versus
-  seats left (outlined). Used anywhere a group appears.
-- **Ticket voucher:** vouchers are drawn as a perforated ticket with a rotating QR.
-- **Dhaka weave:** the spin wheel is the one place the dhaka geometric pattern appears.
+- Three logo seats: two filled and one open.
+- Category tiles and seat rings; larger seat tables for toly progress.
+- Illustrated avatars when a person has no photo.
+- A perforated voucher ticket that stays light in either theme.
+- A prize wheel with a fixed pointer, rim lights and published odds.
+- Empty tables and content-shaped skeletons for empty and loading states.
 
-## Layout
+## Honest content and behavior
 
-- Mobile first, left-aligned, single column for customers; bottom tab bar for merchant staff.
-- Flat surfaces separated by borders; shadows only for overlays.
-- Radius: controls `rounded-lg`, sheets and panels `rounded-2xl`, pills and dots `rounded-full`.
+Use plain sentence case: "Start a toly", "Join this toly", "Redeem". Show real prices, real odds, and real fill deadlines. A featured deal's decorative seats must be labelled as an illustration. Never imply it is a live group.
 
-## Voice
+API amounts remain integer paisa. Existing presentation call sites use `lib/money.ts`, which converts paisa to the kit's rupee formatter. Other formatting lives in `lib/format.ts`: Nepali grouping, Kathmandu time and readable phone numbers. Prices, codes and counts use tabular figures.
 
-Plain, warm, direct. Sentence case. Say what happens: "Start a toly", "Join toly", "Redeem".
-No fake urgency, no invented "usual prices", no all-caps labels.
+Customers pay the venue directly for their bill. The spin fee is a separate payment to Toly. Keep those statements distinct.
+
+The server chooses prizes, signs rotating voucher tokens and authorizes redemption. UI motion only presents those results. Reduced motion disables decorative loops and confetti and skips wheel animation. QR codes always remain dark on white, with a four-module quiet zone and a typed backup code.
+
+The original design reference kit and local screenshots remain outside Git; the integrated frontend contains the components it actually uses.

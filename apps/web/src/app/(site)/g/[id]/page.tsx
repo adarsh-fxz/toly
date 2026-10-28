@@ -107,8 +107,10 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
             )}
           </SeatTable>
         </div>
+      </section>
 
-        <dl className="grid gap-4 border-t pt-6 sm:grid-cols-3">
+      <aside className="space-y-4 min-[981px]:sticky min-[981px]:top-[92px] min-[981px]:self-start">
+        <dl className="grid gap-3 [&>div]:rounded-[18px] [&>div]:bg-secondary [&>div]:px-5 [&>div]:py-4">
           <div>
             <dt className="text-sm text-muted-foreground">
               Price for the table
@@ -130,9 +132,6 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
             </dd>
           </div>
         </dl>
-      </section>
-
-      <aside className="space-y-4 min-[981px]:sticky min-[981px]:top-[92px] min-[981px]:self-start">
         <Suspense fallback={<Skeleton className="h-28 w-full" />}>
           <Actions group={group} left={left} />
         </Suspense>

@@ -30,15 +30,16 @@ export function DealFacts({ deal }: { deal: PublicDeal }) {
   return (
     <dl className="grid gap-5 sm:grid-cols-2">
       {facts.map(({ icon: Icon, label, value }) => (
-        <div key={label} className="flex gap-3">
+        <div
+          key={label}
+          className="grid grid-cols-[20px_minmax(0,1fr)] gap-x-3"
+        >
           <Icon
-            className="mt-0.5 size-5 shrink-0 text-muted-foreground"
+            className="row-span-2 mt-0.5 size-5 text-muted-foreground"
             aria-hidden
           />
-          <div>
-            <dt className="text-sm text-muted-foreground">{label}</dt>
-            <dd className="font-medium">{value}</dd>
-          </div>
+          <dt className="text-sm text-muted-foreground">{label}</dt>
+          <dd className="font-medium">{value}</dd>
         </div>
       ))}
     </dl>

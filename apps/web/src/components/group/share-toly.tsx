@@ -35,7 +35,7 @@ export function ShareToly({
           href={`https://wa.me/?text=${encodeURIComponent(text)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className={buttonVariants({ size: "lg" })}
+          className={buttonVariants({ size: "lg", variant: "outline" })}
         >
           WhatsApp
         </a>

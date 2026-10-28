@@ -19,14 +19,14 @@ export function groupNepali(n: number): string {
       rest = rest.slice(0, -2);
     }
     if (rest) parts.unshift(rest);
-    out = parts.join(",") + "," + last3;
+    out = `${parts.join(",")},${last3}`;
   }
-  return (neg ? "-" : "") + out + (dec ? "." + dec : "");
+  return (neg ? "-" : "") + out + (dec ? `.${dec}` : "");
 }
 
 /** formatRs(1200) -> "Rs 1,200"; formatRs(150000) -> "Rs 1,50,000". */
 export function formatRs(amount: number): string {
-  return "Rs " + groupNepali(Math.round(amount));
+  return `Rs ${groupNepali(Math.round(amount))}`;
 }
 
 /** Whole-number percent saved, rounded DOWN so we never overstate a discount. */

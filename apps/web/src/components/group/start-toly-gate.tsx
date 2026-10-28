@@ -27,7 +27,7 @@ export async function StartTolyGate({ dealSlug }: { dealSlug: string }) {
         >
           Verify your number to start
         </Link>
-        <p className="text-sm text-ink-foreground/80 dark:text-muted-foreground">
+        <p className="text-sm text-ink-2">
           Every seat belongs to a verified Nepali mobile number.
         </p>
       </div>

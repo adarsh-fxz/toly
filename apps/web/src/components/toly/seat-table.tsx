@@ -119,7 +119,12 @@ export function SeatTable({
               </span>
             )}
           </AnimatePresence>
-          <span className="whitespace-nowrap text-center text-sm font-semibold leading-tight">
+          <span
+            className={cn(
+              "whitespace-nowrap text-center text-sm font-semibold leading-tight",
+              s.y < -0.2 && "absolute bottom-[calc(100%+10px)]",
+            )}
+          >
             {s.member
               ? s.member.isYou
                 ? "You"
