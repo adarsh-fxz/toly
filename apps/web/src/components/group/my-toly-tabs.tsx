@@ -22,7 +22,7 @@ export function MyTolyTabs({
     { id: "past", label: "Past", count: past },
   ];
   return (
-    <div className="mt-8" data-filter={tab}>
+    <div className="toly-filter mt-8" data-filter={tab}>
       <fieldset
         aria-label="Filter your tolys"
         className="flex w-fit max-w-full flex-wrap gap-1 rounded-[24px] bg-secondary p-1.5"
@@ -45,16 +45,7 @@ export function MyTolyTabs({
           </button>
         ))}
       </fieldset>
-      <div
-        className={cn(
-          tab !== "all" && `[&_[data-toly-section]]:hidden`,
-          tab === "ready" && "[&_[data-toly-section=ready]]:block",
-          tab === "filling" && "[&_[data-toly-section=filling]]:block",
-          tab === "past" && "[&_[data-toly-section=past]]:block",
-        )}
-      >
-        {children}
-      </div>
+      <div>{children}</div>
       {tabs.find((t) => t.id === tab)?.count === 0 ? (
         <p role="status" className="py-12 text-ink-2">
           Nothing here yet. Your next toly starts with a deal.

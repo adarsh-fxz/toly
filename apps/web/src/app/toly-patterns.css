@@ -775,3 +775,13 @@
     --S: 48px;
   }
 }
+
+/* Hide only the non-selected sections; preserve each section's display style. */
+.toly-filter[data-filter="ready"]
+  [data-toly-section]:not([data-toly-section="ready"]),
+.toly-filter[data-filter="filling"]
+  [data-toly-section]:not([data-toly-section="filling"]),
+.toly-filter[data-filter="past"]
+  [data-toly-section]:not([data-toly-section="past"]) {
+  display: none;
+}
