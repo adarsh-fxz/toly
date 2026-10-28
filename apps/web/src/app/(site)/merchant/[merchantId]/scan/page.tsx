@@ -1,10 +1,10 @@
-import { formatRs } from "@toly/shared/money";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Scanner } from "@/components/merchant/scanner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { serverApi } from "@/lib/api-server";
 import { formatDateTime } from "@/lib/dates";
+import { formatRs } from "@/lib/money";
 
 export default function ScanPage({
   params,
