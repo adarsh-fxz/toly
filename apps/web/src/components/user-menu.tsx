@@ -3,7 +3,7 @@
 import { LogOut, Settings, ShieldCheck, Store, Ticket } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { PersonAvatar } from "@/components/brand/person-avatar";
 import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -31,7 +31,10 @@ export function UserMenu({ user }: { user: CurrentUser | null }) {
 
   if (!user) {
     return (
-      <Link href="/sign-in" className={buttonVariants({ size: "sm" })}>
+      <Link
+        href="/sign-in"
+        className={buttonVariants({ size: "sm", variant: "ink" })}
+      >
         Sign in
       </Link>
     );
@@ -49,19 +52,24 @@ export function UserMenu({ user }: { user: CurrentUser | null }) {
         className="rounded-full focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
         aria-label="Open account menu"
       >
-        <Avatar className="size-10">
-          {user.image ? <AvatarImage src={user.image} alt="" /> : null}
-          <AvatarFallback className="bg-ink font-semibold text-ink-foreground">
-            {initials(user.name)}
-          </AvatarFallback>
-        </Avatar>
+        <PersonAvatar
+          name={user.name}
+          seed={user.id}
+          src={user.image}
+          size={44}
+          decorative
+        />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent
+        align="end"
+        className="w-64 rounded-[22px] p-2 shadow-3"
+      >
         <DropdownMenuGroup>
           <DropdownMenuLabel className="truncate">
             {user.name || "Your account"}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem render={<Link href="/" />}>Deals</DropdownMenuItem>
           <DropdownMenuItem render={<Link href="/me" />}>
             <Ticket aria-hidden />
             My tolys and vouchers
