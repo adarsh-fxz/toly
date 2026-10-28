@@ -1,4 +1,4 @@
-// Demo data for local development: `pnpm db:seed`. Sign in with any seeded number; codes print in the API log.
+// Synthetic data for local development or a dedicated DEMO_MODE database.
 import { eq } from "drizzle-orm";
 import { seedDemoWheel } from "./demo-wheel";
 import { createDb } from "./index";
@@ -9,7 +9,7 @@ for (const file of ["../../.env"]) {
     process.loadEnvFile(file);
   } catch {}
 }
-if (process.env.NODE_ENV === "production")
+if (process.env.NODE_ENV === "production" && process.env.DEMO_MODE !== "true")
   throw new Error("Refusing to seed a production database");
 const url = process.env.DATABASE_URI;
 if (!url) throw new Error("DATABASE_URI is not set");

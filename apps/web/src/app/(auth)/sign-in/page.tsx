@@ -32,6 +32,7 @@ async function SignIn({
   return (
     <SignInPanel
       next={nextPath}
+      demo={config.demo}
       google={config.google}
       turnstileSiteKey={config.turnstileSiteKey}
     />

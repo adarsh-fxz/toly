@@ -32,7 +32,7 @@ export function MockCheckout({ reference }: { reference: string }) {
         disabled={pending}
         aria-busy={pending}
       >
-        Pay
+        Simulate payment
       </Button>
       <Button
         size="lg"

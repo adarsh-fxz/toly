@@ -40,7 +40,20 @@ const app = new Hono()
     await db.execute(sql`select 1`);
     return c.json({ ok: true });
   })
-  .on(["GET", "POST"], "/api/auth/*", (c) => auth.handler(c.req.raw))
+  .on(["GET", "POST"], "/api/auth/*", (c) => {
+    const origin = c.req.header("origin");
+    if (c.req.method === "POST" && origin && origin !== env.WEB_URL) {
+      return c.json({ error: "FORBIDDEN", message: "Invalid origin" }, 403);
+    }
+    // Shared demo identities must not enroll personal device credentials.
+    if (env.DEMO_MODE && c.req.path.startsWith("/api/auth/passkey/")) {
+      return c.json(
+        { error: "NOT_FOUND", message: "Passkeys are disabled in the demo" },
+        404,
+      );
+    }
+    return auth.handler(c.req.raw);
+  })
   .route("/api/v1", v1);
 
 app.notFound((c) =>

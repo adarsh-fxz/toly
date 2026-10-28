@@ -101,9 +101,11 @@ export function ProfileSection({ name }: { name: string }) {
 }
 
 export function PhoneSection({
+  demo,
   phoneNumber,
   turnstileSiteKey,
 }: {
+  demo: boolean;
   phoneNumber: string | null;
   turnstileSiteKey: string | null;
 }) {
@@ -112,18 +114,23 @@ export function PhoneSection({
   return (
     <Section
       title="Mobile number"
-      description="Needed to start or join a toly, so every seat belongs to a real person."
+      description={
+        demo
+          ? "A shared demo identity for trying the app. Phone ownership is simulated."
+          : "Needed to start or join a toly, so every seat belongs to a real person."
+      }
     >
       {phoneNumber ? (
         <p className="inline-flex items-center gap-2 text-lg font-medium tabular">
           {formatNepaliPhone(phoneNumber)}
           <Badge variant="success" className="gap-1">
             <BadgeCheck className="size-4" aria-hidden />
-            Verified
+            {demo ? "Demo" : "Verified"}
           </Badge>
         </p>
       ) : (
         <PhoneOtpForm
+          demo={demo}
           mode="link"
           turnstileSiteKey={turnstileSiteKey}
           onDone={() => {

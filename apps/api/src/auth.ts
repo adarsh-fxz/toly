@@ -1,5 +1,6 @@
 import { passkey } from "@better-auth/passkey";
 import { schema } from "@toly/db";
+import { isDemoPhone } from "@toly/shared/demo";
 import { isNepaliMobile } from "@toly/shared/phone";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -61,12 +62,19 @@ export const auth = betterAuth({
       otpLength: 6,
       expiresIn: 5 * 60,
       allowedAttempts: 5,
-      phoneNumberValidator: isNepaliMobile,
-      sendOTP: ({ phoneNumber, code }) =>
-        sendSms(
+      phoneNumberValidator: env.DEMO_MODE ? isDemoPhone : isNepaliMobile,
+      sendOTP: ({ phoneNumber, code }, ctx) => {
+        if (env.DEMO_MODE) {
+          // Only the request that created this synthetic identity's code receives it.
+          ctx?.setHeader("x-toly-demo-code", code);
+          ctx?.setHeader("Cache-Control", "no-store");
+          return;
+        }
+        return sendSms(
           phoneNumber,
           `${code} is your Toly code. It expires in 5 minutes. Never share it with anyone.`,
-        ),
+        );
+      },
       signUpOnVerification: {
         getTempEmail: (phone) => `${phone.slice(1)}@phone.toly.invalid`,
         getTempName: () => "",

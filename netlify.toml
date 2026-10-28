@@ -1,0 +1,21 @@
+[build]
+  command = "pnpm --filter @toly/web build"
+  publish = "apps/web/.next"
+
+[build.environment]
+  NODE_VERSION = "24.21.0"
+  PNPM_VERSION = "11.5.0"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Set API_URL, WEB_URL and DEMO_MODE in Netlify's UI, for builds AND functions.
+# The root remains the base directory so pnpm can resolve workspace packages.
+[context.production.environment]
+  WEB_URL = "https://toly.page"
+  DEMO_MODE = "true"
+
+# Previews must not share the public demo's authentication or cookies.
+[context.deploy-preview]
+  ignore = "exit 0"
+
+[context.branch-deploy]
+  ignore = "exit 0"

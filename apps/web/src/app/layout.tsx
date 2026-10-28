@@ -34,6 +34,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
     >
       <body className="flex min-h-full flex-col">
+        {process.env.DEMO_MODE === "true" ? (
+          <div
+            role="status"
+            className="bg-warning-soft px-4 py-2 text-center text-sm text-foreground"
+          >
+            Demo only · Sample venues and vouchers · No real SMS, payments or
+            offers
+          </div>
+        ) : null}
         <Providers>{children}</Providers>
       </body>
     </html>

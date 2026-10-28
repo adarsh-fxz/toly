@@ -5,7 +5,8 @@ import { formatRs } from "@/lib/money";
 import { MockCheckout } from "./mock-checkout";
 
 export default function MockPayPage({ searchParams }: PageProps<"/pay/mock">) {
-  if (process.env.NODE_ENV === "production") notFound();
+  if (process.env.NODE_ENV === "production" && process.env.DEMO_MODE !== "true")
+    notFound();
   return (
     <Suspense>
       <Checkout searchParams={searchParams} />
@@ -21,7 +22,7 @@ async function Checkout({
   return (
     <div className="mx-auto max-w-sm space-y-6 py-16">
       <Banner tone="warn" title="Test checkout">
-        No real money moves in development.
+        No real money moves. This simulates a successful or cancelled payment.
       </Banner>
       <div className="space-y-1">
         <p className="text-muted-foreground">
