@@ -1,6 +1,5 @@
 "use client";
 
-import { formatNepaliPhone } from "@toly/shared/phone";
 import { BadgeCheck, KeyRound, Laptop, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useState } from "react";
@@ -12,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth-client";
 import { authErrorMessage } from "@/lib/auth-errors";
+import { formatDate, formatPhone as formatNepaliPhone } from "@/lib/format";
 
 function Section({
   title,
@@ -23,11 +23,9 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="grid gap-4 py-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-10">
+    <section className="grid gap-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px] min-[981px]:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] min-[981px]:gap-10">
       <div className="space-y-1">
-        <h2 className="font-sans text-lg font-semibold [font-variation-settings:normal]">
-          {title}
-        </h2>
+        <h2 className="font-display text-h4 font-semibold">{title}</h2>
         <p className="text-sm text-muted-foreground">{description}</p>
       </div>
       <div>{children}</div>
@@ -191,10 +189,7 @@ export function PasskeysSection() {
                       {p.name || "Passkey"}
                     </span>
                     <span className="block text-sm text-muted-foreground">
-                      Added{" "}
-                      {new Date(p.createdAt).toLocaleDateString("en-NP", {
-                        dateStyle: "medium",
-                      })}
+                      Added {formatDate(p.createdAt)}
                     </span>
                   </span>
                 </span>
@@ -311,7 +306,7 @@ export function SessionsSection() {
                       <span className="block text-sm text-muted-foreground">
                         {isCurrent
                           ? "This device"
-                          : `Active ${new Date(s.updatedAt).toLocaleDateString("en-NP", { dateStyle: "medium" })}`}
+                          : `Active ${formatDate(s.updatedAt)}`}
                       </span>
                     </span>
                   </span>

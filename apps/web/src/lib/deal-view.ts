@@ -7,6 +7,7 @@ export function dealCategory(category: string): Category {
     cafe: "cafe",
     restaurant: "restaurant",
     desserts: "desserts",
+    dessert: "desserts",
     bakery: "desserts",
     bar: "bar",
     karaoke: "karaoke",

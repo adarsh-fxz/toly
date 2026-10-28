@@ -19,15 +19,7 @@ export function formatDay(isoDate: string): string {
   }).format(date);
 }
 
-export function formatDateTime(value: string | Date): string {
-  return new Intl.DateTimeFormat("en-NP", {
-    timeZone: TZ,
-    day: "numeric",
-    month: "short",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(value));
-}
+export { formatDateTime } from "@/lib/format";
 
 export function timeLeft(until: string | Date, now = Date.now()): string {
   const ms = new Date(until).getTime() - now;

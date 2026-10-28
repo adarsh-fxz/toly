@@ -1,40 +1,59 @@
 import Link from "next/link";
-import { SeatDots } from "@/components/brand/seat-dots";
-import { Wordmark } from "@/components/wordmark";
+import { HeroScene } from "@/components/brand/hero-scene";
+import { LogoLink } from "@/components/brand/logo";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { SeatRing } from "@/components/toly/seat-ring";
+
+const demo = [
+  { id: "auth-a", firstName: "Aashma" },
+  { id: "auth-p", firstName: "Prabin" },
+  { id: "auth-s", firstName: "Sujan" },
+];
 
 export default function AuthLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className="grid min-h-dvh grid-rows-[auto_1fr] md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:grid-rows-1">
-      <aside className="flex flex-col justify-between gap-6 bg-ink px-4 py-6 text-ink-foreground dark:border-b dark:bg-card dark:text-card-foreground md:dark:border-r md:dark:border-b-0 md:px-10 md:py-10">
-        <Link
-          href="/"
-          aria-label="Toly home"
-          className="-m-2 w-fit rounded-lg p-2 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
-          <Wordmark />
-        </Link>
-        <div className="space-y-3 md:space-y-6">
-          <SeatDots filled={3} total={4} size="md" className="md:hidden" />
-          <SeatDots
-            filled={3}
-            total={4}
-            size="lg"
-            className="hidden md:inline-flex"
-          />
-          <p className="max-w-sm font-display text-3xl font-extrabold leading-[0.95] font-condensed md:text-5xl lg:text-6xl">
-            Three in. One seat left.
+    <div className="grid min-h-dvh min-[981px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <aside className="relative isolate m-3 flex flex-col justify-between overflow-hidden rounded-[36px] p-10 max-[980px]:hidden">
+        <HeroScene idPrefix="auth" />
+        <LogoLink />
+        <div className="glass my-16 max-w-[480px] self-center rounded-[32px] p-9">
+          <p className="text-sm font-medium text-ink-2" lang="ne">
+            टोली · Your crew of friends
           </p>
-          <p className="hidden max-w-sm text-lg text-ink-foreground/80 dark:text-muted-foreground md:block">
+          <h2 className="mt-4 text-h2 font-semibold">
+            Three in.
+            <br />
+            One seat left.
+          </h2>
+          <p className="mt-5 text-ink-2">
             Fill the toly and the group price unlocks. You pay the venue
             directly, the way you always do.
           </p>
+          <div className="mt-7 flex justify-center" aria-hidden="true">
+            <SeatRing members={demo} size={4} />
+          </div>
         </div>
-        <p className="hidden text-sm text-ink-foreground/70 dark:text-muted-foreground md:block">
-          Made for Kathmandu Valley.
-        </p>
+        <p className="text-sm text-ink-2">Made for Kathmandu Valley.</p>
       </aside>
-      <section className="flex items-start justify-center px-4 py-10 md:items-center md:px-10">
-        <div className="w-full max-w-sm">{children}</div>
+      <section className="flex min-w-0 flex-col px-10 py-8 max-sm:px-5">
+        <div className="flex items-center justify-between">
+          <span className="min-[981px]:invisible">
+            <LogoLink />
+          </span>
+          <ThemeToggle />
+        </div>
+        <main
+          id="main"
+          className="mx-auto my-auto w-full max-w-[420px] py-12 max-sm:py-10"
+        >
+          {children}
+        </main>
+        <Link
+          href="/"
+          className="mx-auto inline-flex min-h-11 items-center text-sm text-ink-2"
+        >
+          Back to deals
+        </Link>
       </section>
     </div>
   );

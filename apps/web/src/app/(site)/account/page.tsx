@@ -15,8 +15,8 @@ export const metadata: Metadata = { title: "Account and security" };
 
 export default function AccountPage() {
   return (
-    <div className="max-w-3xl py-10">
-      <h1 className="text-4xl font-extrabold md:text-5xl">
+    <div className="mx-auto max-w-[920px] py-12 max-sm:py-7">
+      <h1 className="text-h1 font-semibold max-sm:text-[36px]">
         Account and security
       </h1>
       <Suspense fallback={<AccountSkeleton />}>
@@ -34,7 +34,7 @@ async function Account() {
   if (!user) redirect("/sign-in?next=/account");
 
   return (
-    <div className="mt-8 divide-y border-y">
+    <div className="mt-9 space-y-5">
       <ProfileSection name={user.name} />
       <PhoneSection
         phoneNumber={user.phoneNumberVerified ? user.phoneNumber : null}
