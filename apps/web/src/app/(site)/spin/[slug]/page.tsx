@@ -48,8 +48,8 @@ async function Spin({
   }
 
   return (
-    <div className="grid gap-8 py-12 max-sm:py-7 min-[981px]:grid-cols-2 min-[981px]:items-start min-[981px]:gap-x-14">
-      <header className="space-y-4 min-[981px]:col-start-2">
+    <div className="grid gap-8 py-12 max-sm:py-7 min-[61.3125rem]:grid-cols-2 min-[61.3125rem]:items-start min-[61.3125rem]:gap-x-14">
+      <header className="space-y-4 min-[61.3125rem]:col-start-2">
         <Link
           href={`/v/${wheel.merchant.slug}`}
           className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
@@ -64,7 +64,7 @@ async function Spin({
           {wheel.merchant.name}. {describeValidity(wheel.validityDays)}.
         </p>
       </header>
-      <div className="min-[981px]:sticky min-[981px]:top-24 min-[981px]:col-start-1 min-[981px]:row-span-2 min-[981px]:row-start-1">
+      <div className="min-[61.3125rem]:sticky min-[61.3125rem]:top-24 min-[61.3125rem]:col-start-1 min-[61.3125rem]:row-span-2 min-[61.3125rem]:row-start-1">
         <SpinPlayer
           wheel={wheel}
           readySpinId={readySpinId}
@@ -79,7 +79,7 @@ async function Spin({
       </div>
       <section
         aria-labelledby="odds"
-        className="space-y-3 min-[981px]:col-start-2"
+        className="space-y-3 min-[61.3125rem]:col-start-2"
       >
         <h2
           id="odds"
@@ -123,7 +123,7 @@ async function Spin({
 
 function SpinSkeleton() {
   return (
-    <div className="grid gap-10 py-10 min-[981px]:grid-cols-2" aria-hidden>
+    <div className="grid gap-10 py-10 min-[61.3125rem]:grid-cols-2" aria-hidden>
       <Skeleton className="mx-auto aspect-square w-full max-w-sm rounded-full" />
       <div className="space-y-4">
         <Skeleton className="h-14 w-3/4" />

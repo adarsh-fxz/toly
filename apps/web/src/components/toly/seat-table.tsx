@@ -97,7 +97,7 @@ export function SeatTable({
                 key="filled"
                 className="seat-av"
                 initial={reduce ? { opacity: 0 } : { scale: 0.5, opacity: 0 }}
-                animate={reduce ? { opacity: 1 } : { scale: 1, opacity: 1 }}
+                animate={{ scale: 1, opacity: 1 }}
                 transition={reduce ? { duration: 0.12 } : spring.seat}
               >
                 <PersonAvatar

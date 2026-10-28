@@ -62,7 +62,7 @@ async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
       >
         All deals
       </Link>
-      <div className="grid gap-6 min-[981px]:grid-cols-[minmax(0,1fr)_380px]">
+      <div className="grid gap-6 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px]">
         <header className="space-y-5 rounded-[32px] bg-tint-a p-10 max-sm:p-6">
           <p className="text-sm font-medium text-muted-foreground">
             {MERCHANT_CATEGORIES[venue.category as MerchantCategory]} in{" "}
@@ -102,7 +102,7 @@ async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
             No deals running right now. Check back soon.
           </p>
         ) : (
-          <ul className="grid gap-5 sm:grid-cols-2 min-[981px]:grid-cols-3">
+          <ul className="grid gap-5 sm:grid-cols-2 min-[61.3125rem]:grid-cols-3">
             {venue.deals.map((deal) => (
               <li key={deal.id}>
                 <DealRow deal={deal} />

@@ -100,7 +100,7 @@ async function Deals({ searchParams }: Pick<PageProps<"/">, "searchParams">) {
           </p>
         </div>
       ) : (
-        <ul className="grid gap-5 sm:grid-cols-2 min-[981px]:grid-cols-3">
+        <ul className="grid gap-5 sm:grid-cols-2 min-[61.3125rem]:grid-cols-3">
           {deals.map((deal) => (
             <li key={deal.id} className="flex flex-col [&>a]:flex-1">
               <DealRow deal={deal} />
@@ -127,7 +127,7 @@ async function SpinVenues() {
     <section
       id="spin"
       aria-labelledby="spin-heading"
-      className="mt-32 grid items-center gap-10 rounded-[36px] bg-card p-10 shadow-1 max-sm:mt-22 max-sm:p-6 min-[981px]:grid-cols-2"
+      className="mt-32 grid items-center gap-10 rounded-[36px] bg-card p-10 shadow-1 max-sm:mt-22 max-sm:p-6 min-[61.3125rem]:grid-cols-2"
     >
       <div>
         <p className="text-sm font-medium text-accent-foreground">Toly Spin</p>

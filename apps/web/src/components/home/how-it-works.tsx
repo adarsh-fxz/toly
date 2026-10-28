@@ -27,7 +27,7 @@ export function HowItWorks() {
       aria-labelledby="how-heading"
       className="py-32 max-sm:py-22"
     >
-      <div className="mx-auto max-w-[640px] text-center">
+      <div className="mx-auto max-w-[680px] text-center">
         <p className="text-sm font-medium text-accent-foreground">
           How it works
         </p>
@@ -42,7 +42,7 @@ export function HowItWorks() {
           directly, and Toly never takes payment for the bill.
         </p>
       </div>
-      <ol className="mt-12 grid gap-7 min-[981px]:grid-cols-3">
+      <ol className="mt-12 grid gap-7 min-[61.3125rem]:grid-cols-3">
         {steps.map((step, i) => (
           <li
             key={step.title}

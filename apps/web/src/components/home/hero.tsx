@@ -37,13 +37,13 @@ export function HomeHero({
   return (
     <section
       aria-labelledby="hero-h"
-      className="relative isolate m-3 mb-0 min-h-[860px] overflow-hidden rounded-[36px] max-[980px]:min-h-0 max-[980px]:pb-[180px] max-sm:m-2 max-sm:mb-0 max-sm:rounded-[28px] max-sm:pb-[150px]"
+      className="relative isolate m-3 mb-0 min-h-[860px] overflow-hidden rounded-[36px] max-[61.25rem]:min-h-0 max-[61.25rem]:pb-[180px] max-sm:m-2 max-sm:mb-0 max-sm:rounded-[28px] max-sm:pb-[150px]"
     >
       <HeroScene idPrefix="home" />
 
       <header className="glass absolute left-1/2 top-5 z-[5] flex h-16 w-[min(1100px,calc(100%-48px))] -translate-x-1/2 items-center justify-between gap-6 rounded-full pl-6 pr-2.5 max-sm:top-2.5 max-sm:h-[58px] max-sm:w-[calc(100%-20px)] max-sm:pl-[18px] max-sm:pr-1.5">
         <LogoLink />
-        <nav aria-label="Main" className="hidden min-[981px]:block">
+        <nav aria-label="Main" className="hidden min-[61.3125rem]:block">
           <ul className="flex gap-0.5">
             {[
               ["#deals", "Deals"],
@@ -87,7 +87,7 @@ export function HomeHero({
 
         <h1
           id="hero-h"
-          className="mt-[26px] font-display text-[74px] font-semibold leading-none tracking-[-0.045em] text-foreground max-[980px]:text-[58px] max-sm:text-[42px] max-sm:tracking-[-0.04em]"
+          className="mt-[26px] font-display text-[74px] font-semibold leading-none tracking-[-0.045em] text-foreground max-[61.25rem]:text-[58px] max-sm:text-[42px] max-sm:tracking-[-0.04em]"
         >
           Round up your{" "}
           <span className="swash">
@@ -152,7 +152,7 @@ function HeroCard({ t }: { t: HeroToly }) {
   return (
     <figure
       aria-label={`Featured deal: ${t.title}. Seat illustration.`}
-      className="glass mt-[54px] grid w-[min(780px,100%)] grid-cols-[minmax(0,1.25fr)_auto_minmax(0,1fr)] items-center gap-7 rounded-[32px] px-7 py-6 text-left max-sm:mt-10 max-sm:grid-cols-1 max-sm:gap-[18px] max-sm:p-[22px] max-[980px]:grid-cols-[minmax(0,1fr)_auto]"
+      className="glass mt-[54px] grid w-[min(780px,100%)] grid-cols-[minmax(0,1.25fr)_auto_minmax(0,1fr)] items-center gap-7 rounded-[32px] px-7 py-6 text-left max-sm:mt-10 max-sm:grid-cols-1 max-sm:gap-[18px] max-sm:p-[22px] max-[61.25rem]:grid-cols-[minmax(0,1fr)_auto]"
     >
       <div>
         <span
@@ -197,7 +197,7 @@ function HeroCard({ t }: { t: HeroToly }) {
         className="max-sm:justify-self-center"
       />
 
-      <div className="flex flex-col gap-0.5 border-l border-border pl-7 max-[980px]:col-span-full max-[980px]:border-l-0 max-[980px]:border-t max-[980px]:pl-0 max-[980px]:pt-[18px]">
+      <div className="flex flex-col gap-0.5 border-l border-border pl-7 max-[61.25rem]:col-span-full max-[61.25rem]:border-l-0 max-[61.25rem]:border-t max-[61.25rem]:pl-0 max-[61.25rem]:pt-[18px]">
         <span className="text-[13px] text-ink-2">Bring your crew</span>
         <span className="font-display text-[30px] font-semibold tabular-nums">
           {t.partySize} seats

@@ -12,32 +12,27 @@ const demo = [
 
 export default function AuthLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className="grid min-h-dvh min-[981px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-      <aside className="relative isolate m-3 flex flex-col justify-between overflow-hidden rounded-[36px] p-10 max-[980px]:hidden">
+    <div className="grid min-h-dvh min-[61.3125rem]:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+      <aside className="relative isolate m-3 flex flex-col justify-between overflow-hidden rounded-[32px] px-8 pb-10 pt-7 max-[61.25rem]:hidden">
         <HeroScene idPrefix="auth" />
         <LogoLink />
-        <div className="glass my-16 max-w-[480px] self-center rounded-[32px] p-9">
-          <p className="text-sm font-medium text-ink-2" lang="ne">
-            टोली · Your crew of friends
-          </p>
-          <h2 className="mt-4 text-h2 font-semibold">
-            Three in.
-            <br />
-            One seat left.
-          </h2>
-          <p className="mt-5 text-ink-2">
-            Fill the toly and the group price unlocks. You pay the venue
-            directly, the way you always do.
-          </p>
-          <div className="mt-7 flex justify-center" aria-hidden="true">
+        <div className="glass my-16 flex w-full max-w-[420px] flex-col items-center gap-3.5 self-center rounded-[28px] p-[26px] text-center">
+          <div aria-hidden="true">
             <SeatRing members={demo} size={4} />
           </div>
+          <h2 className="text-h3 font-semibold">Three in. One seat left.</h2>
+          <p className="text-ink-2">
+            Fill the toly and the group price unlocks. You pay the venue
+            directly.
+          </p>
         </div>
-        <p className="text-sm text-ink-2">Made for Kathmandu Valley.</p>
+        <p className="text-sm text-ink-2">
+          Group deals and discount spins in Kathmandu Valley.
+        </p>
       </aside>
       <section className="flex min-w-0 flex-col px-10 py-8 max-sm:px-5">
         <div className="flex items-center justify-between">
-          <span className="min-[981px]:invisible">
+          <span className="min-[61.3125rem]:invisible">
             <LogoLink />
           </span>
           <ThemeToggle />

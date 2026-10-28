@@ -49,7 +49,7 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
   }[group.status];
 
   return (
-    <div className="grid gap-10 py-12 max-sm:py-7 min-[981px]:grid-cols-[minmax(0,1fr)_380px] min-[981px]:gap-x-12">
+    <div className="grid gap-10 py-12 max-sm:py-7 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px] min-[61.3125rem]:gap-x-12">
       {group.status === "forming" ? <AutoRefresh /> : null}
       <section className="space-y-8">
         <div className="space-y-3">
@@ -109,7 +109,7 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
         </div>
       </section>
 
-      <aside className="space-y-4 min-[981px]:sticky min-[981px]:top-[92px] min-[981px]:self-start">
+      <aside className="space-y-4 min-[61.3125rem]:sticky min-[61.3125rem]:top-[92px] min-[61.3125rem]:self-start">
         <dl className="grid gap-3 [&>div]:rounded-[18px] [&>div]:bg-secondary [&>div]:px-5 [&>div]:py-4">
           <div>
             <dt className="text-sm text-muted-foreground">

@@ -23,7 +23,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="grid gap-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px] min-[981px]:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] min-[981px]:gap-10">
+    <section className="grid gap-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px] min-[61.3125rem]:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] min-[61.3125rem]:gap-10">
       <div className="space-y-1">
         <h2 className="font-display text-h4 font-semibold">{title}</h2>
         <p className="text-sm text-muted-foreground">{description}</p>

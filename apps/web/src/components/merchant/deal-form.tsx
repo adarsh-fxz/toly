@@ -136,7 +136,7 @@ export function DealForm({
   }
 
   return (
-    <div className="grid items-start gap-8 min-[981px]:grid-cols-[minmax(0,1fr)_340px]">
+    <div className="grid items-start gap-8 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_340px]">
       <form
         onSubmit={submit}
         onInput={(e) => {
@@ -487,7 +487,7 @@ export function DealForm({
           </Button>
         </div>
       </form>
-      <aside className="space-y-4 min-[981px]:sticky min-[981px]:top-24">
+      <aside className="space-y-4 min-[61.3125rem]:sticky min-[61.3125rem]:top-24">
         <h3 className="text-sm font-semibold text-ink-2">Customer preview</h3>
         <div inert>
           <DealCard
