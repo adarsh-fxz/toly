@@ -42,6 +42,7 @@ export function SpinPlayer({
   const [rotation, setRotation] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const busy = useRef(false);
+  const actionRef = useRef<HTMLDivElement>(null);
   const revealTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
     () => () => {
@@ -155,7 +156,7 @@ export function SpinPlayer({
               Up to {wheel.dailyLimitPerUser} a day
             </span>
           </div>
-          <div aria-live="polite" className="min-h-28">
+          <div ref={actionRef} aria-live="polite" className="min-h-28">
             {phase.name === "won" ? (
               <Button
                 asLink
@@ -229,6 +230,7 @@ export function SpinPlayer({
         {odds}
       </div>
       <PrizeReveal
+        returnFocus={actionRef}
         open={phase.name === "won"}
         title={phase.name === "won" ? phase.prize.label : "Your prize"}
         offer={

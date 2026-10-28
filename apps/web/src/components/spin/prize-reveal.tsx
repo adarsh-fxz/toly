@@ -3,6 +3,7 @@
 import { Dialog } from "@base-ui/react/dialog";
 import { Gift } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
+import type { RefObject } from "react";
 import { Confetti } from "@/components/toly/confetti";
 import { Button } from "@/components/ui/button";
 import { spring } from "@/lib/motion";
@@ -13,12 +14,14 @@ export function PrizeReveal({
   offer,
   voucherId,
   onClose,
+  returnFocus,
 }: {
   open: boolean;
   title: string;
   offer: string;
   voucherId: string;
   onClose: () => void;
+  returnFocus: RefObject<HTMLDivElement | null>;
 }) {
   const reduce = useReducedMotion();
   return (
@@ -30,7 +33,12 @@ export function PrizeReveal({
     >
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-scrim opacity-100 transition-opacity duration-200 data-starting-style:opacity-0 data-ending-style:opacity-0" />
-        <Dialog.Popup className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 overflow-hidden rounded-t-xl bg-popover p-8 text-center shadow-3 outline-none transition-[opacity,translate,scale] duration-320 ease-out data-starting-style:translate-y-full data-ending-style:translate-y-full max-sm:px-6 sm:top-1/2 sm:bottom-auto sm:w-[calc(100%-40px)] sm:-translate-y-1/2 sm:rounded-xl sm:data-starting-style:translate-y-[calc(-50%-6px)] sm:data-starting-style:scale-[.98] sm:data-starting-style:opacity-0 sm:data-ending-style:opacity-0">
+        <Dialog.Popup
+          finalFocus={() =>
+            returnFocus.current?.querySelector<HTMLElement>("button, a") ?? null
+          }
+          className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 overflow-hidden rounded-t-xl bg-popover p-8 text-center shadow-3 outline-none transition-[opacity,translate,scale] duration-320 ease-out data-starting-style:translate-y-full data-ending-style:translate-y-full max-sm:px-6 sm:top-1/2 sm:bottom-auto sm:w-[calc(100%-40px)] sm:-translate-y-1/2 sm:rounded-xl sm:data-starting-style:translate-y-[calc(-50%-6px)] sm:data-starting-style:scale-[.98] sm:data-starting-style:opacity-0 sm:data-ending-style:opacity-0"
+        >
           <span
             className="mx-auto mb-5 block h-1 w-10 rounded-full bg-input sm:hidden"
             aria-hidden
