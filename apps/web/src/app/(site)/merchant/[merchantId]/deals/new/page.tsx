@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { DealForm } from "@/components/merchant/deal-form";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getMerchant } from "@/lib/merchant";
 
 export default function NewDealPage({
   params,
@@ -21,5 +22,7 @@ async function NewDeal({
   params,
 }: Pick<PageProps<"/merchant/[merchantId]/deals/new">, "params">) {
   const { merchantId } = await params;
-  return <DealForm merchantId={merchantId} />;
+  return (
+    <DealForm merchantId={merchantId} venue={await getMerchant(merchantId)} />
+  );
 }

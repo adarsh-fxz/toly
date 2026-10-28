@@ -169,12 +169,14 @@ export function WheelEditor({
   return (
     <form
       onSubmit={save}
-      className="grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
+      className="grid gap-10 min-[981px]:grid-cols-[minmax(0,1fr)_380px]"
       noValidate
     >
       <div className="space-y-8">
-        <fieldset className="grid gap-5 sm:grid-cols-3">
-          <legend className="mb-4 text-lg font-semibold">Wheel</legend>
+        <fieldset className="grid gap-5 rounded-xl bg-card p-7 shadow-1 sm:grid-cols-3">
+          <legend className="float-left mb-4 w-full font-display text-h4 font-semibold">
+            Wheel
+          </legend>
           <div className="space-y-1.5">
             <Label htmlFor={`${id}-price`}>Price per spin (Rs)</Label>
             <Input
@@ -225,7 +227,7 @@ export function WheelEditor({
             {rows.map((row, i) => (
               <li
                 key={row.key}
-                className="space-y-3 rounded-2xl border bg-card p-4"
+                className="space-y-4 rounded-xl bg-card p-6 shadow-1"
               >
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-sm font-semibold">
@@ -350,7 +352,7 @@ export function WheelEditor({
         </fieldset>
       </div>
 
-      <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+      <aside className="space-y-6 rounded-xl bg-card p-6 shadow-2 min-[981px]:sticky min-[981px]:top-24 min-[981px]:self-start">
         <Wheel
           segments={rows.map((r) => ({
             id: r.key,
