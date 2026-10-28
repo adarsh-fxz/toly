@@ -4,6 +4,8 @@ The demo runs at `https://toly.page` using Netlify (Next.js), a Render Free Node
 
 ## Demo behavior
 
+Before the API is deployed, set `FRONTEND_PREVIEW=true` in Netlify for builds and functions. With `DEMO_MODE=true`, this enables read-only fixtures for the homepage, category filters, deal details, venues and wheel prizes, without any API connection. Sign-in, group creation and checkout are unavailable. When the backend is ready, set the actual `API_URL`, remove or disable `FRONTEND_PREVIEW`, and rebuild the frontend to enable the interactive demo.
+
 - Keep `NODE_ENV=production` on the API and set `DEMO_MODE=true` on both hosts.
 - Sign in with a shared synthetic number from `9800000000` to `9800000999`. The form shows the generated, single-use code; no SMS is sent. Use made-up names only. Seeded owner: `9800000001`; customers: `9800000002` and `9800000003`.
 - Payments use the mock checkout. Deals, venues and vouchers are samples; nothing can be redeemed at a real venue.

@@ -49,6 +49,11 @@ const nextConfig: NextConfig = {
   },
   // The browser only ever talks to this origin; the API sits behind it so auth cookies stay first-party.
   async rewrites() {
+    if (
+      process.env.DEMO_MODE === "true" &&
+      process.env.FRONTEND_PREVIEW === "true"
+    )
+      return [];
     return [{ source: "/api/:path*", destination: `${apiUrl}/api/:path*` }];
   },
   async headers() {
