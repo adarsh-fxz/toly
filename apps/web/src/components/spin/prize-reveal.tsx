@@ -2,8 +2,10 @@
 
 import { Dialog } from "@base-ui/react/dialog";
 import { Gift } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { Confetti } from "@/components/toly/confetti";
 import { Button } from "@/components/ui/button";
+import { spring } from "@/lib/motion";
 
 export function PrizeReveal({
   open,
@@ -18,6 +20,7 @@ export function PrizeReveal({
   voucherId: string;
   onClose: () => void;
 }) {
+  const reduce = useReducedMotion();
   return (
     <Dialog.Root
       open={open}
@@ -36,9 +39,16 @@ export function PrizeReveal({
           <p className="relative text-sm font-semibold text-accent-foreground">
             You won
           </p>
-          <span className="relative mx-auto mt-4 grid size-[88px] place-items-center rounded-full bg-accent text-accent-foreground">
+          <motion.span
+            initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={
+              reduce ? { duration: 0.12 } : { ...spring.seat, delay: 0.1 }
+            }
+            className="relative mx-auto mt-4 grid size-[88px] place-items-center rounded-full bg-accent text-accent-foreground"
+          >
             <Gift className="size-10" strokeWidth={1.7} aria-hidden />
-          </span>
+          </motion.span>
           <Dialog.Title className="relative mt-5 font-display text-[40px] font-semibold leading-tight tracking-[-.04em] max-sm:text-[34px]">
             {title}
           </Dialog.Title>

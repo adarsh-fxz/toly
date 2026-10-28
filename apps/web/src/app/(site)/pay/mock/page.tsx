@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { Banner } from "@/components/feedback/banner";
 import { formatRs } from "@/lib/money";
 import { MockCheckout } from "./mock-checkout";
 
@@ -19,9 +20,9 @@ async function Checkout({
   if (typeof ref !== "string") notFound();
   return (
     <div className="mx-auto max-w-sm space-y-6 py-16">
-      <p className="rounded-lg bg-secondary px-3 py-2 text-sm">
-        Test checkout. No real money moves in development.
-      </p>
+      <Banner tone="warn" title="Test checkout">
+        No real money moves in development.
+      </Banner>
       <div className="space-y-1">
         <p className="text-muted-foreground">
           {typeof name === "string" ? name : "Payment"}

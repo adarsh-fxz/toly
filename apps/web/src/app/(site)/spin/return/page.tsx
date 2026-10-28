@@ -1,3 +1,4 @@
+import { CircleX, Clock3 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -45,6 +46,9 @@ async function Confirm({
   const back = state.merchantSlug ? `/spin/${state.merchantSlug}` : "/";
   return status === "pending" ? (
     <div className="space-y-5 rounded-xl bg-card p-8 shadow-2">
+      <span className="grid size-16 place-items-center rounded-[22px] bg-info-soft text-info">
+        <Clock3 className="size-7" aria-hidden />
+      </span>
       <h1 className="text-h3 font-semibold">Waiting for your payment</h1>
       <p className="text-muted-foreground">
         The payment provider hasn't confirmed it yet. This usually takes a few
@@ -59,6 +63,9 @@ async function Confirm({
     </div>
   ) : (
     <div className="space-y-5 rounded-xl bg-card p-8 shadow-2">
+      <span className="grid size-16 place-items-center rounded-[22px] bg-destructive-soft text-destructive">
+        <CircleX className="size-7" aria-hidden />
+      </span>
       <h1 className="text-h3 font-semibold">Payment didn't go through</h1>
       <p className="text-muted-foreground">
         You weren't charged for a spin. You can try again.

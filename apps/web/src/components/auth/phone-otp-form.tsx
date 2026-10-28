@@ -125,13 +125,15 @@ export function PhoneOtpForm({
     onDone();
   }
 
+  const steps: Step[] =
+    mode === "link" ? ["phone", "code"] : ["phone", "code", "name"];
   const stepDots = (
     <span
       className="inline-flex gap-1.5"
       role="img"
-      aria-label={`Step ${step === "phone" ? 1 : step === "code" ? 2 : 3} of 3`}
+      aria-label={`Step ${steps.indexOf(step) + 1} of ${steps.length}`}
     >
-      {["phone", "code", "name"].map((value) => (
+      {steps.map((value) => (
         <i
           key={value}
           className={`size-1.5 rounded-full ${value === step ? "bg-primary" : "bg-input"}`}

@@ -1,5 +1,6 @@
 "use client";
 
+import { TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -17,6 +18,9 @@ export default function ErrorPage({
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-6 px-5 py-24 text-center">
+      <span className="grid size-20 place-items-center rounded-[26px] bg-destructive-soft text-destructive">
+        <TriangleAlert className="size-9" strokeWidth={1.7} aria-hidden />
+      </span>
       <h1 className="text-h1 font-semibold max-sm:text-[36px]">
         Something went wrong on our side.
       </h1>
