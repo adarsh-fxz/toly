@@ -24,7 +24,7 @@ export function RouteSkeleton({
           <Skeleton className="mx-auto h-10 w-4/5" />
         </div>
       ) : kind === "toly" || kind === "spin" || kind === "scan" ? (
-        <div className="grid gap-8 min-[981px]:grid-cols-[minmax(0,1fr)_380px]">
+        <div className="grid gap-8 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px]">
           <Skeleton
             className={
               kind === "scan"
@@ -41,7 +41,7 @@ export function RouteSkeleton({
       ) : (
         <>
           <div
-            className={`grid gap-4 ${kind === "dashboard" ? "grid-cols-2 min-[981px]:grid-cols-4" : "sm:grid-cols-2"}`}
+            className={`grid gap-4 ${kind === "dashboard" ? "grid-cols-2 min-[61.3125rem]:grid-cols-4" : "sm:grid-cols-2"}`}
           >
             {["a", "b", "c", "d"].map((key) => (
               <div

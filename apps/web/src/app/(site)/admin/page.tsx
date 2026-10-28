@@ -82,9 +82,9 @@ async function Queue({
         />
       ) : (
         <div className="mt-7 overflow-hidden rounded-xl bg-card shadow-1">
-          <table className="block w-full text-left text-sm min-[981px]:table">
+          <table className="block w-full text-left text-sm min-[61.3125rem]:table">
             <caption className="sr-only">Venue reviews</caption>
-            <thead className="hidden bg-secondary text-ink-2 min-[981px]:table-header-group">
+            <thead className="hidden bg-secondary text-ink-2 min-[61.3125rem]:table-header-group">
               <tr>
                 <th scope="col" className="p-5 font-medium">
                   Venue
@@ -97,13 +97,13 @@ async function Queue({
                 </th>
               </tr>
             </thead>
-            <tbody className="block divide-y min-[981px]:table-row-group">
+            <tbody className="block divide-y min-[61.3125rem]:table-row-group">
               {venues.map((v) => (
                 <tr
                   key={v.id}
-                  className="block align-top min-[981px]:table-row"
+                  className="block align-top min-[61.3125rem]:table-row"
                 >
-                  <td className="block p-5 min-[981px]:table-cell">
+                  <td className="block p-5 min-[61.3125rem]:table-cell">
                     <p className="font-display text-h4 font-semibold">
                       {v.name}
                     </p>
@@ -124,13 +124,13 @@ async function Queue({
                       </p>
                     ) : null}
                   </td>
-                  <td className="block px-5 pb-5 text-ink-2 min-[981px]:table-cell min-[981px]:pt-5">
+                  <td className="block px-5 pb-5 text-ink-2 min-[61.3125rem]:table-cell min-[61.3125rem]:pt-5">
                     <p>{v.applicantName || "Unnamed user"}</p>
                     <time className="mt-1 block text-[13px] text-muted-foreground">
                       {formatDate(v.createdAt)}
                     </time>
                   </td>
-                  <td className="block p-5 pt-0 min-[981px]:table-cell min-[981px]:pt-5">
+                  <td className="block p-5 pt-0 min-[61.3125rem]:table-cell min-[61.3125rem]:pt-5">
                     <ReviewActions merchantId={v.id} status={v.status} />
                   </td>
                 </tr>

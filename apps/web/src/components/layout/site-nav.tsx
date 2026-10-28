@@ -21,7 +21,7 @@ export function SiteNav({ account }: { account: ReactNode }) {
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-[20px] backdrop-saturate-[1.7]">
       <Container className="flex h-[68px] items-center justify-between gap-4 max-sm:h-[60px]">
         <LogoLink />
-        <nav aria-label="Main" className="hidden gap-0.5 min-[981px]:flex">
+        <nav aria-label="Main" className="hidden gap-0.5 min-[61.3125rem]:flex">
           {links.map(({ href, label }) => {
             const active =
               href === "/"

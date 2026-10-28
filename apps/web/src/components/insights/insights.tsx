@@ -79,7 +79,7 @@ export function Insights({
         </nav>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 min-[981px]:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 min-[61.3125rem]:grid-cols-4">
         {tiles.map((t) => (
           <StatTile
             key={t.label}

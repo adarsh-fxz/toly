@@ -243,7 +243,7 @@ export function PhoneOtpForm({
       <div className="space-y-1.5">
         <Label htmlFor={`${id}-phone`}>Mobile number</Label>
         <div className="flex">
-          <span className="inline-flex h-11 items-center rounded-l-lg border border-r-0 border-input bg-muted px-3 text-base text-muted-foreground tabular">
+          <span className="inline-flex h-[52px] items-center rounded-l-md border border-r-0 border-input bg-muted px-3 text-base text-muted-foreground tabular">
             +977
           </span>
           <Input

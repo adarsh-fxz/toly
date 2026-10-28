@@ -24,9 +24,7 @@ export function SignInPanel({
   return (
     <div className="space-y-7">
       <div className="space-y-2">
-        <h1 className="text-[40px] font-semibold tracking-[-0.04em] max-sm:text-[36px]">
-          Sign in
-        </h1>
+        <h1 className="text-h1 font-semibold max-sm:text-[36px]">Sign in</h1>
         <p className="text-muted-foreground">
           New here? The same steps create your account.
         </p>

@@ -139,7 +139,7 @@ export function Scanner({ merchantId }: { merchantId: string }) {
   };
 
   return (
-    <div className="grid gap-8 min-[981px]:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+    <div className="grid gap-8 min-[61.3125rem]:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
       <section
         aria-label="Scanner"
         className="space-y-4 rounded-xl bg-card p-5 shadow-1"

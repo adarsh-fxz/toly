@@ -50,7 +50,7 @@ export function ReviewActions({
   }
 
   return (
-    <div className="w-full space-y-3 min-[981px]:w-72">
+    <div className="w-full space-y-3 min-[61.3125rem]:w-72">
       <div className="space-y-1.5">
         <Label htmlFor={`${id}-note`}>Note to the venue</Label>
         <Textarea

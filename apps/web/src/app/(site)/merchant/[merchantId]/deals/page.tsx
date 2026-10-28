@@ -81,7 +81,7 @@ async function Deals({
           ) : null}
         </div>
       ) : (
-        <ul className="grid gap-5 min-[981px]:grid-cols-2">
+        <ul className="grid gap-5 min-[61.3125rem]:grid-cols-2">
           {deals.map((deal) => (
             <li
               key={deal.id}

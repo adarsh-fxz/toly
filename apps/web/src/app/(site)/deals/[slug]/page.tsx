@@ -47,9 +47,9 @@ async function Deal({ params }: Pick<PageProps<"/deals/[slug]">, "params">) {
   const available = deal.status === "live";
 
   return (
-    <article className="grid gap-9 py-12 max-sm:py-7 min-[981px]:grid-cols-[minmax(0,1fr)_380px] min-[981px]:gap-x-12">
+    <article className="grid gap-9 py-12 max-sm:py-7 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px] min-[61.3125rem]:gap-x-12">
       {available ? <ViewBeacon slug={deal.slug} /> : null}
-      <header className="space-y-4 min-[981px]:col-start-1">
+      <header className="space-y-4 min-[61.3125rem]:col-start-1">
         <Link
           href={`/v/${deal.merchant.slug}`}
           className="inline-block inline-flex min-h-11 items-center text-sm font-medium text-ink-2 underline-offset-4 hover:text-foreground hover:underline"
@@ -68,7 +68,7 @@ async function Deal({ params }: Pick<PageProps<"/deals/[slug]">, "params">) {
 
       <PriceCard deal={deal} available={available} off={off} />
 
-      <div className="space-y-10 min-[981px]:col-start-1">
+      <div className="space-y-10 min-[61.3125rem]:col-start-1">
         <DealTile
           category={dealCategory(deal.merchant.category)}
           partySize={deal.partySize}
@@ -132,7 +132,7 @@ function PriceCard({
   off: number;
 }) {
   return (
-    <aside className="min-[981px]:col-start-2 min-[981px]:row-span-2 min-[981px]:row-start-1 min-[981px]:sticky min-[981px]:top-[92px] min-[981px]:self-start">
+    <aside className="min-[61.3125rem]:col-start-2 min-[61.3125rem]:row-span-2 min-[61.3125rem]:row-start-1 min-[61.3125rem]:sticky min-[61.3125rem]:top-[92px] min-[61.3125rem]:self-start">
       <div className="space-y-6 rounded-xl bg-card p-7 shadow-2 max-sm:p-[22px]">
         <div className="space-y-1">
           <p className="font-display text-[48px] font-semibold leading-none tracking-[-0.04em] tabular-nums max-sm:text-[40px]">

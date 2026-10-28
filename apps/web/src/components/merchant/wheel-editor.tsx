@@ -169,7 +169,7 @@ export function WheelEditor({
   return (
     <form
       onSubmit={save}
-      className="grid gap-10 min-[981px]:grid-cols-[minmax(0,1fr)_380px]"
+      className="grid gap-10 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px]"
       noValidate
     >
       <div className="space-y-8">
@@ -352,7 +352,7 @@ export function WheelEditor({
         </fieldset>
       </div>
 
-      <aside className="space-y-6 rounded-xl bg-card p-6 shadow-2 min-[981px]:sticky min-[981px]:top-24 min-[981px]:self-start">
+      <aside className="space-y-6 rounded-xl bg-card p-6 shadow-2 min-[61.3125rem]:sticky min-[61.3125rem]:top-24 min-[61.3125rem]:self-start">
         <Wheel
           segments={rows.map((r) => ({
             id: r.key,

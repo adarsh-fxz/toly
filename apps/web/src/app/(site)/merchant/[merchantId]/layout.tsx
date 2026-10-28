@@ -9,7 +9,7 @@ export default function MerchantLayout({
   params,
 }: LayoutProps<"/merchant/[merchantId]">) {
   return (
-    <div className="pb-24 min-[981px]:pb-0">
+    <div className="pb-24 min-[61.3125rem]:pb-0">
       <Suspense fallback={<HeaderSkeleton />}>
         <VenueHeader params={params} />
       </Suspense>

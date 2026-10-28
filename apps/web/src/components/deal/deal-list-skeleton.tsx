@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function DealListSkeleton({ rows = 3 }: { rows?: number }) {
   return (
     <div
-      className="grid gap-5 sm:grid-cols-2 min-[981px]:grid-cols-3"
+      className="grid gap-5 sm:grid-cols-2 min-[61.3125rem]:grid-cols-3"
       role="status"
       aria-label="Loading deals"
     >
