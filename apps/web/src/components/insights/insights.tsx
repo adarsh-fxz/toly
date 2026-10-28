@@ -1,6 +1,7 @@
-import { formatRs } from "@toly/shared/money";
 import { Lightbulb } from "lucide-react";
 import Link from "next/link";
+import { StatTile } from "@/components/dashboard/stat-tile";
+import { formatRs } from "@/lib/money";
 import type { VenueInsights } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { DailyBars } from "./daily-bars";
@@ -9,8 +10,7 @@ const RANGES = [7, 30, 90] as const;
 
 const hourLabel = (h: number) => {
   const end = (h + 1) % 24;
-  const fmt = (n: number) =>
-    `${n % 12 === 0 ? 12 : n % 12}${n < 12 ? "am" : "pm"}`;
+  const fmt = (n: number) => `${String(n).padStart(2,"0")}:00`;
   return `${fmt(h)} to ${fmt(end)}`;
 };
 
@@ -69,7 +69,7 @@ export function Insights({
               scroll={false}
               aria-current={data.days === days ? "page" : undefined}
               className={cn(
-                "rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground",
+                "inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium text-muted-foreground",
                 data.days === days && "bg-ink text-ink-foreground",
               )}
             >
@@ -79,17 +79,16 @@ export function Insights({
         </nav>
       </div>
 
-      <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border bg-border lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 min-[981px]:grid-cols-4">
         {tiles.map((t) => (
-          <div key={t.label} className="space-y-1 bg-card p-4">
-            <dt className="text-sm text-muted-foreground">{t.label}</dt>
-            <dd className="font-display text-4xl font-extrabold tabular font-condensed">
-              {t.value}
-            </dd>
-            <dd className="text-xs text-muted-foreground">{t.note}</dd>
-          </div>
+          <StatTile
+            key={t.label}
+            label={t.label}
+            value={t.value}
+            note={t.note}
+          />
         ))}
-      </dl>
+      </div>
 
       {data.suggestions.length > 0 ? (
         <ul className="space-y-2">
@@ -107,7 +106,7 @@ export function Insights({
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <DailyBars days={data.daily} />
-        <dl className="space-y-4">
+        <dl className="space-y-5 rounded-xl bg-card p-6 shadow-1">
           <div>
             <dt className="text-sm text-muted-foreground">
               Bills recorded at redemption
@@ -142,7 +141,7 @@ export function Insights({
       </div>
 
       {data.deals.length > 0 ? (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-xl bg-card p-6 shadow-1">
           <table className="w-full min-w-[32rem] text-sm">
             <caption className="sr-only">Results by deal</caption>
             <thead>

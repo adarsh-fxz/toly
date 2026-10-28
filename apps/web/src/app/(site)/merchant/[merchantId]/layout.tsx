@@ -9,7 +9,7 @@ export default function MerchantLayout({
   params,
 }: LayoutProps<"/merchant/[merchantId]">) {
   return (
-    <div className="pb-20 md:pb-0">
+    <div className="pb-24 min-[981px]:pb-0">
       <Suspense fallback={<HeaderSkeleton />}>
         <VenueHeader params={params} />
       </Suspense>
@@ -24,9 +24,11 @@ async function VenueHeader({
   const { merchantId } = await params;
   const merchant = await getMerchant(merchantId);
   return (
-    <div className="space-y-4 pt-8">
+    <div className="space-y-5 pt-12 max-sm:pt-7">
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-3xl font-extrabold md:text-4xl">{merchant.name}</h1>
+        <h1 className="text-h3 font-semibold max-sm:text-[25px]">
+          {merchant.name}
+        </h1>
         {merchant.status !== "approved" ? (
           <Badge variant="secondary">Not live yet</Badge>
         ) : null}
@@ -38,7 +40,7 @@ async function VenueHeader({
 
 function HeaderSkeleton() {
   return (
-    <div className="space-y-4 pt-8" aria-hidden>
+    <div className="space-y-5 pt-12 max-sm:pt-7" aria-hidden>
       <Skeleton className="h-10 w-56" />
       <Skeleton className="hidden h-11 w-80 md:block" />
     </div>

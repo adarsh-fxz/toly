@@ -11,8 +11,10 @@ export const metadata: Metadata = { title: "List your venue" };
 
 export default function ApplyPage() {
   return (
-    <div className="max-w-xl py-10">
-      <h1 className="text-4xl font-extrabold md:text-5xl">List your venue</h1>
+    <div className="mx-auto max-w-[760px] py-12 max-sm:py-7">
+      <h1 className="text-h1 font-semibold max-sm:text-[36px]">
+        List your venue
+      </h1>
       <p className="mt-3 text-muted-foreground">
         Tell us where you are. We'll call the counter number to confirm, then
         you can create your first deal.
