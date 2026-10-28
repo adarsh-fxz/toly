@@ -231,7 +231,22 @@ async function FeaturedHero() {
               price: deal.groupPricePaisa / 100,
               regularPrice: deal.basePricePaisa / 100,
               partySize: deal.partySize,
-              members: [],
+              members: [
+                "Aashma",
+                "Prabin",
+                "Sujan",
+                "Nima",
+                "Bina",
+                "Yuna",
+                "Pema",
+                "Anish",
+                "Rojina",
+              ]
+                .slice(0, deal.partySize - 1)
+                .map((firstName, i) => ({
+                  id: `illustration-${i}`,
+                  firstName,
+                })),
               href: `/deals/${deal.slug}`,
             }
           : null

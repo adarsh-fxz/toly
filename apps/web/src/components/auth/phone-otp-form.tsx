@@ -1,6 +1,6 @@
 "use client";
 
-import { formatNepaliPhone, normalizeNepaliPhone } from "@toly/shared/phone";
+import { normalizeNepaliPhone } from "@toly/shared/phone";
 import { useEffect, useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
 import { authErrorMessage } from "@/lib/auth-errors";
+import { formatPhone as formatNepaliPhone } from "@/lib/format";
 import { Turnstile } from "./turnstile";
 
 const RESEND_SECONDS = 30;

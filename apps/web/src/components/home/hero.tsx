@@ -20,21 +20,10 @@ export type HeroToly = {
   regularPrice: number;
   partySize: number;
   members: Member[];
-  /** when the fill window closes */
-  endsAt?: string;
   href?: string;
-  /** the member who would fill the last seat in the demo loop (decorative) */
-  demoJoiner?: Member;
 };
 
-/**
- * P1 home hero: the "Kathmandu evening" scene, a floating glass nav, the headline with the
- * hand-drawn swash under "toly.", and a glass card showing a real toly filling up.
- * Light = dusk; dark = lamp-lit night with stars and moon (all from tokens).
- *
- * The card plays a gentle loop (3/4 → 4/4 "Unlocked" → back) every 4.5 s, only when the
- * featured toly is one seat short and reduced motion is off. Otherwise it shows the real state.
- */
+/** The kit's valley scene and glass hero, featuring a real deal with labelled illustrative seats. */
 export function HomeHero({
   featured,
   signedIn,
