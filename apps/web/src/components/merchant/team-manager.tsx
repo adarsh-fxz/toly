@@ -1,14 +1,15 @@
 "use client";
 
-import { formatNepaliPhone } from "@toly/shared/phone";
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 import { toast } from "sonner";
+import { PersonAvatar } from "@/components/brand/person-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api, readError } from "@/lib/api";
+import { formatPhone as formatNepaliPhone } from "@/lib/format";
 
 type Member = {
   userId: string;
@@ -28,6 +29,7 @@ export function TeamManager({
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [confirming, setConfirming] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   async function add(event: React.FormEvent) {
@@ -62,35 +64,71 @@ export function TeamManager({
 
   return (
     <div className="max-w-2xl space-y-8">
-      <ul className="divide-y border-y">
+      <ul className="divide-y rounded-xl bg-card px-6 shadow-1">
         {members.map((m) => (
           <li
             key={m.userId}
             className="flex flex-wrap items-center justify-between gap-3 py-4"
           >
-            <div className="min-w-0">
-              <p className="flex items-center gap-2 font-semibold">
-                {m.name || "Unnamed"}
-                {m.role === "owner" ? (
-                  <Badge variant="secondary">Owner</Badge>
-                ) : null}
-              </p>
-              {m.phoneNumber ? (
-                <p className="text-sm text-muted-foreground tabular">
-                  {formatNepaliPhone(m.phoneNumber)}
+            <div className="flex min-w-0 items-center gap-3">
+              <PersonAvatar
+                name={m.name}
+                seed={m.userId}
+                size={44}
+                decorative
+              />
+              <div>
+                <p className="flex items-center gap-2 font-semibold">
+                  {m.name || "Unnamed"}
+                  {m.role === "owner" ? (
+                    <Badge variant="secondary">Owner</Badge>
+                  ) : null}
                 </p>
-              ) : null}
+                {m.phoneNumber ? (
+                  <p className="text-sm text-muted-foreground tabular">
+                    {formatNepaliPhone(m.phoneNumber)}
+                  </p>
+                ) : null}
+              </div>
             </div>
             {m.role === "staff" ? (
-              <Button variant="ghost" size="sm" onClick={() => remove(m)}>
-                Remove
-              </Button>
+              confirming === m.userId ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="text-sm text-ink-2">Remove access?</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setConfirming(null)}
+                  >
+                    Keep
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => remove(m)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setConfirming(m.userId)}
+                >
+                  Remove
+                </Button>
+              )
             ) : null}
           </li>
         ))}
       </ul>
 
-      <form onSubmit={add} className="space-y-3" noValidate>
+      <form
+        onSubmit={add}
+        className="space-y-4 rounded-xl bg-card p-6 shadow-1"
+        noValidate
+      >
         <div className="space-y-1.5">
           <Label htmlFor={`${id}-phone`}>
             Add a staff member by mobile number

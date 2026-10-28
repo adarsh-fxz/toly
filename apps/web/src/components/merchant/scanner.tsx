@@ -83,6 +83,7 @@ export function Scanner({ merchantId }: { merchantId: string }) {
         setCameraError("No camera found. Type the code instead.");
         return;
       }
+      if (disposed || !videoRef.current) return;
       const scanner = new QrScanner(
         videoRef.current,
         (result) => {
@@ -138,23 +139,29 @@ export function Scanner({ merchantId }: { merchantId: string }) {
   };
 
   return (
-    <div className="grid gap-8 md:grid-cols-2">
-      <section aria-label="Scanner" className="space-y-4">
+    <div className="grid gap-8 min-[981px]:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+      <section
+        aria-label="Scanner"
+        className="space-y-4 rounded-xl bg-card p-5 shadow-1"
+      >
         {state.step === "scan" ? (
           <>
-            <div className="relative aspect-square overflow-hidden rounded-3xl bg-ink">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[28px] bg-[#0e0d16] max-sm:aspect-square">
               <video
                 ref={videoRef}
                 className="size-full object-cover"
                 playsInline
                 muted
               />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-10 rounded-2xl border-4 border-white/80"
-              />
+              <div aria-hidden className="viewfinder-frame">
+                <i />
+                <i />
+                <i />
+                <i />
+                <span className="viewfinder-line" />
+              </div>
               {cameraError ? (
-                <div className="absolute inset-0 grid place-items-center p-8 text-center text-ink-foreground">
+                <div className="absolute inset-0 grid place-items-center p-8 text-center text-white">
                   <div className="space-y-2">
                     <Camera className="mx-auto size-8" aria-hidden />
                     <p>{cameraError}</p>
@@ -179,7 +186,10 @@ export function Scanner({ merchantId }: { merchantId: string }) {
         )}
       </section>
 
-      <section aria-labelledby={`${id}-manual`} className="space-y-3 md:pt-2">
+      <section
+        aria-labelledby={`${id}-manual`}
+        className="space-y-4 self-start rounded-xl bg-card p-6 shadow-1"
+      >
         <h2
           id={`${id}-manual`}
           className="flex items-center gap-2 font-sans text-lg font-semibold [font-variation-settings:normal]"
@@ -238,7 +248,7 @@ function ResultPanel({
     return (
       <div
         role="status"
-        className="grid aspect-square animate-pulse place-items-center rounded-3xl bg-muted"
+        className="skeleton grid aspect-square place-items-center rounded-xl bg-muted"
       >
         Checking voucher…
       </div>
@@ -249,7 +259,7 @@ function ResultPanel({
     return (
       <div
         role="alert"
-        className="space-y-4 rounded-3xl border-2 border-destructive p-6"
+        className="space-y-4 rounded-xl bg-destructive-soft p-6"
       >
         <CircleAlert className="size-10 text-destructive" aria-hidden />
         <p className="text-2xl font-bold">{state.message}</p>
@@ -264,12 +274,10 @@ function ResultPanel({
     return (
       <div
         role="status"
-        className="space-y-4 rounded-3xl bg-success p-6 text-success-foreground"
+        className="space-y-4 rounded-xl bg-success-soft p-6 text-foreground"
       >
         <BadgeCheck className="size-12" aria-hidden />
-        <p className="font-display text-5xl font-extrabold font-condensed">
-          Redeemed
-        </p>
+        <p className="font-display text-h2 font-semibold">Redeemed</p>
         <p className="text-lg">
           {state.voucher.title} for {state.voucher.holderName},{" "}
           {formatDateTime(state.at)}
@@ -289,7 +297,9 @@ function ResultPanel({
   const { voucher } = state;
   return (
     <div
-      className="space-y-5 rounded-3xl border-2 p-6 data-[ok=true]:border-success"
+      role="status"
+      aria-live="polite"
+      className="space-y-5 rounded-xl bg-card p-6 shadow-1 data-[ok=true]:bg-success-soft"
       data-ok={voucher.canRedeem}
     >
       <div className="space-y-1">

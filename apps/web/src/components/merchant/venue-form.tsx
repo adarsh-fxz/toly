@@ -91,7 +91,7 @@ export function VenueForm({ venue }: { venue?: Venue }) {
     <form
       onSubmit={submit}
       onChange={(e) => clearError(eventFieldName(e))}
-      className="space-y-5"
+      className="space-y-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px]"
       noValidate
     >
       <FormField id="name" label="Venue name" error={errors.name}>
