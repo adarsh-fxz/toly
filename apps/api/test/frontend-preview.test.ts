@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { previewFetch } from "../../web/src/lib/frontend-preview";
+import type { PublicDeal, PublicWheel } from "../../web/src/lib/types";
 
 const read = (path: string) =>
   previewFetch(`https://unavailable.invalid/api/v1/${path}`);
@@ -7,22 +8,26 @@ const read = (path: string) =>
 describe("frontend preview without a backend", () => {
   it("lists sample deals and applies category filters", async () => {
     const all = await (await read("deals")).json();
-    const cafes = await (await read("deals?category=cafe")).json();
+    const cafes = (await (
+      await read("deals?category=cafe")
+    ).json()) as PublicDeal[];
     expect(all).toHaveLength(2);
     expect(cafes).toHaveLength(1);
-    expect(cafes[0].merchant.category).toBe("cafe");
+    expect(cafes[0]?.merchant.category).toBe("cafe");
     expect(await (await read("deals?category=activity")).json()).toEqual([]);
   });
 
   it("serves linked deal, venue and wheel pages from fixtures", async () => {
-    const deal = await (
+    const deal = (await (
       await read("deals/afternoon-chiya-set-for-four")
-    ).json();
-    const venue = await (await read(`venues/${deal.merchant.slug}`)).json();
-    const wheel = await (
+    ).json()) as PublicDeal;
+    const venue = (await (
+      await read(`venues/${deal.merchant.slug}`)
+    ).json()) as { deals: PublicDeal[] };
+    const wheel = (await (
       await read(`venues/${deal.merchant.slug}/wheel`)
-    ).json();
-    expect(venue.deals[0].id).toBe(deal.id);
+    ).json()) as PublicWheel;
+    expect(venue.deals[0]?.id).toBe(deal.id);
     expect(wheel.prizes).toHaveLength(6);
     expect(
       wheel.prizes.reduce(
