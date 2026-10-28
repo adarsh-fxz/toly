@@ -32,13 +32,13 @@ async function MerchantHome() {
   if (venues.length === 0) return <Pitch />;
 
   return (
-    <div className="max-w-2xl py-10">
-      <h1 className="text-4xl font-extrabold md:text-5xl">Your venues</h1>
-      <ul className="mt-8 divide-y border-y">
+    <div className="max-w-3xl py-12 max-sm:py-7">
+      <h1 className="text-h1 font-semibold max-sm:text-[36px]">Your venues</h1>
+      <ul className="mt-8 space-y-4">
         {venues.map((v) => (
           <li
             key={v.id}
-            className="flex flex-wrap items-center justify-between gap-4 py-5"
+            className="flex flex-wrap items-center justify-between gap-4 rounded-xl bg-card p-6 shadow-1"
           >
             <div className="min-w-0 space-y-1">
               <p className="truncate text-lg font-semibold">{v.name}</p>
@@ -107,8 +107,8 @@ const promises = [
 function Pitch() {
   return (
     <div className="py-12 md:py-20">
-      <div className="max-w-3xl space-y-6">
-        <h1 className="text-5xl font-extrabold md:text-7xl">
+      <div className="max-w-3xl space-y-6 rounded-[36px] bg-tint-a p-10 max-sm:p-6">
+        <h1 className="text-h1 font-semibold max-sm:text-[36px]">
           Fill your quiet hours with groups.
         </h1>
         <p className="max-w-xl text-lg text-muted-foreground">
@@ -123,8 +123,8 @@ function Pitch() {
       </div>
       <ul className="mt-16 grid gap-10 md:grid-cols-3">
         {promises.map(({ icon: Icon, title, body }) => (
-          <li key={title} className="space-y-3">
-            <Icon className="size-6 text-primary" aria-hidden />
+          <li key={title} className="space-y-4 rounded-xl bg-card p-7 shadow-1">
+            <Icon className="size-6 text-accent-foreground" aria-hidden />
             <h2 className="font-sans text-lg font-semibold [font-variation-settings:normal]">
               {title}
             </h2>

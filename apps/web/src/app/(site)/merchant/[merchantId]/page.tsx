@@ -56,11 +56,9 @@ async function Overview({
         </Suspense>
       ) : null}
 
-      <section className="max-w-xl space-y-6">
+      <section className="space-y-6 rounded-xl bg-card p-7 shadow-1">
         <div className="space-y-1">
-          <h2 className="font-sans text-xl font-semibold [font-variation-settings:normal]">
-            Venue details
-          </h2>
+          <h2 className="font-display text-h4 font-semibold">Venue details</h2>
           <p className="text-sm text-muted-foreground">
             Customers see these on every deal you publish.
           </p>

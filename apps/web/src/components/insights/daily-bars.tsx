@@ -19,7 +19,7 @@ export function DailyBars({ days }: { days: Day[] }) {
   const shown = active === null ? null : days[active];
 
   return (
-    <figure className="space-y-3">
+    <figure className="min-w-0 space-y-4 rounded-xl bg-card p-6 shadow-1">
       <figcaption className="flex items-baseline justify-between gap-4">
         <span className="font-semibold">Redemptions, last 14 days</span>
         <span
@@ -47,7 +47,7 @@ export function DailyBars({ days }: { days: Day[] }) {
                 className="group flex h-full w-full items-end focus-visible:outline-none"
               >
                 <span
-                  className="block w-full rounded-t-[4px] bg-ink transition-opacity group-hover:opacity-80 group-focus-visible:ring-3 group-focus-visible:ring-ring/50"
+                  className="block w-full rounded-t-[4px] bg-chart-1 transition-opacity group-hover:opacity-80 group-focus-visible:ring-3 group-focus-visible:ring-ring/50"
                   style={{
                     height: d.count
                       ? `${Math.max(4, (d.count / max) * 100)}%`

@@ -1,5 +1,4 @@
 import { describeDays } from "@toly/shared/deal";
-import { formatRs } from "@toly/shared/money";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -10,6 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { serverApi } from "@/lib/api-server";
 import { getMerchant } from "@/lib/merchant";
+import { formatRs } from "@/lib/money";
 
 const statusLabel: Record<string, string> = {
   draft: "Draft",
@@ -81,15 +81,17 @@ async function Deals({
           ) : null}
         </div>
       ) : (
-        <ul className="divide-y border-y">
+        <ul className="grid gap-5 min-[981px]:grid-cols-2">
           {deals.map((deal) => (
             <li
               key={deal.id}
-              className="flex flex-wrap items-center justify-between gap-4 py-5"
+              className="flex flex-wrap items-center justify-between gap-4 rounded-xl bg-card p-6 shadow-1"
             >
               <div className="min-w-0 space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-lg font-semibold">{deal.title}</p>
+                  <p className="font-display text-h4 font-semibold">
+                    {deal.title}
+                  </p>
                   <Badge
                     variant={deal.status === "live" ? "default" : "secondary"}
                   >
