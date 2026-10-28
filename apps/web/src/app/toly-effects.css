@@ -43,3 +43,17 @@
 .glass.wheel-demo-result {
   background: color-mix(in srgb, var(--card) 90%, transparent);
 }
+
+/* Match the kit's reversible illustration hover, with the requested slower pace. */
+.wheel-demo-illustration .wheel-disc {
+  transform: rotate(0deg);
+  transition: transform 6.4s cubic-bezier(0.12, 0.75, 0.12, 1);
+}
+.wheel-demo-illustration:hover .wheel-disc {
+  transform: rotate(720deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .wheel-demo-illustration:hover .wheel-disc {
+    transform: none;
+  }
+}

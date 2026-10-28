@@ -74,7 +74,7 @@ export function RotatingQr({ voucherId }: { voucherId: string }) {
   }, [voucherId, router]);
 
   return (
-    <div className="space-y-2">
+    <div className="w-full space-y-4">
       <div className="relative mx-auto aspect-square w-full max-w-[296px] overflow-hidden rounded-3xl bg-qr-bg p-[18px] max-sm:max-w-[266px] shadow-[0_0_0_1px_rgb(23_22_28/.08),0_16px_40px_-20px_rgb(23_22_28/.4)]">
         <AnimatePresence initial={false}>
           {src ? (

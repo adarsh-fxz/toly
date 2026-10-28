@@ -35,37 +35,38 @@ export function Wheel({
   const reduce = useReducedMotion();
   const slice = 360 / segments.length;
   const background = `conic-gradient(${segments.map((segment, i) => `${wheelColor(i, segment.hot)} ${i * slice}deg ${(i + 1) * slice}deg`).join(",")})`;
+  const labels = segments.map((segment, i) => (
+    <span
+      key={segment.id}
+      className={cn("wheel-label", segment.hot && "hot")}
+      style={{ ["--a" as string]: `${i * slice + slice / 2}deg` }}
+    >
+      <b>{segment.short}</b>
+      <span>{segment.sub}</span>
+    </span>
+  ));
   return (
     <div
       className={cn("wheel-wrap mx-auto", `wheel-${size}`, className)}
       role="img"
       aria-label={`Prize wheel: ${segments.map((s) => `${s.short} ${s.sub}`).join(", ")}`}
     >
-      <motion.div
-        className="wheel-disc"
-        style={{ background }}
-        initial={false}
-        animate={{ rotate: rotation }}
-        transition={
-          spinning && !reduce
-            ? {
-                ...wheelSpin,
-                duration: size === "demo" ? 6.4 : wheelSpin.duration,
-              }
-            : { duration: 0 }
-        }
-      >
-        {segments.map((segment, i) => (
-          <span
-            key={segment.id}
-            className={cn("wheel-label", segment.hot && "hot")}
-            style={{ ["--a" as string]: `${i * slice + slice / 2}deg` }}
-          >
-            <b>{segment.short}</b>
-            <span>{segment.sub}</span>
-          </span>
-        ))}
-      </motion.div>
+      {size === "demo" ? (
+        <div className="wheel-disc" style={{ background }}>
+          {labels}
+        </div>
+      ) : (
+        <motion.div
+          className="wheel-disc"
+          style={{ background }}
+          initial={false}
+          animate={{ rotate: rotation }}
+          transition={spinning && !reduce ? wheelSpin : { duration: 0 }}
+        >
+          {labels}
+        </motion.div>
+      )}
+
       <div className="wheel-dots" aria-hidden="true">
         {Array.from(
           { length: size === "compact" ? 12 : 24 },

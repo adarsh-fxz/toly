@@ -10,13 +10,11 @@ import {
 } from "./helpers";
 
 async function demoVenue() {
-  await db
-    .insert(schema.user)
-    .values({
-      id: "demo-owner",
-      name: "Demo owner",
-      email: "demo@test.invalid",
-    });
+  await db.insert(schema.user).values({
+    id: "demo-owner",
+    name: "Demo owner",
+    email: "demo@test.invalid",
+  });
   const { merchant } = await createLiveDeal("demo-owner");
   await db
     .update(schema.merchants)

@@ -1,22 +1,10 @@
-"use client";
-
-import { useReducedMotion } from "motion/react";
-import { useState } from "react";
 import { Wheel } from "./wheel";
 
 /** The kit's explicitly illustrative six-prize wheel. Live checkout uses the venue's real prizes. */
 export function WheelDemo() {
-  const reduce = useReducedMotion();
-  const [rotation, setRotation] = useState(0);
   return (
     <figure
-      className="relative mx-auto w-full max-w-[380px]"
-      onMouseEnter={() => {
-        if (!reduce) setRotation(720);
-      }}
-      onMouseLeave={() => {
-        if (!reduce) setRotation(0);
-      }}
+      className="wheel-demo-illustration relative mx-auto w-full max-w-[380px]"
       aria-label="Example prize wheel and voucher illustration"
     >
       <Wheel
@@ -29,8 +17,8 @@ export function WheelDemo() {
           { id: "example-five", short: "5%", sub: "Bill" },
           { id: "example-free", short: "FREE", sub: "Bill", hot: true },
         ]}
-        rotation={rotation}
-        spinning
+        rotation={0}
+        spinning={false}
       />
       <div
         className="glass wheel-demo-result absolute -right-7 bottom-[26px] z-[3] flex flex-col gap-0.5 rounded-[20px] px-[18px] py-3.5 text-left max-[980px]:-right-2 max-sm:right-0 max-sm:-bottom-1.5"

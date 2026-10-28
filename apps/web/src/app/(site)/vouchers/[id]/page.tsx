@@ -77,9 +77,7 @@ async function Voucher({
                     : "Expired"}
             </span>
           </div>
-          <h1 className="text-[30px] font-semibold leading-tight tracking-tight">
-            {v.title}
-          </h1>
+          <h1 className="text-h3 font-semibold">{v.title}</h1>
           <p className="text-[17px] font-semibold">
             {describeOffer(v.details)}
           </p>
@@ -164,7 +162,7 @@ async function Voucher({
             never takes payment for the bill.
           </Banner>
         ) : null}
-        <dl className="space-y-3 rounded-xl bg-card p-7 text-[15px] shadow-1 max-sm:p-[22px]">
+        <dl className="space-y-3.5 rounded-xl bg-card p-7 text-[15px] shadow-1 max-sm:p-[22px]">
           {v.redeemedAt ? (
             <Row label="Redeemed">{formatDateTime(v.redeemedAt)}</Row>
           ) : (
