@@ -1,7 +1,12 @@
+"use client";
+
+import { motion, useReducedMotion } from "motion/react";
 import { LogoMark } from "@/components/brand/logo";
+import { wheelSpin } from "@/lib/motion";
+import { wheelColor } from "@/lib/spin-view";
 import { cn } from "@/lib/utils";
 
-type Segment = { id: string; short: string; sub: string };
+type Segment = { id: string; short: string; sub: string; hot?: boolean };
 
 export function landingRotation(
   index: number,
@@ -12,15 +17,6 @@ export function landingRotation(
   const step = 360 / count;
   return turns * 360 - (index * step + step / 2) + jitter * step * 0.35;
 }
-
-const colors = [
-  "var(--seg-a)",
-  "var(--seg-b)",
-  "var(--seg-c)",
-  "var(--seg-b)",
-  "var(--seg-d)",
-  "var(--seg-b)",
-];
 
 /** Kit presentation driven by the existing server-selected result and rotation. */
 export function Wheel({
@@ -34,34 +30,33 @@ export function Wheel({
   spinning: boolean;
   className?: string;
 }) {
+  const reduce = useReducedMotion();
   const slice = 360 / segments.length;
-  const background = `conic-gradient(${segments.map((_, i) => `${colors[i % colors.length]} ${i * slice}deg ${(i + 1) * slice}deg`).join(",")})`;
+  const background = `conic-gradient(${segments.map((segment, i) => `${wheelColor(i, segment.hot)} ${i * slice}deg ${(i + 1) * slice}deg`).join(",")})`;
   return (
     <div
       className={cn("wheel-wrap mx-auto", className)}
       role="img"
       aria-label={`Prize wheel: ${segments.map((s) => `${s.short} ${s.sub}`).join(", ")}`}
     >
-      <div
-        className={cn(
-          "wheel-disc motion-safe:transition-transform",
-          spinning
-            ? "motion-safe:duration-[4500ms] motion-safe:ease-[cubic-bezier(.12,.75,.12,1)]"
-            : "duration-0",
-        )}
-        style={{ background, transform: `rotate(${rotation}deg)` }}
+      <motion.div
+        className="wheel-disc"
+        style={{ background }}
+        initial={false}
+        animate={{ rotate: rotation }}
+        transition={spinning && !reduce ? wheelSpin : { duration: 0 }}
       >
         {segments.map((segment, i) => (
           <span
             key={segment.id}
-            className="wheel-label"
+            className={cn("wheel-label", segment.hot && "hot")}
             style={{ ["--a" as string]: `${i * slice + slice / 2}deg` }}
           >
             <b>{segment.short}</b>
             <span>{segment.sub}</span>
           </span>
         ))}
-      </div>
+      </motion.div>
       <div className="wheel-dots" aria-hidden="true">
         {Array.from({ length: 24 }, (_, i) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: fixed rim lights
@@ -90,6 +85,7 @@ export function segmentLabel(prize: {
 }) {
   const item = prize.appliesTo?.trim();
   return {
+    hot: prize.percentOff === 100 && !item,
     short: prize.percentOff === 100 ? "FREE" : `${prize.percentOff}%`,
     sub: item ? (item.length > 12 ? `${item.slice(0, 11)}…` : item) : "bill",
   };
