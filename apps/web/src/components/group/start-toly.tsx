@@ -51,7 +51,7 @@ export function StartToly({ dealSlug }: { dealSlug: string }) {
   return (
     <div className="space-y-4">
       <fieldset className="space-y-2">
-        <legend className="mb-2 text-sm text-ink-foreground/80 dark:text-muted-foreground">
+        <legend className="mb-2 text-sm text-ink-2">
           When are you thinking of going? You can use the voucher any eligible
           day.
         </legend>
@@ -63,10 +63,10 @@ export function StartToly({ dealSlug }: { dealSlug: string }) {
               aria-pressed={when === o.value}
               onClick={() => setWhen(o.value)}
               className={cn(
-                "h-10 rounded-full border border-ink-foreground/25 px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:border-border",
+                "h-11 rounded-full border border-input px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 dark:border-border",
                 when === o.value
-                  ? "border-ink-foreground bg-ink-foreground text-ink dark:border-foreground dark:bg-foreground dark:text-background"
-                  : "hover:border-ink-foreground/60",
+                  ? "border-foreground bg-foreground text-background"
+                  : "hover:border-foreground/60",
               )}
             >
               {o.label}
@@ -85,11 +85,9 @@ export function StartToly({ dealSlug }: { dealSlug: string }) {
               max={kathmanduDate(59)}
               value={picked}
               onChange={(e) => setPicked(e.target.value)}
-              className="h-11 rounded-lg border border-ink-foreground/25 bg-transparent px-3 text-base [color-scheme:dark] dark:border-border dark:[color-scheme:normal]"
+              className="h-11 rounded-lg border border-input bg-transparent px-3 text-base "
             />
-            <span className="ml-3 text-sm text-ink-foreground/80 dark:text-muted-foreground">
-              {formatDay(picked)}
-            </span>
+            <span className="ml-3 text-sm text-ink-2">{formatDay(picked)}</span>
           </div>
         ) : null}
       </fieldset>
