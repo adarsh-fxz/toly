@@ -33,14 +33,22 @@ export function InlineConfirm({
   const reduce = useReducedMotion();
   const [open, setOpen] = useState(defaultOpen);
   const [busy, setBusy] = useState(false);
+  const keepRef = useRef<HTMLButtonElement | null>(null);
   const focusKeep = useCallback((button: HTMLButtonElement | null) => {
+    keepRef.current = button;
     button?.focus();
   }, []);
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const restoreFocus = useRef(false);
+  const focusTrigger = useCallback((button: HTMLButtonElement | null) => {
+    if (button && restoreFocus.current) {
+      button.focus();
+      restoreFocus.current = false;
+    }
+  }, []);
 
   const close = () => {
+    restoreFocus.current = true;
     setOpen(false);
-    setTimeout(() => triggerRef.current?.focus(), 220);
   };
 
   return (
@@ -80,8 +88,10 @@ export function InlineConfirm({
                 try {
                   const done = await onConfirm();
                   if (done !== false) close();
+                  else keepRef.current?.focus();
                 } catch {
                   toast.error("Couldn't complete that. Try again.");
+                  keepRef.current?.focus();
                 } finally {
                   setBusy(false);
                 }
@@ -94,7 +104,7 @@ export function InlineConfirm({
       ) : (
         <motion.button
           key="trigger"
-          ref={triggerRef}
+          ref={focusTrigger}
           type="button"
           onClick={() => setOpen(true)}
           disabled={busy}
