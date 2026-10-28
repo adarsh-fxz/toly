@@ -150,10 +150,11 @@ export function DealForm({
         className="min-w-0 space-y-6"
         noValidate
       >
-        <fieldset className="space-y-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px]">
-          <legend className="float-left mb-5 w-full font-display text-h4 font-semibold">
-            The offer
-          </legend>
+        <section
+          aria-label="The offer"
+          className="space-y-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px]"
+        >
+          <h3 className="font-display text-h4 font-semibold">The offer</h3>
           <FormField
             id="title"
             label="Deal name"
@@ -236,12 +237,15 @@ export function DealForm({
               </p>
             ) : null}
           </div>
-        </fieldset>
+        </section>
 
-        <fieldset className="space-y-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px]">
-          <legend className="float-left mb-5 w-full font-display text-h4 font-semibold">
+        <section
+          aria-label="Group and price"
+          className="space-y-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px]"
+        >
+          <h3 className="font-display text-h4 font-semibold">
             Group and price
-          </legend>
+          </h3>
           <div className="grid gap-5 sm:grid-cols-3">
             <FormField
               id="partySize"
@@ -329,12 +333,15 @@ export function DealForm({
               ) : null}
             </div>
           </div>
-        </fieldset>
+        </section>
 
-        <fieldset className="space-y-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px]">
-          <legend className="float-left mb-5 w-full font-display text-h4 font-semibold">
+        <section
+          aria-label="When it can be used"
+          className="space-y-5 rounded-xl bg-card p-7 shadow-1 max-sm:p-[22px]"
+        >
+          <h3 className="font-display text-h4 font-semibold">
             When it can be used
-          </legend>
+          </h3>
           <fieldset className="space-y-2">
             <legend className="mb-2 text-sm font-medium">Days</legend>
             <div className="flex flex-wrap gap-2">
@@ -454,7 +461,7 @@ export function DealForm({
               defaultValue={deal?.terms}
             />
           </FormField>
-        </fieldset>
+        </section>
 
         {errors._form ? (
           <p role="alert" className="text-sm text-destructive">

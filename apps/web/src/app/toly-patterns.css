@@ -209,6 +209,7 @@
 }
 
 /* ---------- wordmark dots (components/brand/logo.tsx) ---------- */
+/* biome-ignore lint/style/noDescendingSpecificity: logo and scene SVGs are separate components */
 .wm-dots circle {
   fill: var(--primary);
   transition:
@@ -710,6 +711,7 @@
 }
 
 /* QR refresh timer ring (components/voucher/voucher-qr.tsx) */
+/* biome-ignore lint/style/noDescendingSpecificity: QR timer never shares logo or scene SVGs */
 .qr-timer circle {
   fill: none;
   stroke-width: 3;
@@ -738,6 +740,7 @@
 }
 
 /* Keep the kit wheel within its host card at every width. */
+/* biome-ignore lint/style/noDescendingSpecificity: responsive host sizing overrides only wheel geometry */
 .wheel-wrap {
   --ws: min(100%, 420px);
   --lr: 30cqw;
@@ -763,4 +766,12 @@
 .wheel-wrap .wheel-hub {
   width: 15cqw;
   height: 15cqw;
+}
+
+/* Fit the supplied table to narrow phones without clipping any seats. */
+@media (max-width: 374px) {
+  .seat-table {
+    --R: 92px;
+    --S: 48px;
+  }
 }

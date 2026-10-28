@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 /** Counts up once (600 ms, ease-out) when scrolled into view; reduced motion shows the final value. */
 function useCountUp(target: number, run: boolean) {
   const reduce = useReducedMotion();
-  const [v, setV] = useState(reduce ? target : 0);
+  const [v, setV] = useState(0);
   useEffect(() => {
     if (!run) return;
     if (reduce) {

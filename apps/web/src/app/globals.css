@@ -271,8 +271,11 @@
   *,
   *::before,
   *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion must override component animation */
     animation-duration: 0.001ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion must override component animation */
     animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion must override component transition */
     transition-duration: 0.001ms !important;
   }
 }
@@ -322,5 +325,29 @@
   body:has(#poster) footer,
   body:has(#poster) main > div > div:first-child {
     display: none;
+  }
+}
+
+@media print {
+  body:has(#poster) {
+    margin: 0;
+    padding: 0;
+  }
+  :where(body:has(#poster)) * {
+    visibility: hidden;
+  }
+  #poster {
+    visibility: visible;
+  }
+  #poster :where(*) {
+    visibility: visible;
+  }
+  #poster {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 148mm;
+    height: 210mm;
+    margin: 0;
+    break-inside: avoid;
   }
 }

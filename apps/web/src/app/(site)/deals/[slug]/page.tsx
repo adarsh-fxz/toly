@@ -174,7 +174,7 @@ function PriceCard({
             <StartTolyGate dealSlug={deal.slug} />
           </Suspense>
         ) : null}
-        <p className="border-t border-ink-foreground/15 pt-4 text-sm text-ink-foreground/80 dark:border-border dark:text-muted-foreground">
+        <p className="border-t pt-4 text-sm text-ink-2">
           You pay {deal.merchant.name} directly at the counter. Toly never takes
           payment for the bill.
         </p>

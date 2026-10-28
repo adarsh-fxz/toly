@@ -173,8 +173,8 @@ export function WheelEditor({
       noValidate
     >
       <div className="space-y-8">
-        <fieldset className="grid gap-5 rounded-xl bg-card p-7 shadow-1 sm:grid-cols-3">
-          <legend className="float-left mb-4 w-full font-display text-h4 font-semibold">
+        <fieldset className="grid gap-5 rounded-xl bg-card p-7 shadow-1 sm:grid-cols-3 [&>legend+*]:clear-both">
+          <legend className="mb-4 font-display text-h4 font-semibold">
             Wheel
           </legend>
           <div className="space-y-1.5">
