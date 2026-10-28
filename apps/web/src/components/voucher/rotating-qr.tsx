@@ -30,7 +30,8 @@ export function RotatingQr({ voucherId }: { voucherId: string }) {
         if (!res.ok) throw new Error(String(res.status));
         const { token } = await res.json();
         const dataUrl = await QRCode.toDataURL(token, {
-          margin: 0,
+          margin: 4,
+          color: { dark: "#17161C", light: "#FFFFFF" },
           width: 512,
           errorCorrectionLevel: "M",
         });
@@ -62,7 +63,7 @@ export function RotatingQr({ voucherId }: { voucherId: string }) {
 
   return (
     <div className="space-y-2">
-      <div className="mx-auto aspect-square w-full max-w-64 rounded-xl bg-white p-3">
+      <div className="mx-auto aspect-square w-full max-w-64 rounded-xl bg-qr-bg p-1">
         {src ? (
           // biome-ignore lint/performance/noImgElement: locally generated data URL, nothing to optimise
           <img
@@ -71,7 +72,7 @@ export function RotatingQr({ voucherId }: { voucherId: string }) {
             className="size-full [image-rendering:pixelated]"
           />
         ) : (
-          <div className="size-full animate-pulse rounded-lg bg-neutral-200" />
+          <div className="skeleton size-full rounded-md" />
         )}
       </div>
       <p

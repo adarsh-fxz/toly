@@ -1,11 +1,11 @@
 "use client";
 
-import { formatRs } from "@toly/shared/money";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { api, readError } from "@/lib/api";
+import { formatRs } from "@/lib/money";
 import type { PublicWheel } from "@/lib/types";
 import { describeOffer } from "@/lib/voucher";
 import { landingRotation, segmentLabel, Wheel } from "./wheel";
@@ -100,7 +100,7 @@ export function SpinPlayer({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 rounded-[32px] bg-card px-7 py-10 shadow-2 max-sm:px-5">
       <Wheel
         segments={segments}
         rotation={rotation}
@@ -109,9 +109,9 @@ export function SpinPlayer({
 
       <div aria-live="polite" className="min-h-28">
         {phase.name === "won" ? (
-          <div className="space-y-4 rounded-3xl bg-prize p-6 text-prize-foreground">
+          <div className="space-y-4 rounded-xl bg-prize-soft p-6 text-foreground">
             <p className="text-sm font-semibold">You won</p>
-            <p className="font-display text-4xl font-extrabold font-condensed">
+            <p className="font-display text-h3 font-semibold">
               {phase.prize.label}
             </p>
             <p>{describeOffer(phase.prize)}</p>
@@ -125,7 +125,7 @@ export function SpinPlayer({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-prize-foreground/30 bg-transparent"
+                className="w-full border-input bg-transparent"
                 onClick={() => setPhase({ name: "idle" })}
               >
                 Done
@@ -146,7 +146,9 @@ export function SpinPlayer({
             onClick={play}
             disabled={phase.name === "spinning"}
           >
-            {phase.name === "spinning" ? "Spinning…" : "Spin the wheel"}
+            {phase.name === "spinning"
+              ? "Drawing your prize…"
+              : "Spin the wheel"}
           </Button>
         ) : (
           <div className="space-y-2">

@@ -736,3 +736,31 @@
     animation: none;
   }
 }
+
+/* Keep the kit wheel within its host card at every width. */
+.wheel-wrap {
+  --ws: min(100%, 420px);
+  --lr: 30cqw;
+  --dr: 48cqw;
+  width: min(100%, 420px);
+  height: auto;
+  aspect-ratio: 1;
+  container-type: inline-size;
+}
+.wheel-wrap .wheel-label {
+  --lr: 30cqw;
+  width: 24cqw;
+}
+.wheel-wrap .wheel-label b {
+  font-size: clamp(16px, 6cqw, 28px);
+}
+.wheel-wrap .wheel-label span {
+  font-size: clamp(10px, 3cqw, 13px);
+}
+.wheel-wrap .wheel-dots i {
+  --dr: 48cqw;
+}
+.wheel-wrap .wheel-hub {
+  width: 15cqw;
+  height: 15cqw;
+}
