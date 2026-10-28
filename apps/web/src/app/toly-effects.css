@@ -38,3 +38,8 @@
 .dark .wheel-label.hot span {
   color: #fff5e8;
 }
+
+/* The landing illustration's prize text stays legible against every slice. */
+.glass.wheel-demo-result {
+  background: color-mix(in srgb, var(--card) 90%, transparent);
+}

@@ -12,7 +12,10 @@ export function WheelDemo() {
     <figure
       className="relative mx-auto w-full max-w-[380px]"
       onMouseEnter={() => {
-        if (!reduce) setRotation((value) => value + 720);
+        if (!reduce) setRotation(720);
+      }}
+      onMouseLeave={() => {
+        if (!reduce) setRotation(0);
       }}
       aria-label="Example prize wheel and voucher illustration"
     >
@@ -30,7 +33,7 @@ export function WheelDemo() {
         spinning
       />
       <div
-        className="glass absolute -right-7 bottom-[26px] z-[3] flex flex-col gap-0.5 rounded-[20px] px-[18px] py-3.5 text-left max-[980px]:-right-2 max-sm:right-0 max-sm:-bottom-1.5"
+        className="glass wheel-demo-result absolute -right-7 bottom-[26px] z-[3] flex flex-col gap-0.5 rounded-[20px] px-[18px] py-3.5 text-left max-[980px]:-right-2 max-sm:right-0 max-sm:-bottom-1.5"
         aria-hidden
       >
         <small className="text-xs text-ink-2">You won</small>

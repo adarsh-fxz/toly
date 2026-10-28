@@ -46,7 +46,14 @@ export function Wheel({
         style={{ background }}
         initial={false}
         animate={{ rotate: rotation }}
-        transition={spinning && !reduce ? wheelSpin : { duration: 0 }}
+        transition={
+          spinning && !reduce
+            ? {
+                ...wheelSpin,
+                duration: size === "demo" ? 6.4 : wheelSpin.duration,
+              }
+            : { duration: 0 }
+        }
       >
         {segments.map((segment, i) => (
           <span

@@ -3,6 +3,7 @@
 import { MotionConfig } from "motion/react";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
+import { ScrollExperience } from "@/components/layout/scroll-experience";
 import { Toaster } from "@/components/ui/sonner";
 
 /**
@@ -19,8 +20,10 @@ export function Providers({ children }: { children: ReactNode }) {
       disableTransitionOnChange
     >
       <MotionConfig reducedMotion="user">
-        {children}
-        <Toaster />
+        <ScrollExperience>
+          {children}
+          <Toaster />
+        </ScrollExperience>
       </MotionConfig>
     </ThemeProvider>
   );

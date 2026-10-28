@@ -167,7 +167,7 @@ function Pitch() {
         All deals
       </BackLink>
       <section
-        className="night grid items-center gap-12 rounded-[40px] px-16 py-[72px] max-[980px]:grid-cols-1 max-[980px]:px-8 max-[980px]:py-12 max-sm:gap-8 max-sm:rounded-[30px] max-sm:px-5 max-sm:py-9 min-[981px]:grid-cols-[minmax(0,1.1fr)_minmax(0,.9fr)]"
+        className="night grid items-center gap-12 rounded-[40px] px-16 py-[72px] max-[61.25rem]:grid-cols-1 max-[61.25rem]:px-8 max-[61.25rem]:py-12 max-sm:gap-8 max-sm:rounded-[30px] max-sm:px-5 max-sm:py-9 min-[61.3125rem]:grid-cols-[minmax(0,1.1fr)_minmax(0,.9fr)]"
         aria-labelledby="pitch-heading"
       >
         <div className="relative space-y-6">
@@ -176,7 +176,7 @@ function Pitch() {
           </p>
           <h1
             id="pitch-heading"
-            className="font-display text-[60px] font-[650] leading-[1.02] tracking-[-.045em] text-[#F3F1EC] max-[980px]:text-[46px] max-sm:text-[36px]"
+            className="font-display text-[60px] font-[650] leading-[1.02] tracking-[-.045em] text-[#F3F1EC] max-[61.25rem]:text-[46px] max-sm:text-[36px]"
           >
             Fill your quiet hours with groups.
           </h1>
@@ -253,11 +253,11 @@ function Pitch() {
       <section className="pt-[72px]" aria-labelledby="benefits-heading">
         <h2
           id="benefits-heading"
-          className="text-center text-h2 font-[650] max-[980px]:text-[42px] max-sm:text-[34px]"
+          className="text-center text-h2 font-[650] max-[61.25rem]:text-[42px] max-sm:text-[34px]"
         >
           Why venues use Toly
         </h2>
-        <ul className="kit-list mt-12 grid gap-6 sm:grid-cols-2 min-[981px]:grid-cols-4">
+        <ul className="kit-list mt-12 grid gap-6 sm:grid-cols-2 min-[61.3125rem]:grid-cols-4">
           {promises.map(({ icon: Icon, title, body, tone }) => (
             <li
               key={title}

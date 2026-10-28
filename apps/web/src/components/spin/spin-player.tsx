@@ -139,7 +139,7 @@ export function SpinPlayer({
 
   return (
     <div
-      className="grid gap-8 py-12 max-sm:py-7 min-[61.3125rem]:grid-cols-2 min-[61.3125rem]:items-start min-[61.3125rem]:gap-x-14"
+      className="grid gap-8 py-12 max-sm:py-7 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_540px] min-[61.3125rem]:items-start min-[61.3125rem]:gap-x-14"
       data-spin-phase={phase.name}
     >
       <section className="space-y-6 min-[61.3125rem]:col-start-1 min-[61.3125rem]:row-start-1">
@@ -220,7 +220,7 @@ export function SpinPlayer({
             rotation={rotation}
             spinning={phase.name === "spinning"}
           />
-          <p className="relative max-w-[30em] text-center text-sm text-white/75">
+          <p className="relative max-w-[26em] text-center text-sm text-white/75">
             Slices on the wheel are equal in size. The real chances are listed
             in Prizes and chances.
           </p>

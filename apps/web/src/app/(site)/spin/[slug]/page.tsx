@@ -69,7 +69,7 @@ async function Spin({
             <ArrowLeft className="size-4" aria-hidden />
             {wheel.merchant.name} · {wheel.merchant.area}
           </Link>
-          <h1 className="text-h1 font-semibold max-sm:text-[36px]">
+          <h1 className="text-h1 font-[650] max-sm:text-[36px]">
             Spin for a discount
           </h1>
           <p className="max-w-prose text-lg text-muted-foreground">

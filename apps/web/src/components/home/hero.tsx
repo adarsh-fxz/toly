@@ -79,7 +79,8 @@ export function HomeHero({
       <div className="relative flex flex-col items-center px-6 pt-[140px] text-center max-sm:px-4 max-sm:pt-[104px]">
         <h1
           id="hero-h"
-          className="mt-[26px] font-display text-[74px] font-semibold leading-none tracking-[-0.045em] text-foreground max-[61.25rem]:text-[58px] max-sm:text-[42px] max-sm:tracking-[-0.04em]"
+          tabIndex={-1}
+          className="mt-[26px] outline-none font-display text-[74px] font-semibold leading-none tracking-[-0.045em] text-foreground max-[61.25rem]:text-[58px] max-sm:text-[42px] max-sm:tracking-[-0.04em]"
         >
           Round up your{" "}
           <span className="swash">

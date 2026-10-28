@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export function ClosingCta() {
   return (
     <section
-      className="night mt-28 px-10 py-[88px] text-center max-sm:px-5 max-sm:py-14"
+      className="night mt-28 rounded-[40px] px-10 py-[88px] text-center max-sm:rounded-[30px] max-sm:px-5 max-sm:py-14"
       aria-labelledby="closing-heading"
     >
       <div className="relative mb-7 flex justify-center" aria-hidden>
