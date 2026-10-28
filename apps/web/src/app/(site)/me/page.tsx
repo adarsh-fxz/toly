@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { SeatDots } from "@/components/brand/seat-dots";
+import { PersonAvatar } from "@/components/brand/person-avatar";
 import { EmptyState } from "@/components/feedback/empty-state";
 import { MyTolyTabs } from "@/components/group/my-toly-tabs";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +11,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { serverApi } from "@/lib/api-server";
 import { timeLeft } from "@/lib/dates";
-import { formatRs } from "@/lib/money";
+import { formatDate } from "@/lib/format";
+import { describeOffer } from "@/lib/voucher";
 
 export const metadata: Metadata = { title: "My tolys" };
 
@@ -36,15 +37,23 @@ async function Me() {
   const groups = groupsRes.ok ? await groupsRes.json() : [];
   const vouchers = vouchersRes.ok ? await vouchersRes.json() : [];
 
-  const ready = vouchers.filter((v) => v.status === "issued");
+  const isReady = (v: (typeof vouchers)[number]) =>
+    v.status === "issued" &&
+    (!v.expiresAt || new Date(v.expiresAt) > new Date());
+  const ready = vouchers.filter(isReady);
   const filling = groups.filter((g) => g.status === "forming");
   const past = [
     ...vouchers
-      .filter((v) => v.status !== "issued")
+      .filter((v) => !isReady(v))
       .map((v) => ({
         key: v.id,
         title: v.title,
-        note: v.status === "redeemed" ? "Redeemed" : "Void",
+        note:
+          v.status === "redeemed"
+            ? "Redeemed"
+            : v.status === "void"
+              ? "Cancelled"
+              : "Expired",
         href: `/vouchers/${v.id}`,
       })),
     ...groups
@@ -88,29 +97,45 @@ async function Me() {
             <h2 id="ready" className="text-h3 font-semibold">
               Ready to use
             </h2>
-            <ul className="grid gap-3 sm:grid-cols-2">
+            <ul className="kit-list grid gap-3 sm:grid-cols-2">
               {ready.map((v) => (
                 <li key={v.id}>
                   <Link
                     href={`/vouchers/${v.id}`}
-                    className="flex min-h-36 items-center gap-4 rounded-xl bg-card p-6 text-foreground shadow-1 transition-transform focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99] dark:border dark:bg-card dark:text-card-foreground"
+                    className="flex min-h-36 items-stretch gap-4 overflow-hidden rounded-xl bg-card p-6 text-foreground shadow-1 transition-transform focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99] dark:border dark:bg-card dark:text-card-foreground"
                   >
-                    <Ticket
-                      className="size-6 shrink-0 text-accent-foreground"
+                    <span
+                      className="relative -my-6 -ml-6 grid min-h-36 w-16 shrink-0 self-stretch place-items-center border-r-2 border-dashed border-input bg-tint-a before:absolute before:-right-[9px] before:-top-2 before:size-4 before:rounded-full before:bg-background after:absolute after:-bottom-2 after:-right-[9px] after:size-4 after:rounded-full after:bg-background sm:w-20"
                       aria-hidden
-                    />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate font-semibold">
+                    >
+                      <Ticket className="size-6 text-accent-ink" />
+                    </span>
+                    <span className="min-w-0 flex-1 space-y-1">
+                      <span className="block truncate text-sm text-muted-foreground">
+                        {v.merchant.name}
+                      </span>
+                      <span className="block font-display text-h4 font-semibold">
                         {v.title}
                       </span>
-                      <span className="block truncate text-sm opacity-80">
-                        {v.merchant.name}
-                        {v.details.groupPricePaisa
-                          ? `, ${formatRs(v.details.groupPricePaisa)}`
-                          : null}
+                      <span className="block text-sm text-ink-2">
+                        {describeOffer(v.details)}
+                      </span>
+                      <span className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                        <Badge variant="secondary">
+                          {v.expiresAt
+                            ? `Use by ${formatDate(v.expiresAt)}`
+                            : "Until it's used"}
+                        </Badge>
+                        <span
+                          className={buttonVariants({
+                            variant: "ink",
+                            size: "sm",
+                          })}
+                        >
+                          Show
+                        </span>
                       </span>
                     </span>
-                    <span className="text-sm font-medium">Show</span>
                   </Link>
                 </li>
               ))}
@@ -127,12 +152,12 @@ async function Me() {
             <h2 id="filling" className="text-h3 font-semibold">
               Filling up
             </h2>
-            <ul className="grid gap-4 sm:grid-cols-2">
+            <ul className="kit-list grid gap-4 sm:grid-cols-2">
               {filling.map((g) => (
                 <li key={g.id}>
                   <Link
                     href={`/g/${g.id}`}
-                    className="flex flex-wrap items-center justify-between gap-4 rounded-xl bg-card p-6 shadow-1 hover:shadow-2"
+                    className="flex flex-col gap-4 rounded-xl bg-card p-6 shadow-1 transition-[transform,box-shadow] hover:-translate-y-[3px] hover:shadow-2"
                   >
                     <span className="min-w-0">
                       <span className="block truncate font-semibold">
@@ -143,7 +168,47 @@ async function Me() {
                         <span className="tabular">{timeLeft(g.expiresAt)}</span>
                       </span>
                     </span>
-                    <SeatDots filled={g.filled} total={g.partySize} size="sm" />
+                    <span className="flex items-center justify-between gap-3">
+                      <span
+                        className="flex flex-wrap gap-1.5"
+                        role="img"
+                        aria-label={`${g.filled} of ${g.partySize} seats filled`}
+                      >
+                        {Array.from(
+                          { length: g.partySize },
+                          (_, position) => position,
+                        ).map((position) =>
+                          position < g.filled ? (
+                            <PersonAvatar
+                              key={position}
+                              name="Member"
+                              seed={`${g.id}-${position}`}
+                              size={36}
+                              decorative
+                            />
+                          ) : (
+                            <i
+                              key={position}
+                              className="size-9 rounded-full bg-card shadow-[inset_0_0_0_1.5px_var(--seat-line)]"
+                            />
+                          ),
+                        )}
+                      </span>
+                      <span className="text-sm font-semibold tabular-nums">
+                        {g.filled} of {g.partySize}
+                      </span>
+                    </span>
+                    <span
+                      className="h-1.5 overflow-hidden rounded-full bg-secondary"
+                      aria-hidden
+                    >
+                      <span
+                        className="block h-full rounded-full bg-primary"
+                        style={{
+                          width: `${Math.min(100, (g.filled / g.partySize) * 100)}%`,
+                        }}
+                      />
+                    </span>
                   </Link>
                 </li>
               ))}
@@ -160,7 +225,7 @@ async function Me() {
             <h2 id="past" className="text-h3 font-semibold">
               Past
             </h2>
-            <ul className="divide-y border-y">
+            <ul className="kit-list divide-y overflow-hidden rounded-xl bg-card px-6 shadow-1">
               {past.map((p) => (
                 <li key={p.key}>
                   <Link
@@ -168,7 +233,11 @@ async function Me() {
                     className="flex items-center justify-between gap-3 py-3 hover:bg-card"
                   >
                     <span className="truncate">{p.title}</span>
-                    <Badge variant="secondary">{p.note}</Badge>
+                    <Badge
+                      variant={p.note === "Redeemed" ? "success" : "secondary"}
+                    >
+                      {p.note}
+                    </Badge>
                   </Link>
                 </li>
               ))}
