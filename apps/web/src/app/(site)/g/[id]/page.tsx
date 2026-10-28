@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -58,6 +58,7 @@ async function Toly({ params }: Pick<PageProps<"/g/[id]">, "params">) {
             href={`/deals/${deal.dealSlug}`}
             className="inline-flex min-h-11 items-center text-sm font-medium text-ink-2 underline-offset-4 hover:text-foreground hover:underline"
           >
+            <ArrowLeft className="mr-2 size-4" aria-hidden />
             {deal.title} at {deal.merchantName}
           </Link>
           <StatusHeadline>{headline}</StatusHeadline>

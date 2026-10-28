@@ -1,4 +1,5 @@
 import { describeValidity } from "@toly/shared/deal";
+import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -63,9 +64,10 @@ async function Spin({
         <header className="space-y-4">
           <Link
             href={`/v/${wheel.merchant.slug}`}
-            className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
-            {wheel.merchant.name}, {wheel.merchant.area}
+            <ArrowLeft className="size-4" aria-hidden />
+            {wheel.merchant.name} · {wheel.merchant.area}
           </Link>
           <h1 className="text-h1 font-semibold max-sm:text-[36px]">
             Spin for a discount

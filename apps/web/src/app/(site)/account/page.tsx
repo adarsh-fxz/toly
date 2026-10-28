@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { BackLink } from "@/components/layout/back-link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
 import { getCurrentUser } from "@/lib/session";
@@ -16,6 +17,9 @@ export const metadata: Metadata = { title: "Account and security" };
 export default function AccountPage() {
   return (
     <div className="mx-auto max-w-[920px] py-12 max-sm:py-7">
+      <BackLink href="/me" className="mb-4">
+        My tolys
+      </BackLink>
       <h1 className="text-h1 font-semibold max-sm:text-[36px]">
         Account and security
       </h1>

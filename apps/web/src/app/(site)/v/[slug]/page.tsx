@@ -2,14 +2,19 @@ import {
   MERCHANT_CATEGORIES,
   type MerchantCategory,
 } from "@toly/shared/merchant";
+import { MapPin } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { CategoryIcon } from "@/components/deal/category-icon";
 import { DealListSkeleton } from "@/components/deal/deal-list-skeleton";
 import { DealRow } from "@/components/deal/deal-row";
 import { EmptyState } from "@/components/feedback/empty-state";
+import { BackLink } from "@/components/layout/back-link";
 import { Wheel } from "@/components/spin/wheel";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { publicApi } from "@/lib/api-server";
 import { formatRs } from "@/lib/money";
@@ -58,55 +63,88 @@ async function Venue({ params }: Pick<PageProps<"/v/[slug]">, "params">) {
 
   return (
     <div className="py-12 max-sm:py-7">
-      <Link
-        href="/#deals"
-        className="mb-4 inline-flex min-h-11 items-center text-sm font-medium text-ink-2"
-      >
+      <BackLink href="/#deals" className="mb-4">
         All deals
-      </Link>
+      </BackLink>
       <div className="grid gap-6 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px]">
-        <header className="space-y-5 rounded-[32px] bg-tint-a p-10 max-sm:p-6">
-          <p className="text-sm font-medium text-muted-foreground">
-            {MERCHANT_CATEGORIES[venue.category as MerchantCategory]} in{" "}
-            {venue.area}
-          </p>
-          <h1 className="text-h1 font-semibold max-sm:text-[36px]">
+        <header className="flex flex-col gap-[18px] rounded-[32px] bg-tint-a p-10 max-sm:p-6">
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="grid size-[72px] place-items-center rounded-[22px] bg-card shadow-1">
+              <CategoryIcon category={venue.category} className="size-8" />
+            </span>
+            <div className="flex flex-wrap gap-2">
+              <Badge
+                variant="secondary"
+                className="h-[26px] px-2.5 text-[13px]"
+              >
+                {MERCHANT_CATEGORIES[venue.category as MerchantCategory]}
+              </Badge>
+              <Badge
+                variant="secondary"
+                className="h-[26px] px-2.5 text-[13px]"
+              >
+                {venue.area}
+              </Badge>
+            </div>
+          </div>
+          <h1 className="text-h1 font-[650] max-[980px]:text-[46px] max-sm:text-[36px]">
             {venue.name}
           </h1>
-          <p className="text-muted-foreground">{venue.address}</p>
+          <p className="flex items-start gap-2 text-ink-2">
+            <MapPin className="mt-1 size-[18px] shrink-0" aria-hidden />
+            {venue.address}
+          </p>
           {venue.description ? (
-            <p className="max-w-prose text-lg">{venue.description}</p>
+            <p className="max-w-[36em] text-lg leading-[1.55] text-ink-2">
+              {venue.description}
+            </p>
           ) : null}
         </header>
         {wheel ? (
-          <Link
-            href={`/spin/${venue.slug}`}
-            className="night flex flex-col items-start justify-center gap-5 rounded-[32px] p-8 transition-transform focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99] "
+          <aside
+            className="night flex flex-col justify-between gap-[18px] rounded-[32px] p-8 max-sm:p-6"
+            aria-labelledby="venue-spin-heading"
           >
             <Wheel
+              size="compact"
               segments={wheel.prizes.map((p) => ({
                 id: p.id,
                 ...segmentLabel(p),
               }))}
               rotation={0}
               spinning={false}
-              className="!w-36 !max-w-full self-center"
             />
-            <span className="min-w-0 flex-1">
-              <span className="block text-lg font-bold">Toly Spin</span>
-              <span className="block text-sm">
+            <div>
+              <p className="text-sm font-medium text-[#F6BA5E]">Toly Spin</p>
+              <h2
+                id="venue-spin-heading"
+                className="mt-1 font-display text-[22px] font-semibold leading-[1.2] tracking-[-.025em] text-[#F3F1EC]"
+              >
                 {formatRs(wheel.pricePaisa)} a spin. Every spin wins a discount
                 here.
-              </span>
-            </span>
-            <span className="font-semibold">Spin</span>
-          </Link>
+              </h2>
+            </div>
+            <Link
+              href={`/spin/${venue.slug}`}
+              className={buttonVariants({
+                size: "lg",
+                className: "h-14 w-full px-7 text-[17px]",
+              })}
+            >
+              See prizes and spin
+            </Link>
+          </aside>
         ) : null}
       </div>
       <section aria-labelledby="venue-deals" className="mt-12 space-y-4">
-        <h2 id="venue-deals" className="text-h3 font-semibold">
-          Group deals
-        </h2>
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
+          <h2 id="venue-deals" className="text-h3 font-semibold">
+            Group deals here
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Prices are for the whole table. You pay the venue directly.
+          </p>
+        </div>
         {venue.deals.length === 0 ? (
           <EmptyState
             title="No deals running right now"

@@ -1,9 +1,11 @@
-import { Clock3 } from "lucide-react";
+import { Clock3, ShieldCheck, Sun } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
+import { AvatarStack } from "@/components/brand/person-avatar";
 import { Banner } from "@/components/feedback/banner";
+import { BackLink } from "@/components/layout/back-link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RedeemedStamp } from "@/components/voucher/redeemed-stamp";
 import { RotatingQr } from "@/components/voucher/rotating-qr";
@@ -19,6 +21,9 @@ export const metadata: Metadata = {
 export default function VoucherPage({ params }: PageProps<"/vouchers/[id]">) {
   return (
     <div className="mx-auto py-12 max-sm:py-7">
+      <BackLink href="/me" className="mb-4">
+        My tolys
+      </BackLink>
       <Suspense
         fallback={<Skeleton className="h-[34rem] w-full rounded-3xl" />}
       >
@@ -38,24 +43,31 @@ async function Voucher({
   if (res.status === 401) redirect(`/sign-in?next=/vouchers/${id}`);
   if (!res.ok) notFound();
   const v = await res.json();
+  const groupResponse = v.groupId
+    ? await client.api.v1.groups[":id"].$get({ param: { id: v.groupId } })
+    : null;
+  const group = groupResponse?.ok ? await groupResponse.json() : null;
+  const memberNames =
+    group?.members.map((member) => (member.isYou ? "you" : member.name)) ?? [];
   const usable =
     v.status === "issued" &&
     (!v.expiresAt || new Date(v.expiresAt) > new Date());
 
   return (
-    <div className="grid items-start gap-8 min-[61.3125rem]:grid-cols-[520px_minmax(0,1fr)] min-[61.3125rem]:gap-12 [&>*]:mx-auto [&>*]:w-full [&>*]:max-w-[520px]">
-      <article className="force-light overflow-hidden rounded-[32px] bg-card shadow-2">
-        <header className="space-y-4 p-8 max-sm:p-6">
-          <div className="flex items-center justify-between gap-3">
+    <div className="grid items-start gap-8 min-[61.3125rem]:grid-cols-[480px_minmax(0,1fr)] min-[61.3125rem]:gap-14 [&>*]:mx-auto [&>*]:w-full max-[980px]:[&>*]:max-w-[560px]">
+      <article className="force-light overflow-hidden rounded-[30px] bg-card shadow-2">
+        <header className="flex flex-col gap-1.5 px-7 pt-7 pb-6 max-sm:p-[22px]">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <Link
               href={`/v/${v.merchant.slug}`}
               className="text-sm text-ink-2 underline-offset-4 hover:underline"
             >
-              {v.merchant.name}, {v.merchant.area}
+              {v.merchant.name} · {v.merchant.area}
             </Link>
             <span
-              className={`rounded-full px-3 py-1 text-xs font-semibold ${usable ? "bg-success-soft text-success" : "bg-secondary text-ink-2"}`}
+              className={`inline-flex min-h-[26px] items-center gap-1.5 rounded-full px-2.5 text-[13px] font-semibold ${usable ? "bg-success-soft text-success" : "bg-secondary text-ink-2"}`}
             >
+              <i className="size-1.5 rounded-full bg-current" aria-hidden />
               {usable
                 ? "Ready to use"
                 : v.status === "redeemed"
@@ -68,16 +80,35 @@ async function Voucher({
           <h1 className="text-[30px] font-semibold leading-tight tracking-tight">
             {v.title}
           </h1>
-          <p className="text-lg font-semibold">{describeOffer(v.details)}</p>
+          <p className="text-[17px] font-semibold">
+            {describeOffer(v.details)}
+          </p>
+          {group?.members.length ? (
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <AvatarStack
+                size={32}
+                people={group.members.map((member, i) => ({
+                  id: `${group.id}-${i}-${member.name}`,
+                  name: member.name,
+                }))}
+              />
+              <span className="text-sm text-ink-2">
+                {new Intl.ListFormat("en", {
+                  style: "long",
+                  type: "conjunction",
+                }).format(memberNames)}
+              </span>
+            </div>
+          ) : null}
         </header>
 
-        <div aria-hidden className="ticket-cut my-4" />
+        <div aria-hidden className="ticket-cut" />
 
-        <div className="relative space-y-6 px-6 pb-8">
+        <div className="relative flex flex-col items-center gap-4 p-7 max-sm:p-[22px]">
           {usable ? (
             <RotatingQr voucherId={v.id} />
           ) : (
-            <div className="relative mx-auto grid aspect-square w-full max-w-64 place-items-center rounded-xl bg-secondary">
+            <div className="relative mx-auto grid aspect-square w-full max-w-[296px] place-items-center rounded-xl bg-secondary">
               {v.status === "redeemed" && v.redeemedAt ? (
                 <RedeemedStamp at={v.redeemedAt} />
               ) : (
@@ -105,7 +136,7 @@ async function Voucher({
               {usable ? "Or tell staff this code" : "Code"}
             </p>
             <p
-              className={`font-display text-[clamp(24px,7vw,40px)] font-semibold tracking-[0.06em] tabular-nums ${usable ? "" : "text-muted-foreground"}`}
+              className={`mt-1 font-display text-[40px] font-semibold leading-none tracking-[0.06em] max-sm:text-[34px] tabular-nums ${usable ? "" : "text-muted-foreground"}`}
             >
               <span className="sr-only">
                 Backup code {formatCode(v.code).split("").join(" ")}
@@ -113,16 +144,27 @@ async function Voucher({
               <span aria-hidden>{formatCode(v.code)}</span>
             </p>
           </div>
+          {usable ? (
+            <p className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Sun className="size-4 shrink-0" aria-hidden />
+              Screen stays awake and bright while this is open
+            </p>
+          ) : null}
         </div>
       </article>
       <aside className="space-y-6">
         {usable ? (
-          <Banner tone="neutral" title="Staff scan this before you pay">
+          <Banner
+            tone="neutral"
+            icon={ShieldCheck}
+            title="Staff scan this before you pay"
+            className="[&_svg]:text-success"
+          >
             Then pay {v.merchant.name} directly, by cash, card or bank QR. Toly
             never takes payment for the bill.
           </Banner>
         ) : null}
-        <dl className="space-y-3 rounded-xl bg-card p-7 text-sm shadow-1 max-sm:p-[22px]">
+        <dl className="space-y-3 rounded-xl bg-card p-7 text-[15px] shadow-1 max-sm:p-[22px]">
           {v.redeemedAt ? (
             <Row label="Redeemed">{formatDateTime(v.redeemedAt)}</Row>
           ) : (
@@ -151,7 +193,7 @@ function Row({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-[7rem_minmax(0,1fr)] gap-3">
+    <div className="grid grid-cols-[84px_minmax(0,1fr)] gap-x-6 gap-y-1 max-sm:grid-cols-1">
       <dt className="text-muted-foreground">{label}</dt>
       <dd>{children}</dd>
     </div>

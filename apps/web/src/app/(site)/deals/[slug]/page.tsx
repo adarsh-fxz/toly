@@ -1,12 +1,14 @@
-import { Check } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { SeatDots } from "@/components/brand/seat-dots";
+import { CategoryIcon } from "@/components/deal/category-icon";
 import { DealFacts } from "@/components/deal/deal-facts";
 import { ViewBeacon } from "@/components/deal/view-beacon";
 import { StartTolyGate } from "@/components/group/start-toly-gate";
+import { BackLink } from "@/components/layout/back-link";
 import { DealTile } from "@/components/toly/deal-card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -48,78 +50,95 @@ async function Deal({ params }: Pick<PageProps<"/deals/[slug]">, "params">) {
   const available = deal.status === "live";
 
   return (
-    <article className="grid gap-9 py-12 max-sm:py-7 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px] min-[61.3125rem]:gap-x-12">
-      {available ? <ViewBeacon slug={deal.slug} /> : null}
-      <header className="space-y-4 min-[61.3125rem]:col-start-1">
-        <Link
-          href={`/v/${deal.merchant.slug}`}
-          className="inline-block inline-flex min-h-11 items-center text-sm font-medium text-ink-2 underline-offset-4 hover:text-foreground hover:underline"
-        >
-          {deal.merchant.name}, {deal.merchant.area}
-        </Link>
-        <h1 className="text-h1 font-semibold max-sm:text-[36px]">
-          {deal.title}
-        </h1>
-        {deal.description ? (
-          <p className="max-w-prose text-lg text-muted-foreground">
-            {deal.description}
-          </p>
-        ) : null}
-      </header>
-
-      <PriceCard deal={deal} available={available} off={off} />
-
-      <div className="space-y-10 min-[61.3125rem]:col-start-1">
-        <DealTile
-          category={dealCategory(deal.merchant.category)}
-          partySize={deal.partySize}
-          large
-        />
-        <section aria-labelledby="included" className="space-y-4">
-          <h2
-            id="included"
-            className="font-sans text-xl font-semibold [font-variation-settings:normal]"
+    <div className="py-12 max-sm:py-7">
+      <BackLink href="/#deals" className="mb-4">
+        All deals
+      </BackLink>
+      <article className="grid gap-9 min-[61.3125rem]:grid-cols-[minmax(0,1fr)_380px] min-[61.3125rem]:gap-x-12">
+        {available ? <ViewBeacon slug={deal.slug} /> : null}
+        <header className="space-y-0 min-[61.3125rem]:col-start-1">
+          <Link
+            href={`/v/${deal.merchant.slug}`}
+            className="inline-flex min-h-11 items-center gap-2 text-sm text-ink-2 underline-offset-4 hover:text-foreground hover:underline"
           >
-            What's included
-          </h2>
-          <ul className="space-y-2">
-            {deal.includes.map((item) => (
-              <li key={item} className="flex gap-3">
-                <Check
-                  className="mt-1 size-4 shrink-0 text-success"
-                  aria-hidden
-                />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </section>
+            <span className="grid size-8 place-items-center rounded-[10px] bg-accent text-accent-foreground">
+              <CategoryIcon
+                category={deal.merchant.category}
+                className="size-4"
+              />
+            </span>
+            <span>
+              <b className="font-semibold text-foreground">
+                {deal.merchant.name}
+              </b>{" "}
+              · {deal.merchant.area}
+            </span>
+            <ChevronRight className="size-4" aria-hidden />
+          </Link>
+          <h1 className="mt-2 text-h1 font-[650] max-[980px]:text-[46px] max-sm:text-[36px]">
+            {deal.title}
+          </h1>
+          {deal.description ? (
+            <p className="mt-4 max-w-[34em] text-lg leading-[1.55] text-ink-2">
+              {deal.description}
+            </p>
+          ) : null}
+        </header>
 
-        <section aria-labelledby="when" className="space-y-4">
-          <h2
-            id="when"
-            className="font-sans text-xl font-semibold [font-variation-settings:normal]"
-          >
-            When and where
-          </h2>
-          <DealFacts deal={deal} />
-        </section>
+        <PriceCard deal={deal} available={available} off={off} />
 
-        {deal.terms ? (
-          <section aria-labelledby="terms" className="space-y-2">
+        <div className="space-y-10 min-[61.3125rem]:col-start-1">
+          <DealTile
+            category={dealCategory(deal.merchant.category)}
+            partySize={deal.partySize}
+            large
+          />
+          <section aria-labelledby="included" className="space-y-4">
             <h2
-              id="terms"
+              id="included"
               className="font-sans text-xl font-semibold [font-variation-settings:normal]"
             >
-              Venue rules
+              What's included
             </h2>
-            <p className="max-w-prose whitespace-pre-line text-muted-foreground">
-              {deal.terms}
-            </p>
+            <ul className="space-y-2">
+              {deal.includes.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <Check
+                    className="mt-1 size-4 shrink-0 text-success"
+                    aria-hidden
+                  />
+                  {item}
+                </li>
+              ))}
+            </ul>
           </section>
-        ) : null}
-      </div>
-    </article>
+
+          <section aria-labelledby="when" className="space-y-4">
+            <h2
+              id="when"
+              className="font-sans text-xl font-semibold [font-variation-settings:normal]"
+            >
+              When and where
+            </h2>
+            <DealFacts deal={deal} />
+          </section>
+
+          {deal.terms ? (
+            <section aria-labelledby="terms" className="space-y-2">
+              <h2
+                id="terms"
+                className="font-sans text-xl font-semibold [font-variation-settings:normal]"
+              >
+                Venue rules
+              </h2>
+              <p className="max-w-prose whitespace-pre-line text-muted-foreground">
+                {deal.terms}
+              </p>
+            </section>
+          ) : null}
+        </div>
+      </article>
+    </div>
   );
 }
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import { EmptyState } from "@/components/feedback/empty-state";
+import { BackLink } from "@/components/layout/back-link";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { readError } from "@/lib/api";
@@ -26,6 +27,9 @@ type Status = (typeof tabs)[number]["status"];
 export default function AdminPage({ searchParams }: PageProps<"/admin">) {
   return (
     <div className="py-12 max-sm:py-7">
+      <BackLink href="/" className="mb-4">
+        All deals
+      </BackLink>
       <h1 className="text-h1 font-semibold max-sm:text-[36px]">
         Venue reviews
       </h1>

@@ -75,12 +75,12 @@ export function RotatingQr({ voucherId }: { voucherId: string }) {
 
   return (
     <div className="space-y-2">
-      <div className="relative mx-auto aspect-square w-full max-w-64 overflow-hidden rounded-xl bg-qr-bg p-1 shadow-[0_0_0_1px_rgb(23_22_28/.08),0_16px_40px_-20px_rgb(23_22_28/.4)]">
+      <div className="relative mx-auto aspect-square w-full max-w-[296px] overflow-hidden rounded-3xl bg-qr-bg p-[18px] max-sm:max-w-[266px] shadow-[0_0_0_1px_rgb(23_22_28/.08),0_16px_40px_-20px_rgb(23_22_28/.4)]">
         <AnimatePresence initial={false}>
           {src ? (
             <motion.div
               key={src}
-              className="absolute inset-1"
+              className="absolute inset-[18px]"
               initial={{ opacity: 0 }}
               animate={{ opacity: offline ? 0.12 : 1 }}
               exit={{ opacity: 0 }}
@@ -112,7 +112,7 @@ export function RotatingQr({ voucherId }: { voucherId: string }) {
         </Banner>
       ) : (
         <p
-          className="flex items-center justify-center gap-2 text-center text-sm text-ink-2"
+          className="flex items-center justify-center gap-2 text-center text-xs text-ink-2"
           aria-live="off"
         >
           <svg

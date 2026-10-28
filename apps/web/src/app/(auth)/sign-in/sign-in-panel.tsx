@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { GoogleSignIn } from "@/components/auth/google-sign-in";
 import { PasskeySignIn } from "@/components/auth/passkey-sign-in";
 import { PhoneOtpForm } from "@/components/auth/phone-otp-form";
+import { BackLink } from "@/components/layout/back-link";
 
 export function SignInPanel({
   next,
@@ -23,6 +24,7 @@ export function SignInPanel({
 
   return (
     <div className="space-y-7">
+      <BackLink href="/">Back home</BackLink>
       <div className="space-y-2">
         <h1 className="text-h1 font-semibold max-sm:text-[36px]">Sign in</h1>
         <p className="text-muted-foreground">
